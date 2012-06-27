@@ -1,0 +1,556 @@
+# -----------------------------
+# PostgreSQL configuration file
+# -----------------------------
+#
+# This file consists of lines of the form:
+#
+#   name = value
+#
+# (The "=" is optional.)  Whitespace may be used.  Comments are introduced with
+# "#" anywhere on a line.  The complete list of parameter names and allowed
+# values can be found in the PostgreSQL documentation.
+#
+# The commented-out settings shown in this file represent the default values.
+# Re-commenting a setting is NOT sufficient to revert it to the default value;
+# you need to reload the server.
+#
+# This file is read on server startup and when the server receives a SIGHUP
+# signal.  If you edit the file on a running system, you have to SIGHUP the
+# server for the changes to take effect, or use "pg_ctl reload".  Some
+# parameters, which are marked below, require a server shutdown and restart to
+# take effect.
+#
+# Any parameter can also be given as a command-line option to the server, e.g.,
+# "postgres -c log_connections=on".  Some parameters can be changed at run time
+# with the "SET" SQL command.
+#
+# Memory units:  kB = kilobytes        Time units:  ms  = milliseconds
+#                MB = megabytes                     s   = seconds
+#                GB = gigabytes                     min = minutes
+#                                                   h   = hours
+#                                                   d   = days
+
+
+#------------------------------------------------------------------------------
+# FILE LOCATIONS
+#------------------------------------------------------------------------------
+
+# The default values of these variables are driven from the -D command-line
+# option or PGDATA environment variable, represented here as ConfigDir.
+
+data_directory = '<%= node["postgresql"]["data_directory"] %>'   # use data in another directory
+          # (change requires restart)
+hba_file = '<%= node["postgresql"]["hba_file"] %>' # host-based authentication file
+          # (change requires restart)
+ident_file = '<%= node["postgresql"]["ident_file"] %>' # ident configuration file
+          # (change requires restart)
+
+# If external_pid_file is not explicitly set, no extra PID file is written.
+external_pid_file = '<%= node["postgresql"]["external_pid_file"] %>'    # write an extra PID file
+          # (change requires restart)
+
+
+#------------------------------------------------------------------------------
+# CONNECTIONS AND AUTHENTICATION
+#------------------------------------------------------------------------------
+
+# - Connection Settings -
+
+listen_addresses = '<%= node["postgresql"]["listen_addresses"] %>'   # what IP address(es) to listen on;
+          # comma-separated list of addresses;
+          # defaults to 'localhost', '*' = all
+          # (change requires restart)
+port = <%= node["postgresql"]["port"] %>       # (change requires restart)
+max_connections = <%= node["postgresql"]["max_connections"] %>     # (change requires restart)
+# Note:  Increasing max_connections costs ~400 bytes of shared memory per
+# connection slot, plus lock space (see max_locks_per_transaction).
+#superuser_reserved_connections = <%= node["postgresql"]["superuser_reserved_connections"] %> # (change requires restart)
+unix_socket_directory = '<%= node["postgresql"]["unix_socket_directory"] %>'   # (change requires restart)
+#unix_socket_group = '<%= node["postgresql"]["unix_socket_group"] %>'     # (change requires restart)
+#unix_socket_permissions = <%= node["postgresql"]["unix_socket_permissions"] %>   # begin with 0 to use octal notation
+          # (change requires restart)
+#bonjour = <%= node["postgresql"]["bonjour"] %>        # advertise server via Bonjour
+          # (change requires restart)
+#bonjour_name = '<%= node["postgresql"]["bonjour_name"] %>'      # defaults to the computer name
+          # (change requires restart)
+
+# - Security and Authentication -
+
+#authentication_timeout = <%= node["postgresql"]["authentication_timeout"] %>    # 1s-600s
+ssl = <%= node["postgresql"]["ssl"] %>        # (change requires restart)
+#ssl_ciphers = '<%= node["postgresql"]["ssl_ciphers"] %>'  # allowed SSL ciphers
+          # (change requires restart)
+#ssl_renegotiation_limit = <%= node["postgresql"]["ssl_renegotiation_limit"] %>  # amount of data between renegotiations
+#password_encryption = <%= node["postgresql"]["password_encryption"] %>
+#db_user_namespace = <%= node["postgresql"]["db_user_namespace"] %>
+
+# Kerberos and GSSAPI
+#krb_server_keyfile = '<%= node["postgresql"]["krb_server_keyfile"] %>'
+#krb_srvname = '<%= node["postgresql"]["krb_srvname"] %>'   # (Kerberos only)
+#krb_caseins_users = <%= node["postgresql"]["krb_caseins_users"] %>
+
+# - TCP Keepalives -
+# see "man 7 tcp" for details
+
+#tcp_keepalives_idle = <%= node["postgresql"]["tcp_keepalives_idle"] %>    # TCP_KEEPIDLE, in seconds;
+          # 0 selects the system default
+#tcp_keepalives_interval = <%= node["postgresql"]["tcp_keepalives_interval"] %>    # TCP_KEEPINTVL, in seconds;
+          # 0 selects the system default
+#tcp_keepalives_count = <%= node["postgresql"]["tcp_keepalives_count"] %>   # TCP_KEEPCNT;
+          # 0 selects the system default
+
+
+#------------------------------------------------------------------------------
+# RESOURCE USAGE (except WAL)
+#------------------------------------------------------------------------------
+
+# - Memory -
+
+shared_buffers = <%= node["postgresql"]["shared_buffers"] %>     # min 128kB
+          # (change requires restart)
+#temp_buffers = <%= node["postgresql"]["temp_buffers"] %>     # min 800kB
+#max_prepared_transactions = <%= node["postgresql"]["max_prepared_transactions"] %>    # zero disables the feature
+          # (change requires restart)
+# Note:  Increasing max_prepared_transactions costs ~600 bytes of shared memory
+# per transaction slot, plus lock space (see max_locks_per_transaction).
+# It is not advisable to set max_prepared_transactions nonzero unless you
+# actively intend to use prepared transactions.
+#work_mem = <%= node["postgresql"]["work_mem"] %>       # min 64kB
+#maintenance_work_mem = <%= node["postgresql"]["maintenance_work_mem"] %>    # min 1MB
+#max_stack_depth = <%= node["postgresql"]["max_stack_depth"] %>      # min 100kB
+
+# - Kernel Resource Usage -
+
+#max_files_per_process = <%= node["postgresql"]["max_files_per_process"] %>   # min 25
+          # (change requires restart)
+#shared_preload_libraries = '<%= node["postgresql"]["shared_preload_libraries"] %>'    # (change requires restart)
+
+# - Cost-Based Vacuum Delay -
+
+#vacuum_cost_delay = <%= node["postgresql"]["vacuum_cost_delay"] %>    # 0-100 milliseconds
+#vacuum_cost_page_hit = <%= node["postgresql"]["vacuum_cost_page_hit"] %>   # 0-10000 credits
+#vacuum_cost_page_miss = <%= node["postgresql"]["vacuum_cost_page_miss"] %>   # 0-10000 credits
+#vacuum_cost_page_dirty = <%= node["postgresql"]["vacuum_cost_page_dirty"] %>    # 0-10000 credits
+#vacuum_cost_limit = <%= node["postgresql"]["vacuum_cost_limit"] %>    # 1-10000 credits
+
+# - Background Writer -
+
+#bgwriter_delay = <%= node["postgresql"]["bgwriter_delay"] %>     # 10-10000ms between rounds
+#bgwriter_lru_maxpages = <%= node["postgresql"]["bgwriter_lru_maxpages"] %>    # 0-1000 max buffers written/round
+#bgwriter_lru_multiplier = <%= node["postgresql"]["bgwriter_lru_multiplier"] %>    # 0-10.0 multipler on buffers scanned/round
+
+# - Asynchronous Behavior -
+
+#effective_io_concurrency = <%= node["postgresql"]["effective_io_concurrency"] %>   # 1-1000. 0 disables prefetching
+
+
+#------------------------------------------------------------------------------
+# WRITE AHEAD LOG
+#------------------------------------------------------------------------------
+
+# - Settings -
+
+#wal_level = <%= node["postgresql"]["wal_level"] %>      # minimal, archive, or hot_standby
+          # (change requires restart)
+#fsync = <%= node["postgresql"]["fsync"] %>       # turns forced synchronization on or off
+#synchronous_commit = <%= node["postgresql"]["synchronous_commit"] %>    # synchronization level; on, off, or local
+#wal_sync_method = <%= node["postgresql"]["wal_sync_method"] %>    # the default is the first option
+          # supported by the operating system:
+          #   open_datasync
+          #   fdatasync (default on Linux)
+          #   fsync
+          #   fsync_writethrough
+          #   open_sync
+#full_page_writes = <%= node["postgresql"]["full_page_writes"] %>      # recover from partial page writes
+#wal_buffers = <%= node["postgresql"]["wal_buffers"] %>     # min 32kB, -1 sets based on shared_buffers
+          # (change requires restart)
+#wal_writer_delay = <%= node["postgresql"]["wal_writer_delay"] %>   # 1-10000 milliseconds
+
+#commit_delay = <%= node["postgresql"]["commit_delay"] %>     # range 0-100000, in microseconds
+#commit_siblings = <%= node["postgresql"]["commit_siblings"] %>      # range 1-1000
+
+# - Checkpoints -
+
+#checkpoint_segments = <%= node["postgresql"]["checkpoint_segments"] %>    # in logfile segments, min 1, 16MB each
+#checkpoint_timeout = <%= node["postgresql"]["checkpoint_timeout"] %>    # range 30s-1h
+#checkpoint_completion_target = <%= node["postgresql"]["checkpoint_completion_target"] %> # checkpoint target duration, 0.0 - 1.0
+#checkpoint_warning = <%= node["postgresql"]["checkpoint_warning"] %>   # 0 disables
+
+# - Archiving -
+
+#archive_mode = <%= node["postgresql"]["archive_mode"] %>   # allows archiving to be done
+        # (change requires restart)
+#archive_command = '<%= node["postgresql"]["archive_command"] %>'   # command to use to archive a logfile segment
+#archive_timeout = <%= node["postgresql"]["archive_timeout"] %>    # force a logfile segment switch after this
+        # number of seconds; 0 disables
+
+
+#------------------------------------------------------------------------------
+# REPLICATION
+#------------------------------------------------------------------------------
+
+# - Master Server -
+
+# These settings are ignored on a standby server
+
+#max_wal_senders = <%= node["postgresql"]["max_wal_senders"] %>    # max number of walsender processes
+        # (change requires restart)
+#wal_sender_delay = <%= node["postgresql"]["wal_sender_delay"] %>    # walsender cycle time, 1-10000 milliseconds
+#wal_keep_segments = <%= node["postgresql"]["wal_keep_segments"] %>    # in logfile segments, 16MB each; 0 disables
+#vacuum_defer_cleanup_age = <%= node["postgresql"]["vacuum_defer_cleanup_age"] %> # number of xacts by which cleanup is delayed
+#replication_timeout = <%= node["postgresql"]["replication_timeout"] %>  # in milliseconds; 0 disables
+#synchronous_standby_names = '<%= node["postgresql"]["synchronous_standby_names"] %>' # standby servers that provide sync rep
+        # comma-separated list of application_name
+        # from standby(s); '*' = all
+
+# - Standby Servers -
+
+# These settings are ignored on a master server
+
+#hot_standby = <%= node["postgresql"]["hot_standby"] %>      # "on" allows queries during recovery
+          # (change requires restart)
+#max_standby_archive_delay = <%= node["postgresql"]["max_standby_archive_delay"] %>  # max delay before canceling queries
+          # when reading WAL from archive;
+          # -1 allows indefinite delay
+#max_standby_streaming_delay = <%= node["postgresql"]["max_standby_streaming_delay"] %>  # max delay before canceling queries
+          # when reading streaming WAL;
+          # -1 allows indefinite delay
+#wal_receiver_status_interval = <%= node["postgresql"]["wal_receiver_status_interval"] %> # send replies at least this often
+          # 0 disables
+#hot_standby_feedback = <%= node["postgresql"]["hot_standby_feedback"] %>   # send info from standby to prevent
+          # query conflicts
+
+
+#------------------------------------------------------------------------------
+# QUERY TUNING
+#------------------------------------------------------------------------------
+
+# - Planner Method Configuration -
+
+#enable_bitmapscan = <%= node["postgresql"]["enable_bitmapscan"] %>
+#enable_hashagg = <%= node["postgresql"]["enable_hashagg"] %>
+#enable_hashjoin = <%= node["postgresql"]["enable_hashjoin"] %>
+#enable_indexscan = <%= node["postgresql"]["enable_indexscan"] %>
+#enable_material = <%= node["postgresql"]["enable_material"] %>
+#enable_mergejoin = <%= node["postgresql"]["enable_mergejoin"] %>
+#enable_nestloop = <%= node["postgresql"]["enable_nestloop"] %>
+#enable_seqscan = <%= node["postgresql"]["enable_seqscan"] %>
+#enable_sort = <%= node["postgresql"]["enable_sort"] %>
+#enable_tidscan = <%= node["postgresql"]["enable_tidscan"] %>
+
+# - Planner Cost Constants -
+
+#seq_page_cost = <%= node["postgresql"]["seq_page_cost"] %>      # measured on an arbitrary scale
+#random_page_cost = <%= node["postgresql"]["random_page_cost"] %>     # same scale as above
+#cpu_tuple_cost = <%= node["postgresql"]["cpu_tuple_cost"] %>      # same scale as above
+#cpu_index_tuple_cost = <%= node["postgresql"]["cpu_index_tuple_cost"] %>   # same scale as above
+#cpu_operator_cost = <%= node["postgresql"]["cpu_operator_cost"] %>   # same scale as above
+#effective_cache_size = <%= node["postgresql"]["effective_cache_size"] %>
+
+# - Genetic Query Optimizer -
+
+#geqo = <%= node["postgresql"]["geqo"] %>
+#geqo_threshold = <%= node["postgresql"]["geqo_threshold"] %>
+#geqo_effort = <%= node["postgresql"]["geqo_effort"] %>      # range 1-10
+#geqo_pool_size = <%= node["postgresql"]["geqo_pool_size"] %>     # selects default based on effort
+#geqo_generations = <%= node["postgresql"]["geqo_generations"] %>     # selects default based on effort
+#geqo_selection_bias = <%= node["postgresql"]["geqo_selection_bias"] %>    # range 1.5-2.0
+#geqo_seed = <%= node["postgresql"]["geqo_seed"] %>      # range 0.0-1.0
+
+# - Other Planner Options -
+
+#default_statistics_target = <%= node["postgresql"]["default_statistics_target"] %>  # range 1-10000
+#constraint_exclusion = <%= node["postgresql"]["constraint_exclusion"] %> # on, off, or partition
+#cursor_tuple_fraction = <%= node["postgresql"]["cursor_tuple_fraction"] %>    # range 0.0-1.0
+#from_collapse_limit = <%= node["postgresql"]["from_collapse_limit"] %>
+#join_collapse_limit = <%= node["postgresql"]["join_collapse_limit"] %>    # 1 disables collapsing of explicit
+          # JOIN clauses
+
+
+#------------------------------------------------------------------------------
+# ERROR REPORTING AND LOGGING
+#------------------------------------------------------------------------------
+
+# - Where to Log -
+
+#log_destination = '<%= node["postgresql"]["log_destination"] %>'   # Valid values are combinations of
+          # stderr, csvlog, syslog, and eventlog,
+          # depending on platform.  csvlog
+          # requires logging_collector to be on.
+
+# This is used when logging to stderr:
+#logging_collector = <%= node["postgresql"]["logging_collector"] %>    # Enable capturing of stderr and csvlog
+          # into log files. Required to be on for
+          # csvlogs.
+          # (change requires restart)
+
+# These are only used if logging_collector is on:
+#log_directory = '<%= node["postgresql"]["log_directory"] %>'   # directory where log files are written,
+          # can be absolute or relative to PGDATA
+#log_filename = '<%= node["postgresql"]["log_filename"] %>'  # log file name pattern,
+          # can include strftime() escapes
+#log_file_mode = <%= node["postgresql"]["log_file_mode"] %>     # creation mode for log files,
+          # begin with 0 to use octal notation
+#log_truncate_on_rotation = <%= node["postgresql"]["log_truncate_on_rotation"] %>   # If on, an existing log file with the
+          # same name as the new log file will be
+          # truncated rather than appended to.
+          # But such truncation only occurs on
+          # time-driven rotation, not on restarts
+          # or size-driven rotation.  Default is
+          # off, meaning append to existing files
+          # in all cases.
+#log_rotation_age = <%= node["postgresql"]["log_rotation_age"] %>      # Automatic rotation of logfiles will
+          # happen after that time.  0 disables.
+#log_rotation_size = <%= node["postgresql"]["log_rotation_size"] %>   # Automatic rotation of logfiles will
+          # happen after that much log output.
+          # 0 disables.
+
+# These are relevant when logging to syslog:
+#syslog_facility = '<%= node["postgresql"]["syslog_facility"] %>'
+#syslog_ident = '<%= node["postgresql"]["syslog_ident"] %>'
+
+#silent_mode = <%= node["postgresql"]["silent_mode"] %>      # Run server silently.
+          # DO NOT USE without syslog or
+          # logging_collector
+          # (change requires restart)
+
+
+# - When to Log -
+
+#client_min_messages = <%= node["postgresql"]["client_min_messages"] %>   # values in order of decreasing detail:
+          #   debug5
+          #   debug4
+          #   debug3
+          #   debug2
+          #   debug1
+          #   log
+          #   notice
+          #   warning
+          #   error
+
+#log_min_messages = <%= node["postgresql"]["log_min_messages"] %>   # values in order of decreasing detail:
+          #   debug5
+          #   debug4
+          #   debug3
+          #   debug2
+          #   debug1
+          #   info
+          #   notice
+          #   warning
+          #   error
+          #   log
+          #   fatal
+          #   panic
+
+#log_min_error_statement = <%= node["postgresql"]["log_min_error_statement"] %>  # values in order of decreasing detail:
+          #   debug5
+          #   debug4
+          #   debug3
+          #   debug2
+          #   debug1
+          #   info
+          #   notice
+          #   warning
+          #   error
+          #   log
+          #   fatal
+          #   panic (effectively off)
+
+#log_min_duration_statement = <%= node["postgresql"]["log_min_duration_statement"] %>  # -1 is disabled, 0 logs all statements
+          # and their durations, > 0 logs only
+          # statements running at least this number
+          # of milliseconds
+
+
+# - What to Log -
+
+#debug_print_parse = <%= node["postgresql"]["debug_print_parse"] %>
+#debug_print_rewritten = <%= node["postgresql"]["debug_print_rewritten"] %>
+#debug_print_plan = <%= node["postgresql"]["debug_print_plan"] %>
+#debug_pretty_print = <%= node["postgresql"]["debug_pretty_print"] %>
+#log_checkpoints = <%= node["postgresql"]["log_checkpoints"] %>
+#log_connections = <%= node["postgresql"]["log_connections"] %>
+#log_disconnections = <%= node["postgresql"]["log_disconnections"] %>
+#log_duration = <%= node["postgresql"]["log_duration"] %>
+#log_error_verbosity = <%= node["postgresql"]["log_error_verbosity"] %>    # terse, default, or verbose messages
+#log_hostname = <%= node["postgresql"]["log_hostname"] %>
+log_line_prefix = '<%= node["postgresql"]["log_line_prefix"] %>'     # special values:
+          #   %a = application name
+          #   %u = user name
+          #   %d = database name
+          #   %r = remote host and port
+          #   %h = remote host
+          #   %p = process ID
+          #   %t = timestamp without milliseconds
+          #   %m = timestamp with milliseconds
+          #   %i = command tag
+          #   %e = SQL state
+          #   %c = session ID
+          #   %l = session line number
+          #   %s = session start timestamp
+          #   %v = virtual transaction ID
+          #   %x = transaction ID (0 if none)
+          #   %q = stop here in non-session
+          #        processes
+          #   %% = '%'
+          # e.g. '[%u%%%d] '
+#log_lock_waits = <%= node["postgresql"]["log_lock_waits"] %>     # log lock waits >= deadlock_timeout
+#log_statement = '<%= node["postgresql"]["log_statement"] %>'     # none, ddl, mod, all
+#log_temp_files = <%= node["postgresql"]["log_temp_files"] %>      # log temporary files equal or larger
+          # than the specified size in kilobytes;
+          # -1 disables, 0 logs all temp files
+#log_timezone = '<%= node["postgresql"]["log_timezone"] %>'
+
+
+#------------------------------------------------------------------------------
+# RUNTIME STATISTICS
+#------------------------------------------------------------------------------
+
+# - Query/Index Statistics Collector -
+
+#track_activities = <%= node["postgresql"]["track_activities"] %>
+#track_counts = <%= node["postgresql"]["track_counts"] %>
+#track_functions = <%= node["postgresql"]["track_functions"] %>     # none, pl, all
+#track_activity_query_size = <%= node["postgresql"]["track_activity_query_size"] %>   # (change requires restart)
+#update_process_title = <%= node["postgresql"]["update_process_title"] %>
+#stats_temp_directory = '<%= node["postgresql"]["stats_temp_directory"] %>'
+
+
+# - Statistics Monitoring -
+
+#log_parser_stats = <%= node["postgresql"]["log_parser_stats"] %>
+#log_planner_stats = <%= node["postgresql"]["log_planner_stats"] %>
+#log_executor_stats = <%= node["postgresql"]["log_executor_stats"] %>
+#log_statement_stats = <%= node["postgresql"]["log_statement_stats"] %>
+
+
+#------------------------------------------------------------------------------
+# AUTOVACUUM PARAMETERS
+#------------------------------------------------------------------------------
+
+#autovacuum = <%= node["postgresql"]["autovacuum"] %>      # Enable autovacuum subprocess?  'on'
+          # requires track_counts to also be on.
+#log_autovacuum_min_duration = <%= node["postgresql"]["log_autovacuum_min_duration"] %> # -1 disables, 0 logs all actions and
+          # their durations, > 0 logs only
+          # actions running at least this number
+          # of milliseconds.
+#autovacuum_max_workers = <%= node["postgresql"]["autovacuum_max_workers"] %>   # max number of autovacuum subprocesses
+          # (change requires restart)
+#autovacuum_naptime = <%= node["postgresql"]["autovacuum_naptime"] %>    # time between autovacuum runs
+#autovacuum_vacuum_threshold = <%= node["postgresql"]["autovacuum_vacuum_threshold"] %> # min number of row updates before
+          # vacuum
+#autovacuum_analyze_threshold = <%= node["postgresql"]["autovacuum_analyze_threshold"] %>  # min number of row updates before
+          # analyze
+#autovacuum_vacuum_scale_factor = <%= node["postgresql"]["autovacuum_vacuum_scale_factor"] %> # fraction of table size before vacuum
+#autovacuum_analyze_scale_factor = <%= node["postgresql"]["autovacuum_analyze_scale_factor"] %>  # fraction of table size before analyze
+#autovacuum_freeze_max_age = <%= node["postgresql"]["autovacuum_freeze_max_age"] %>  # maximum XID age before forced vacuum
+          # (change requires restart)
+#autovacuum_vacuum_cost_delay = <%= node["postgresql"]["autovacuum_vacuum_cost_delay"] %>  # default vacuum cost delay for
+          # autovacuum, in milliseconds;
+          # -1 means use vacuum_cost_delay
+#autovacuum_vacuum_cost_limit = <%= node["postgresql"]["autovacuum_vacuum_cost_limit"] %>  # default vacuum cost limit for
+          # autovacuum, -1 means use
+          # vacuum_cost_limit
+
+
+#------------------------------------------------------------------------------
+# CLIENT CONNECTION DEFAULTS
+#------------------------------------------------------------------------------
+
+# - Statement Behavior -
+
+#search_path = '<%= node["postgresql"]["search_path"] %>'   # schema names
+#default_tablespace = '<%= node["postgresql"]["default_tablespace"] %>'    # a tablespace name, '' uses the default
+#temp_tablespaces = '<%= node["postgresql"]["temp_tablespaces"] %>'      # a list of tablespace names, '' uses
+          # only default tablespace
+#check_function_bodies = <%= node["postgresql"]["check_function_bodies"] %>
+#default_transaction_isolation = '<%= node["postgresql"]["default_transaction_isolation"] %>'
+#default_transaction_read_only = <%= node["postgresql"]["default_transaction_read_only"] %>
+#default_transaction_deferrable = <%= node["postgresql"]["default_transaction_deferrable"] %>
+#session_replication_role = '<%= node["postgresql"]["session_replication_role"] %>'
+#statement_timeout = <%= node["postgresql"]["statement_timeout"] %>      # in milliseconds, 0 is disabled
+#vacuum_freeze_min_age = <%= node["postgresql"]["vacuum_freeze_min_age"] %>
+#vacuum_freeze_table_age = <%= node["postgresql"]["vacuum_freeze_table_age"] %>
+#bytea_output = '<%= node["postgresql"]["bytea_output"] %>'     # hex, escape
+#xmlbinary = '<%= node["postgresql"]["xmlbinary"] %>'
+#xmloption = '<%= node["postgresql"]["xmloption"] %>'
+
+# - Locale and Formatting -
+
+datestyle = '<%= node["postgresql"]["datestyle"] %>'
+#intervalstyle = '<%= node["postgresql"]["intervalstyle"] %>'
+#timezone = '<%= node["postgresql"]["timezone"] %>'
+#timezone_abbreviations = '<%= node["postgresql"]["timezone_abbreviations"] %>'     # Select the set of available time zone
+          # abbreviations.  Currently, there are
+          #   Default
+          #   Australia
+          #   India
+          # You can create your own file in
+          # share/timezonesets/.
+#extra_float_digits = <%= node["postgresql"]["extra_float_digits"] %>     # min -15, max 3
+#client_encoding = <%= node["postgresql"]["client_encoding"] %>    # actually, defaults to database
+          # encoding
+
+# These settings are initialized by initdb, but they can be changed.
+lc_messages = '<%= node["postgresql"]["lc_messages"] %>'     # locale for system error message
+          # strings
+lc_monetary = '<%= node["postgresql"]["lc_monetary"] %>'     # locale for monetary formatting
+lc_numeric = '<%= node["postgresql"]["lc_numeric"] %>'      # locale for number formatting
+lc_time = '<%= node["postgresql"]["lc_time"] %>'       # locale for time formatting
+
+# default configuration for text search
+default_text_search_config = '<%= node["postgresql"]["default_text_search_config"] %>'
+
+# - Other Defaults -
+
+#dynamic_library_path = '<%= node["postgresql"]["dynamic_library_path"] %>'
+#local_preload_libraries = '<%= node["postgresql"]["local_preload_libraries"] %>'
+
+
+#------------------------------------------------------------------------------
+# LOCK MANAGEMENT
+#------------------------------------------------------------------------------
+
+#deadlock_timeout = <%= node["postgresql"]["deadlock_timeout"] %>
+#max_locks_per_transaction = <%= node["postgresql"]["max_locks_per_transaction"] %>   # min 10
+          # (change requires restart)
+# Note:  Each lock table slot uses ~270 bytes of shared memory, and there are
+# max_locks_per_transaction * (max_connections + max_prepared_transactions)
+# lock table slots.
+#max_pred_locks_per_transaction = <%= node["postgresql"]["max_pred_locks_per_transaction"] %>  # min 10
+          # (change requires restart)
+
+#------------------------------------------------------------------------------
+# VERSION/PLATFORM COMPATIBILITY
+#------------------------------------------------------------------------------
+
+# - Previous PostgreSQL Versions -
+
+#array_nulls = <%= node["postgresql"]["array_nulls"] %>
+#backslash_quote = <%= node["postgresql"]["backslash_quote"] %>  # on, off, or safe_encoding
+#default_with_oids = <%= node["postgresql"]["default_with_oids"] %>
+#escape_string_warning = <%= node["postgresql"]["escape_string_warning"] %>
+#lo_compat_privileges = <%= node["postgresql"]["lo_compat_privileges"] %>
+#quote_all_identifiers = <%= node["postgresql"]["quote_all_identifiers"] %>
+#sql_inheritance = <%= node["postgresql"]["sql_inheritance"] %>
+#standard_conforming_strings = <%= node["postgresql"]["standard_conforming_strings"] %>
+#synchronize_seqscans = <%= node["postgresql"]["synchronize_seqscans"] %>
+
+# - Other Platforms and Clients -
+
+#transform_null_equals = <%= node["postgresql"]["transform_null_equals"] %>
+
+
+#------------------------------------------------------------------------------
+# ERROR HANDLING
+#------------------------------------------------------------------------------
+
+#exit_on_error = <%= node["postgresql"]["exit_on_error"] %>        # terminate session on any error?
+#restart_after_crash = <%= node["postgresql"]["restart_after_crash"] %>     # reinitialize after backend crash?
+
+
+#------------------------------------------------------------------------------
+# CUSTOMIZED OPTIONS
+#------------------------------------------------------------------------------
+
+#custom_variable_classes = '<%= node["postgresql"]["custom_variable_classes"] %>'   # list of custom variable class names
