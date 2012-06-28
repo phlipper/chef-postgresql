@@ -39,7 +39,7 @@ template node["postgresql"]["hba_file"] do
 end
 
 # pg_ident
-template ["postgresql"]["ident_file"] do
+template node["postgresql"]["ident_file"] do
   source "pg_ident.conf.erb"
   owner  "postgres"
   group  "postgres"
