@@ -409,6 +409,14 @@ postgresql-server-dev-{version}
 5. Create new Pull Request
 
 
+## Contributors
+
+Many thanks go to the following who have contributed to making this cookbook even better:
+
+* **[@flashingpumpkin](https://github.com/flashingpumpkin)**
+  * recipe bugfixes
+
+
 ## License
 
 **chef-postgresql**
