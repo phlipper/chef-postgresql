@@ -39,6 +39,37 @@ The following platforms are supported by this cookbook, meaning that the recipes
 
 This cookbook installs the postgresql components if not present, and pulls updates if they are installed on the system.
 
+Additionally this cookbook provides two definitions to create, alter and delete users as well as create and drop databases. Usage is as follows:
+
+
+```ruby
+pg_user "myuser" do
+    privileges :superuser => false, :createdb => false, :login => true
+    password "mypassword"
+end
+```
+
+```ruby
+pg_user "myuser" do
+    action :drop
+end
+``` 
+
+```ruby
+pg_database "mydb" do
+    owner "myuser"
+    encoding "utf8"
+    template "template0"
+end
+```
+
+```ruby
+pg_database "mydb" do
+    action :drop
+end
+```
+
+
 ## Attributes
 
 ```ruby
