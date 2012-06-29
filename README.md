@@ -43,27 +43,25 @@ Additionally this cookbook provides two definitions to create, alter and delete 
 
 
 ```ruby
+# create a user
 pg_user "myuser" do
   privileges :superuser => false, :createdb => false, :login => true
   password "mypassword"
 end
-```
 
-```ruby
+# drop a user
 pg_user "myuser" do
   action :drop
 end
-```
 
-```ruby
+# create a database
 pg_database "mydb" do
   owner "myuser"
   encoding "utf8"
   template "template0"
 end
-```
 
-```ruby
+# drop a database
 pg_database "mydb" do
   action :drop
 end
