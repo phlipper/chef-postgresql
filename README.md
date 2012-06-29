@@ -44,28 +44,28 @@ Additionally this cookbook provides two definitions to create, alter and delete 
 
 ```ruby
 pg_user "myuser" do
-    privileges :superuser => false, :createdb => false, :login => true
-    password "mypassword"
+  privileges :superuser => false, :createdb => false, :login => true
+  password "mypassword"
 end
 ```
 
 ```ruby
 pg_user "myuser" do
-    action :drop
-end
-``` 
-
-```ruby
-pg_database "mydb" do
-    owner "myuser"
-    encoding "utf8"
-    template "template0"
+  action :drop
 end
 ```
 
 ```ruby
 pg_database "mydb" do
-    action :drop
+  owner "myuser"
+  encoding "utf8"
+  template "template0"
+end
+```
+
+```ruby
+pg_database "mydb" do
+  action :drop
 end
 ```
 
@@ -446,6 +446,7 @@ Many thanks go to the following who have contributed to making this cookbook eve
 
 * **[@flashingpumpkin](https://github.com/flashingpumpkin)**
   * recipe bugfixes
+  * add `pg_user` and `pg_database` definitions
 
 
 ## License
