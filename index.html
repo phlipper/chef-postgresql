@@ -1,0 +1,528 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>chef-postgresql by phlipper</title>
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+    <script src="javascripts/main.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+
+  </head>
+  <body>
+
+      <header>
+        <h1>chef-postgresql</h1>
+        <p>Chef cookbooks for PostgreSQL components </p>
+      </header>
+
+      <div id="banner">
+        <span id="logo"></span>
+
+        <a href="https://github.com/phlipper/chef-postgresql" class="button fork"><strong>View On GitHub</strong></a>
+        <div class="downloads">
+          <span>Downloads:</span>
+          <ul>
+            <li><a href="https://github.com/phlipper/chef-postgresql/zipball/master" class="button">ZIP</a></li>
+            <li><a href="https://github.com/phlipper/chef-postgresql/tarball/master" class="button">TAR</a></li>
+          </ul>
+        </div>
+      </div><!-- end banner -->
+
+    <div class="wrapper">
+      <nav>
+        <ul></ul>
+      </nav>
+      <section>
+        <h1>chef-postgresql</h1>
+
+<h2>Description</h2>
+
+<p>Installs <a href="http://www.postgresql.org">PostgreSQL</a>, The world's most advanced open source database.</p>
+
+<p>This installs postgres 9.x from the <a href="https://launchpad.net/%7Epitti/+archive/postgresql">PostgreSQL backports for stable Ubuntu releases</a>.</p>
+
+<p>Currently supported versions:</p>
+
+<ul>
+<li><code>9.0</code></li>
+<li><code>9.1</code></li>
+<li><code>9.2</code></li>
+</ul><p>The default version is <code>9.1</code>.</p>
+
+<h2>Requirements</h2>
+
+<h3>Supported Platforms</h3>
+
+<p>The following platforms are supported by this cookbook, meaning that the recipes run on these platforms without error:</p>
+
+<ul>
+<li>Ubuntu</li>
+</ul><h2>Recipes</h2>
+
+<ul>
+<li>
+<code>postgresql</code> - Set up the apt repository and install dependent packages</li>
+<li>
+<code>postgresql::client</code> - Front-end programs for PostgreSQL 9.x</li>
+<li>
+<code>postgresql::server</code> - Object-relational SQL database, version 9.x server</li>
+<li>
+<code>postgresql::contrib</code> - Additional facilities for PostgreSQL</li>
+<li>
+<code>postgresql::dbg</code> - Debug symbols for the server daemon</li>
+<li>
+<code>postgresql::doc</code> - Documentation for the PostgreSQL database management system</li>
+<li>
+<code>postgresql::libpq</code> - PostgreSQL C client library and header files for libpq5 (PostgreSQL library)</li>
+<li>
+<code>postgresql::postgis</code> - Geographic objects support for PostgreSQL 9.x</li>
+</ul><h2>Usage</h2>
+
+<p>This cookbook installs the postgresql components if not present, and pulls updates if they are installed on the system.</p>
+
+<p>Additionally this cookbook provides two definitions to create, alter and delete users as well as create and drop databases. Usage is as follows:</p>
+
+<div class="highlight">
+<pre><span class="c1"># create a user</span>
+<span class="n">pg_user</span> <span class="s2">"myuser"</span> <span class="k">do</span>
+  <span class="n">privileges</span> <span class="ss">:superuser</span> <span class="o">=&gt;</span> <span class="kp">false</span><span class="p">,</span> <span class="ss">:createdb</span> <span class="o">=&gt;</span> <span class="kp">false</span><span class="p">,</span> <span class="ss">:login</span> <span class="o">=&gt;</span> <span class="kp">true</span>
+  <span class="n">password</span> <span class="s2">"mypassword"</span>
+<span class="k">end</span>
+
+<span class="c1"># drop a user</span>
+<span class="n">pg_user</span> <span class="s2">"myuser"</span> <span class="k">do</span>
+  <span class="n">action</span> <span class="ss">:drop</span>
+<span class="k">end</span>
+
+<span class="c1"># create a database</span>
+<span class="n">pg_database</span> <span class="s2">"mydb"</span> <span class="k">do</span>
+  <span class="n">owner</span> <span class="s2">"myuser"</span>
+  <span class="n">encoding</span> <span class="s2">"utf8"</span>
+  <span class="n">template</span> <span class="s2">"template0"</span>
+<span class="k">end</span>
+
+<span class="c1"># drop a database</span>
+<span class="n">pg_database</span> <span class="s2">"mydb"</span> <span class="k">do</span>
+  <span class="n">action</span> <span class="ss">:drop</span>
+<span class="k">end</span>
+</pre>
+</div>
+
+
+<h2>Attributes</h2>
+
+<div class="highlight">
+<pre><span class="n">default</span><span class="o">[</span><span class="s2">"postgresql"</span><span class="o">][</span><span class="s2">"version"</span><span class="o">]</span>                         <span class="o">=</span> <span class="s2">"9.1"</span>
+
+<span class="n">default</span><span class="o">[</span><span class="s2">"postgresql"</span><span class="o">][</span><span class="s2">"environment_variables"</span><span class="o">]</span>           <span class="o">=</span> <span class="p">{}</span>
+<span class="n">default</span><span class="o">[</span><span class="s2">"postgresql"</span><span class="o">][</span><span class="s2">"pg_ctl_options"</span><span class="o">]</span>                  <span class="o">=</span> <span class="s2">""</span>
+<span class="n">default</span><span class="o">[</span><span class="s2">"postgresql"</span><span class="o">][</span><span class="s2">"pg_hba"</span><span class="o">]</span>                          <span class="o">=</span> <span class="o">[]</span>
+<span class="n">default</span><span class="o">[</span><span class="s2">"postgresql"</span><span class="o">][</span><span class="s2">"pg_ident"</span><span class="o">]</span>                        <span class="o">=</span> <span class="o">[]</span>
+<span class="n">default</span><span class="o">[</span><span class="s2">"postgresql"</span><span class="o">][</span><span class="s2">"start"</span><span class="o">]</span>                           <span class="o">=</span> <span class="s2">"auto"</span>  <span class="c1"># auto, manual, disabled</span>
+
+<span class="c1">#------------------------------------------------------------------------------</span>
+<span class="c1"># FILE LOCATIONS</span>
+<span class="c1">#------------------------------------------------------------------------------</span>
+<span class="n">default</span><span class="o">[</span><span class="s2">"postgresql"</span><span class="o">][</span><span class="s2">"data_directory"</span><span class="o">]</span>                  <span class="o">=</span> <span class="s2">"/var/lib/postgresql/</span><span class="si">#{</span><span class="n">node</span><span class="o">[</span><span class="s2">"postgresql"</span><span class="o">][</span><span class="s2">"version"</span><span class="o">]</span><span class="si">}</span><span class="s2">/main"</span>
+<span class="n">default</span><span class="o">[</span><span class="s2">"postgresql"</span><span class="o">][</span><span class="s2">"hba_file"</span><span class="o">]</span>                        <span class="o">=</span> <span class="s2">"/etc/postgresql/</span><span class="si">#{</span><span class="n">node</span><span class="o">[</span><span class="s2">"postgresql"</span><span class="o">][</span><span class="s2">"version"</span><span class="o">]</span><span class="si">}</span><span class="s2">/main/pg_hba.conf"</span>
+<span class="n">default</span><span class="o">[</span><span class="s2">"postgresql"</span><span class="o">][</span><span class="s2">"ident_file"</span><span class="o">]</span>                      <span class="o">=</span> <span class="s2">"/etc/postgresql/</span><span class="si">#{</span><span class="n">node</span><span class="o">[</span><span class="s2">"postgresql"</span><span class="o">][</span><span class="s2">"version"</span><span class="o">]</span><span class="si">}</span><span class="s2">/main/pg_ident.conf"</span>
+<span class="n">default</span><span class="o">[</span><span class="s2">"postgresql"</span><span class="o">][</span><span class="s2">"external_pid_file"</span><span class="o">]</span>               <span class="o">=</span> <span class="s2">"/var/run/postgresql/</span><span class="si">#{</span><span class="n">node</span><span class="o">[</span><span class="s2">"postgresql"</span><span class="o">][</span><span class="s2">"version"</span><span class="o">]</span><span class="si">}</span><span class="s2">-main.pid"</span>
+
+
+<span class="c1">#------------------------------------------------------------------------------</span>
+<span class="c1"># CONNECTIONS AND AUTHENTICATION</span>
+<span class="c1">#------------------------------------------------------------------------------</span>
+
+<span class="c1"># connection settings</span>
+<span class="n">default</span><span class="o">[</span><span class="s2">"postgresql"</span><span class="o">][</span><span class="s2">"listen_addresses"</span><span class="o">]</span>                <span class="o">=</span> <span class="s2">"localhost"</span>
+<span class="n">default</span><span class="o">[</span><span class="s2">"postgresql"</span><span class="o">][</span><span class="s2">"port"</span><span class="o">]</span>                            <span class="o">=</span> <span class="mi">5432</span>
+<span class="n">default</span><span class="o">[</span><span class="s2">"postgresql"</span><span class="o">][</span><span class="s2">"max_connections"</span><span class="o">]</span>                 <span class="o">=</span> <span class="mi">100</span>
+<span class="n">default</span><span class="o">[</span><span class="s2">"postgresql"</span><span class="o">][</span><span class="s2">"superuser_reserved_connections"</span><span class="o">]</span>  <span class="o">=</span> <span class="mi">3</span>
+<span class="n">default</span><span class="o">[</span><span class="s2">"postgresql"</span><span class="o">][</span><span class="s2">"unix_socket_directory"</span><span class="o">]</span>           <span class="o">=</span> <span class="s2">"/var/run/postgresql"</span>
+<span class="n">default</span><span class="o">[</span><span class="s2">"postgresql"</span><span class="o">][</span><span class="s2">"unix_socket_group"</span><span class="o">]</span>               <span class="o">=</span> <span class="s2">""</span>
+<span class="n">default</span><span class="o">[</span><span class="s2">"postgresql"</span><span class="o">][</span><span class="s2">"unix_socket_permissions"</span><span class="o">]</span>         <span class="o">=</span> <span class="s2">"0777"</span>
+<span class="n">default</span><span class="o">[</span><span class="s2">"postgresql"</span><span class="o">][</span><span class="s2">"bonjour"</span><span class="o">]</span>                         <span class="o">=</span> <span class="s2">"off"</span>
+<span class="n">default</span><span class="o">[</span><span class="s2">"postgresql"</span><span class="o">][</span><span class="s2">"bonjour_name"</span><span class="o">]</span>                    <span class="o">=</span> <span class="s2">""</span>
+
+<span class="c1"># security and authentication</span>
+<span class="n">default</span><span class="o">[</span><span class="s2">"postgresql"</span><span class="o">][</span><span class="s2">"authentication_timeout"</span><span class="o">]</span>          <span class="o">=</span> <span class="s2">"1min"</span>
+<span class="n">default</span><span class="o">[</span><span class="s2">"postgresql"</span><span class="o">][</span><span class="s2">"ssl"</span><span class="o">]</span>                             <span class="o">=</span> <span class="kp">true</span>
+<span class="n">default</span><span class="o">[</span><span class="s2">"postgresql"</span><span class="o">][</span><span class="s2">"ssl_ciphers"</span><span class="o">]</span>                     <span class="o">=</span> <span class="s2">"ALL:!ADH:!LOW:!EXP:!MD5:@STRENGTH"</span>
+<span class="n">default</span><span class="o">[</span><span class="s2">"postgresql"</span><span class="o">][</span><span class="s2">"ssl_renegotiation_limit"</span><span class="o">]</span>         <span class="o">=</span> <span class="s2">"512MB"</span>
+<span class="n">default</span><span class="o">[</span><span class="s2">"postgresql"</span><span class="o">][</span><span class="s2">"password_encryption"</span><span class="o">]</span>             <span class="o">=</span> <span class="s2">"on"</span>
+<span class="n">default</span><span class="o">[</span><span class="s2">"postgresql"</span><span class="o">][</span><span class="s2">"db_user_namespace"</span><span class="o">]</span>               <span class="o">=</span> <span class="s2">"off"</span>
+
+<span class="c1"># kerberos and gssapi</span>
+<span class="n">default</span><span class="o">[</span><span class="s2">"postgresql"</span><span class="o">][</span><span class="s2">"db_user_namespace"</span><span class="o">]</span>               <span class="o">=</span> <span class="s2">"off"</span>
+<span class="n">default</span><span class="o">[</span><span class="s2">"postgresql"</span><span class="o">][</span><span class="s2">"krb_server_keyfile"</span><span class="o">]</span>              <span class="o">=</span> <span class="s2">""</span>
+<span class="n">default</span><span class="o">[</span><span class="s2">"postgresql"</span><span class="o">][</span><span class="s2">"krb_srvname"</span><span class="o">]</span>                     <span class="o">=</span> <span class="s2">"postgres"</span>
+<span class="n">default</span><span class="o">[</span><span class="s2">"postgresql"</span><span class="o">][</span><span class="s2">"krb_caseins_users"</span><span class="o">]</span>               <span class="o">=</span> <span class="s2">"off"</span>
+
+<span class="c1"># tcp keepalives</span>
+<span class="n">default</span><span class="o">[</span><span class="s2">"postgresql"</span><span class="o">][</span><span class="s2">"tcp_keepalives_idle"</span><span class="o">]</span>             <span class="o">=</span> <span class="mi">0</span>
+<span class="n">default</span><span class="o">[</span><span class="s2">"postgresql"</span><span class="o">][</span><span class="s2">"tcp_keepalives_interval"</span><span class="o">]</span>         <span class="o">=</span> <span class="mi">0</span>
+<span class="n">default</span><span class="o">[</span><span class="s2">"postgresql"</span><span class="o">][</span><span class="s2">"tcp_keepalives_count"</span><span class="o">]</span>            <span class="o">=</span> <span class="mi">0</span>
+
+
+<span class="c1">#------------------------------------------------------------------------------</span>
+<span class="c1"># RESOURCE USAGE (except WAL)</span>
+<span class="c1">#------------------------------------------------------------------------------</span>
+
+<span class="c1"># memory</span>
+<span class="n">default</span><span class="o">[</span><span class="s2">"postgresql"</span><span class="o">][</span><span class="s2">"shared_buffers"</span><span class="o">]</span>                  <span class="o">=</span> <span class="s2">"24MB"</span>
+<span class="n">default</span><span class="o">[</span><span class="s2">"postgresql"</span><span class="o">][</span><span class="s2">"temp_buffers"</span><span class="o">]</span>                    <span class="o">=</span> <span class="s2">"8MB"</span>
+<span class="n">default</span><span class="o">[</span><span class="s2">"postgresql"</span><span class="o">][</span><span class="s2">"max_prepared_transactions"</span><span class="o">]</span>       <span class="o">=</span> <span class="mi">0</span>
+<span class="n">default</span><span class="o">[</span><span class="s2">"postgresql"</span><span class="o">][</span><span class="s2">"work_mem"</span><span class="o">]</span>                        <span class="o">=</span> <span class="s2">"1MB"</span>
+<span class="n">default</span><span class="o">[</span><span class="s2">"postgresql"</span><span class="o">][</span><span class="s2">"maintenance_work_mem"</span><span class="o">]</span>            <span class="o">=</span> <span class="s2">"16MB"</span>
+<span class="n">default</span><span class="o">[</span><span class="s2">"postgresql"</span><span class="o">][</span><span class="s2">"max_stack_depth"</span><span class="o">]</span>                 <span class="o">=</span> <span class="s2">"2MB"</span>
+
+<span class="c1"># kernel resource usage</span>
+<span class="n">default</span><span class="o">[</span><span class="s2">"postgresql"</span><span class="o">][</span><span class="s2">"max_files_per_process"</span><span class="o">]</span>           <span class="o">=</span> <span class="mi">1000</span>
+<span class="n">default</span><span class="o">[</span><span class="s2">"postgresql"</span><span class="o">][</span><span class="s2">"shared_preload_libraries"</span><span class="o">]</span>        <span class="o">=</span> <span class="s2">""</span>
+
+<span class="c1"># cost-based vacuum delay</span>
+<span class="n">default</span><span class="o">[</span><span class="s2">"postgresql"</span><span class="o">][</span><span class="s2">"vacuum_cost_delay"</span><span class="o">]</span>               <span class="o">=</span> <span class="s2">"0ms"</span>
+<span class="n">default</span><span class="o">[</span><span class="s2">"postgresql"</span><span class="o">][</span><span class="s2">"vacuum_cost_page_hit"</span><span class="o">]</span>            <span class="o">=</span> <span class="mi">1</span>
+<span class="n">default</span><span class="o">[</span><span class="s2">"postgresql"</span><span class="o">][</span><span class="s2">"vacuum_cost_page_miss"</span><span class="o">]</span>           <span class="o">=</span> <span class="mi">10</span>
+<span class="n">default</span><span class="o">[</span><span class="s2">"postgresql"</span><span class="o">][</span><span class="s2">"vacuum_cost_page_dirty"</span><span class="o">]</span>          <span class="o">=</span> <span class="mi">20</span>
+<span class="n">default</span><span class="o">[</span><span class="s2">"postgresql"</span><span class="o">][</span><span class="s2">"vacuum_cost_limit"</span><span class="o">]</span>               <span class="o">=</span> <span class="mi">200</span>
+
+<span class="c1"># background writer</span>
+<span class="n">default</span><span class="o">[</span><span class="s2">"postgresql"</span><span class="o">][</span><span class="s2">"bgwriter_delay"</span><span class="o">]</span>                  <span class="o">=</span> <span class="s2">"200ms"</span>
+<span class="n">default</span><span class="o">[</span><span class="s2">"postgresql"</span><span class="o">][</span><span class="s2">"bgwriter_lru_maxpages"</span><span class="o">]</span>           <span class="o">=</span> <span class="mi">100</span>
+<span class="n">default</span><span class="o">[</span><span class="s2">"postgresql"</span><span class="o">][</span><span class="s2">"bgwriter_lru_multiplier"</span><span class="o">]</span>         <span class="o">=</span> <span class="mi">2</span><span class="o">.</span><span class="mi">0</span>
+
+<span class="c1"># asynchronous behavior</span>
+<span class="n">default</span><span class="o">[</span><span class="s2">"postgresql"</span><span class="o">][</span><span class="s2">"effective_io_concurrency"</span><span class="o">]</span>        <span class="o">=</span> <span class="mi">1</span>
+
+
+<span class="c1">#------------------------------------------------------------------------------</span>
+<span class="c1"># WRITE AHEAD LOG</span>
+<span class="c1">#------------------------------------------------------------------------------</span>
+
+<span class="c1"># settings</span>
+<span class="n">default</span><span class="o">[</span><span class="s2">"postgresql"</span><span class="o">][</span><span class="s2">"wal_level"</span><span class="o">]</span>                       <span class="o">=</span> <span class="s2">"minimal"</span>
+<span class="n">default</span><span class="o">[</span><span class="s2">"postgresql"</span><span class="o">][</span><span class="s2">"fsync"</span><span class="o">]</span>                           <span class="o">=</span> <span class="s2">"on"</span>
+<span class="n">default</span><span class="o">[</span><span class="s2">"postgresql"</span><span class="o">][</span><span class="s2">"synchronous_commit"</span><span class="o">]</span>              <span class="o">=</span> <span class="s2">"on"</span>
+<span class="n">default</span><span class="o">[</span><span class="s2">"postgresql"</span><span class="o">][</span><span class="s2">"wal_sync_method"</span><span class="o">]</span>                 <span class="o">=</span> <span class="s2">"fsync"</span>
+<span class="n">default</span><span class="o">[</span><span class="s2">"postgresql"</span><span class="o">][</span><span class="s2">"full_page_writes"</span><span class="o">]</span>                <span class="o">=</span> <span class="s2">"on"</span>
+<span class="n">default</span><span class="o">[</span><span class="s2">"postgresql"</span><span class="o">][</span><span class="s2">"wal_buffers"</span><span class="o">]</span>                     <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+<span class="n">default</span><span class="o">[</span><span class="s2">"postgresql"</span><span class="o">][</span><span class="s2">"wal_writer_delay"</span><span class="o">]</span>                <span class="o">=</span> <span class="s2">"200ms"</span>
+<span class="n">default</span><span class="o">[</span><span class="s2">"postgresql"</span><span class="o">][</span><span class="s2">"commit_delay"</span><span class="o">]</span>                    <span class="o">=</span> <span class="mi">0</span>
+<span class="n">default</span><span class="o">[</span><span class="s2">"postgresql"</span><span class="o">][</span><span class="s2">"commit_siblings"</span><span class="o">]</span>                 <span class="o">=</span> <span class="mi">5</span>
+
+<span class="c1"># checkpoints</span>
+<span class="n">default</span><span class="o">[</span><span class="s2">"postgresql"</span><span class="o">][</span><span class="s2">"checkpoint_segments"</span><span class="o">]</span>             <span class="o">=</span> <span class="mi">3</span>
+<span class="n">default</span><span class="o">[</span><span class="s2">"postgresql"</span><span class="o">][</span><span class="s2">"checkpoint_timeout"</span><span class="o">]</span>              <span class="o">=</span> <span class="s2">"5min"</span>
+<span class="n">default</span><span class="o">[</span><span class="s2">"postgresql"</span><span class="o">][</span><span class="s2">"checkpoint_completion_target"</span><span class="o">]</span>    <span class="o">=</span> <span class="mi">0</span><span class="o">.</span><span class="mi">5</span>
+<span class="n">default</span><span class="o">[</span><span class="s2">"postgresql"</span><span class="o">][</span><span class="s2">"checkpoint_warning"</span><span class="o">]</span>              <span class="o">=</span> <span class="s2">"30s"</span>
+
+<span class="c1"># archiving</span>
+<span class="n">default</span><span class="o">[</span><span class="s2">"postgresql"</span><span class="o">][</span><span class="s2">"archive_mode"</span><span class="o">]</span>                    <span class="o">=</span> <span class="s2">"off"</span>
+<span class="n">default</span><span class="o">[</span><span class="s2">"postgresql"</span><span class="o">][</span><span class="s2">"archive_command"</span><span class="o">]</span>                 <span class="o">=</span> <span class="s2">""</span>
+<span class="n">default</span><span class="o">[</span><span class="s2">"postgresql"</span><span class="o">][</span><span class="s2">"archive_timeout"</span><span class="o">]</span>                 <span class="o">=</span> <span class="mi">0</span>
+
+
+<span class="c1">#------------------------------------------------------------------------------</span>
+<span class="c1"># REPLICATION</span>
+<span class="c1">#------------------------------------------------------------------------------</span>
+
+<span class="c1"># master server</span>
+<span class="n">default</span><span class="o">[</span><span class="s2">"postgresql"</span><span class="o">][</span><span class="s2">"max_wal_senders"</span><span class="o">]</span>                 <span class="o">=</span> <span class="mi">0</span>
+<span class="n">default</span><span class="o">[</span><span class="s2">"postgresql"</span><span class="o">][</span><span class="s2">"wal_sender_delay"</span><span class="o">]</span>                <span class="o">=</span> <span class="s2">"1s"</span>
+<span class="n">default</span><span class="o">[</span><span class="s2">"postgresql"</span><span class="o">][</span><span class="s2">"wal_keep_segments"</span><span class="o">]</span>               <span class="o">=</span> <span class="mi">0</span>
+<span class="n">default</span><span class="o">[</span><span class="s2">"postgresql"</span><span class="o">][</span><span class="s2">"vacuum_defer_cleanup_age"</span><span class="o">]</span>        <span class="o">=</span> <span class="mi">0</span>
+<span class="n">default</span><span class="o">[</span><span class="s2">"postgresql"</span><span class="o">][</span><span class="s2">"replication_timeout"</span><span class="o">]</span>             <span class="o">=</span> <span class="s2">"60s"</span>
+<span class="n">default</span><span class="o">[</span><span class="s2">"postgresql"</span><span class="o">][</span><span class="s2">"synchronous_standby_names"</span><span class="o">]</span>       <span class="o">=</span> <span class="s2">""</span>
+
+<span class="c1"># standby servers</span>
+<span class="n">default</span><span class="o">[</span><span class="s2">"postgresql"</span><span class="o">][</span><span class="s2">"hot_standby"</span><span class="o">]</span>                     <span class="o">=</span> <span class="s2">"off"</span>
+<span class="n">default</span><span class="o">[</span><span class="s2">"postgresql"</span><span class="o">][</span><span class="s2">"max_standby_archive_delay"</span><span class="o">]</span>       <span class="o">=</span> <span class="s2">"30s"</span>
+<span class="n">default</span><span class="o">[</span><span class="s2">"postgresql"</span><span class="o">][</span><span class="s2">"max_standby_streaming_delay"</span><span class="o">]</span>     <span class="o">=</span> <span class="s2">"30s"</span>
+<span class="n">default</span><span class="o">[</span><span class="s2">"postgresql"</span><span class="o">][</span><span class="s2">"wal_receiver_status_interval"</span><span class="o">]</span>    <span class="o">=</span> <span class="s2">"10s"</span>
+<span class="n">default</span><span class="o">[</span><span class="s2">"postgresql"</span><span class="o">][</span><span class="s2">"hot_standby_feedback"</span><span class="o">]</span>            <span class="o">=</span> <span class="s2">"off"</span>
+
+
+<span class="c1">#------------------------------------------------------------------------------</span>
+<span class="c1"># QUERY TUNING</span>
+<span class="c1">#------------------------------------------------------------------------------</span>
+
+<span class="c1"># planner method configuration</span>
+<span class="n">default</span><span class="o">[</span><span class="s2">"postgresql"</span><span class="o">][</span><span class="s2">"enable_bitmapscan"</span><span class="o">]</span>               <span class="o">=</span> <span class="s2">"on"</span>
+<span class="n">default</span><span class="o">[</span><span class="s2">"postgresql"</span><span class="o">][</span><span class="s2">"enable_hashagg"</span><span class="o">]</span>                  <span class="o">=</span> <span class="s2">"on"</span>
+<span class="n">default</span><span class="o">[</span><span class="s2">"postgresql"</span><span class="o">][</span><span class="s2">"enable_hashjoin"</span><span class="o">]</span>                 <span class="o">=</span> <span class="s2">"on"</span>
+<span class="n">default</span><span class="o">[</span><span class="s2">"postgresql"</span><span class="o">][</span><span class="s2">"enable_indexscan"</span><span class="o">]</span>                <span class="o">=</span> <span class="s2">"on"</span>
+<span class="n">default</span><span class="o">[</span><span class="s2">"postgresql"</span><span class="o">][</span><span class="s2">"enable_material"</span><span class="o">]</span>                 <span class="o">=</span> <span class="s2">"on"</span>
+<span class="n">default</span><span class="o">[</span><span class="s2">"postgresql"</span><span class="o">][</span><span class="s2">"enable_mergejoin"</span><span class="o">]</span>                <span class="o">=</span> <span class="s2">"on"</span>
+<span class="n">default</span><span class="o">[</span><span class="s2">"postgresql"</span><span class="o">][</span><span class="s2">"enable_nestloop"</span><span class="o">]</span>                 <span class="o">=</span> <span class="s2">"on"</span>
+<span class="n">default</span><span class="o">[</span><span class="s2">"postgresql"</span><span class="o">][</span><span class="s2">"enable_seqscan"</span><span class="o">]</span>                  <span class="o">=</span> <span class="s2">"on"</span>
+<span class="n">default</span><span class="o">[</span><span class="s2">"postgresql"</span><span class="o">][</span><span class="s2">"enable_sort"</span><span class="o">]</span>                     <span class="o">=</span> <span class="s2">"on"</span>
+<span class="n">default</span><span class="o">[</span><span class="s2">"postgresql"</span><span class="o">][</span><span class="s2">"enable_tidscan"</span><span class="o">]</span>                  <span class="o">=</span> <span class="s2">"on"</span>
+
+<span class="c1"># planner cost constants</span>
+<span class="n">default</span><span class="o">[</span><span class="s2">"postgresql"</span><span class="o">][</span><span class="s2">"seq_page_cost"</span><span class="o">]</span>                   <span class="o">=</span> <span class="mi">1</span><span class="o">.</span><span class="mi">0</span>
+<span class="n">default</span><span class="o">[</span><span class="s2">"postgresql"</span><span class="o">][</span><span class="s2">"random_page_cost"</span><span class="o">]</span>                <span class="o">=</span> <span class="mi">4</span><span class="o">.</span><span class="mi">0</span>
+<span class="n">default</span><span class="o">[</span><span class="s2">"postgresql"</span><span class="o">][</span><span class="s2">"cpu_tuple_cost"</span><span class="o">]</span>                  <span class="o">=</span> <span class="mi">0</span><span class="o">.</span><span class="mo">01</span>
+<span class="n">default</span><span class="o">[</span><span class="s2">"postgresql"</span><span class="o">][</span><span class="s2">"cpu_index_tuple_cost"</span><span class="o">]</span>            <span class="o">=</span> <span class="mi">0</span><span class="o">.</span><span class="mo">005</span>
+<span class="n">default</span><span class="o">[</span><span class="s2">"postgresql"</span><span class="o">][</span><span class="s2">"cpu_operator_cost"</span><span class="o">]</span>               <span class="o">=</span> <span class="mi">0</span><span class="o">.</span><span class="mo">0025</span>
+<span class="n">default</span><span class="o">[</span><span class="s2">"postgresql"</span><span class="o">][</span><span class="s2">"effective_cache_size"</span><span class="o">]</span>            <span class="o">=</span> <span class="s2">"128MB"</span>
+
+<span class="c1"># genetic query optimizer</span>
+<span class="n">default</span><span class="o">[</span><span class="s2">"postgresql"</span><span class="o">][</span><span class="s2">"geqo"</span><span class="o">]</span>                            <span class="o">=</span> <span class="s2">"on"</span>
+<span class="n">default</span><span class="o">[</span><span class="s2">"postgresql"</span><span class="o">][</span><span class="s2">"geqo_threshold"</span><span class="o">]</span>                  <span class="o">=</span> <span class="mi">12</span>
+<span class="n">default</span><span class="o">[</span><span class="s2">"postgresql"</span><span class="o">][</span><span class="s2">"geqo_effort"</span><span class="o">]</span>                     <span class="o">=</span> <span class="mi">5</span>
+<span class="n">default</span><span class="o">[</span><span class="s2">"postgresql"</span><span class="o">][</span><span class="s2">"geqo_pool_size"</span><span class="o">]</span>                  <span class="o">=</span> <span class="mi">0</span>
+<span class="n">default</span><span class="o">[</span><span class="s2">"postgresql"</span><span class="o">][</span><span class="s2">"geqo_generations"</span><span class="o">]</span>                <span class="o">=</span> <span class="mi">0</span>
+<span class="n">default</span><span class="o">[</span><span class="s2">"postgresql"</span><span class="o">][</span><span class="s2">"geqo_selection_bias"</span><span class="o">]</span>             <span class="o">=</span> <span class="mi">2</span><span class="o">.</span><span class="mi">0</span>
+<span class="n">default</span><span class="o">[</span><span class="s2">"postgresql"</span><span class="o">][</span><span class="s2">"geqo_seed"</span><span class="o">]</span>                       <span class="o">=</span> <span class="mi">0</span><span class="o">.</span><span class="mi">0</span>
+
+<span class="c1"># other planner options</span>
+<span class="n">default</span><span class="o">[</span><span class="s2">"postgresql"</span><span class="o">][</span><span class="s2">"default_statistics_target"</span><span class="o">]</span>       <span class="o">=</span> <span class="mi">100</span>
+<span class="n">default</span><span class="o">[</span><span class="s2">"postgresql"</span><span class="o">][</span><span class="s2">"constraint_exclusion"</span><span class="o">]</span>            <span class="o">=</span> <span class="s2">"partition"</span>
+<span class="n">default</span><span class="o">[</span><span class="s2">"postgresql"</span><span class="o">][</span><span class="s2">"cursor_tuple_fraction"</span><span class="o">]</span>           <span class="o">=</span> <span class="mi">0</span><span class="o">.</span><span class="mi">1</span>
+<span class="n">default</span><span class="o">[</span><span class="s2">"postgresql"</span><span class="o">][</span><span class="s2">"from_collapse_limit"</span><span class="o">]</span>             <span class="o">=</span> <span class="mi">8</span>
+<span class="n">default</span><span class="o">[</span><span class="s2">"postgresql"</span><span class="o">][</span><span class="s2">"join_collapse_limit"</span><span class="o">]</span>             <span class="o">=</span> <span class="mi">8</span>
+
+
+<span class="c1">#------------------------------------------------------------------------------</span>
+<span class="c1"># ERROR REPORTING AND LOGGING</span>
+<span class="c1">#------------------------------------------------------------------------------</span>
+
+<span class="c1"># where to log</span>
+<span class="n">default</span><span class="o">[</span><span class="s2">"postgresql"</span><span class="o">][</span><span class="s2">"log_destination"</span><span class="o">]</span>                 <span class="o">=</span> <span class="s2">"stderr"</span>
+<span class="n">default</span><span class="o">[</span><span class="s2">"postgresql"</span><span class="o">][</span><span class="s2">"logging_collector"</span><span class="o">]</span>               <span class="o">=</span> <span class="s2">"off"</span>
+<span class="n">default</span><span class="o">[</span><span class="s2">"postgresql"</span><span class="o">][</span><span class="s2">"log_directory"</span><span class="o">]</span>                   <span class="o">=</span> <span class="s2">"pg_log"</span>
+<span class="n">default</span><span class="o">[</span><span class="s2">"postgresql"</span><span class="o">][</span><span class="s2">"log_filename"</span><span class="o">]</span>                    <span class="o">=</span> <span class="s2">"postgresql-%Y-%m-%d_%H%M%S.log"</span>
+<span class="n">default</span><span class="o">[</span><span class="s2">"postgresql"</span><span class="o">][</span><span class="s2">"log_file_mode"</span><span class="o">]</span>                   <span class="o">=</span> <span class="mo">0600</span>
+<span class="n">default</span><span class="o">[</span><span class="s2">"postgresql"</span><span class="o">][</span><span class="s2">"log_truncate_on_rotation"</span><span class="o">]</span>        <span class="o">=</span> <span class="s2">"off"</span>
+<span class="n">default</span><span class="o">[</span><span class="s2">"postgresql"</span><span class="o">][</span><span class="s2">"log_rotation_age"</span><span class="o">]</span>                <span class="o">=</span> <span class="s2">"1d"</span>
+<span class="n">default</span><span class="o">[</span><span class="s2">"postgresql"</span><span class="o">][</span><span class="s2">"log_rotation_size"</span><span class="o">]</span>               <span class="o">=</span> <span class="s2">"10MB"</span>
+
+<span class="c1"># These are relevant when logging to syslog:</span>
+<span class="n">default</span><span class="o">[</span><span class="s2">"postgresql"</span><span class="o">][</span><span class="s2">"syslog_facility"</span><span class="o">]</span>                 <span class="o">=</span> <span class="s2">"LOCAL0"</span>
+<span class="n">default</span><span class="o">[</span><span class="s2">"postgresql"</span><span class="o">][</span><span class="s2">"syslog_ident"</span><span class="o">]</span>                    <span class="o">=</span> <span class="s2">"postgres"</span>
+<span class="n">default</span><span class="o">[</span><span class="s2">"postgresql"</span><span class="o">][</span><span class="s2">"silent_mode"</span><span class="o">]</span>                     <span class="o">=</span> <span class="s2">"off"</span>
+
+<span class="c1"># when to log</span>
+<span class="n">default</span><span class="o">[</span><span class="s2">"postgresql"</span><span class="o">][</span><span class="s2">"client_min_messages"</span><span class="o">]</span>             <span class="o">=</span> <span class="s2">"notice"</span>
+<span class="n">default</span><span class="o">[</span><span class="s2">"postgresql"</span><span class="o">][</span><span class="s2">"log_min_messages"</span><span class="o">]</span>                <span class="o">=</span> <span class="s2">"warning"</span>
+<span class="n">default</span><span class="o">[</span><span class="s2">"postgresql"</span><span class="o">][</span><span class="s2">"log_min_error_statement"</span><span class="o">]</span>         <span class="o">=</span> <span class="s2">"error"</span>
+<span class="n">default</span><span class="o">[</span><span class="s2">"postgresql"</span><span class="o">][</span><span class="s2">"log_min_duration_statement"</span><span class="o">]</span>      <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+
+<span class="c1"># what to log</span>
+<span class="n">default</span><span class="o">[</span><span class="s2">"postgresql"</span><span class="o">][</span><span class="s2">"debug_print_parse"</span><span class="o">]</span>               <span class="o">=</span> <span class="s2">"off"</span>
+<span class="n">default</span><span class="o">[</span><span class="s2">"postgresql"</span><span class="o">][</span><span class="s2">"debug_print_rewritten"</span><span class="o">]</span>           <span class="o">=</span> <span class="s2">"off"</span>
+<span class="n">default</span><span class="o">[</span><span class="s2">"postgresql"</span><span class="o">][</span><span class="s2">"debug_print_plan"</span><span class="o">]</span>                <span class="o">=</span> <span class="s2">"off"</span>
+<span class="n">default</span><span class="o">[</span><span class="s2">"postgresql"</span><span class="o">][</span><span class="s2">"debug_pretty_print"</span><span class="o">]</span>              <span class="o">=</span> <span class="s2">"on"</span>
+<span class="n">default</span><span class="o">[</span><span class="s2">"postgresql"</span><span class="o">][</span><span class="s2">"log_checkpoints"</span><span class="o">]</span>                 <span class="o">=</span> <span class="s2">"off"</span>
+<span class="n">default</span><span class="o">[</span><span class="s2">"postgresql"</span><span class="o">][</span><span class="s2">"log_connections"</span><span class="o">]</span>                 <span class="o">=</span> <span class="s2">"off"</span>
+<span class="n">default</span><span class="o">[</span><span class="s2">"postgresql"</span><span class="o">][</span><span class="s2">"log_disconnections"</span><span class="o">]</span>              <span class="o">=</span> <span class="s2">"off"</span>
+<span class="n">default</span><span class="o">[</span><span class="s2">"postgresql"</span><span class="o">][</span><span class="s2">"log_duration"</span><span class="o">]</span>                    <span class="o">=</span> <span class="s2">"off"</span>
+<span class="n">default</span><span class="o">[</span><span class="s2">"postgresql"</span><span class="o">][</span><span class="s2">"log_error_verbosity"</span><span class="o">]</span>             <span class="o">=</span> <span class="s2">"default"</span>
+<span class="n">default</span><span class="o">[</span><span class="s2">"postgresql"</span><span class="o">][</span><span class="s2">"log_hostname"</span><span class="o">]</span>                    <span class="o">=</span> <span class="s2">"off"</span>
+<span class="n">default</span><span class="o">[</span><span class="s2">"postgresql"</span><span class="o">][</span><span class="s2">"log_line_prefix"</span><span class="o">]</span>                 <span class="o">=</span> <span class="s2">"%t "</span>
+<span class="n">default</span><span class="o">[</span><span class="s2">"postgresql"</span><span class="o">][</span><span class="s2">"log_lock_waits"</span><span class="o">]</span>                  <span class="o">=</span> <span class="s2">"off"</span>
+<span class="n">default</span><span class="o">[</span><span class="s2">"postgresql"</span><span class="o">][</span><span class="s2">"log_statement"</span><span class="o">]</span>                   <span class="o">=</span> <span class="s2">"none"</span>
+<span class="n">default</span><span class="o">[</span><span class="s2">"postgresql"</span><span class="o">][</span><span class="s2">"log_temp_files"</span><span class="o">]</span>                  <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+<span class="n">default</span><span class="o">[</span><span class="s2">"postgresql"</span><span class="o">][</span><span class="s2">"log_timezone"</span><span class="o">]</span>                    <span class="o">=</span> <span class="s2">"(defaults to server environment setting)"</span>
+
+
+<span class="c1">#------------------------------------------------------------------------------</span>
+<span class="c1"># RUNTIME STATISTICS</span>
+<span class="c1">#------------------------------------------------------------------------------</span>
+
+<span class="c1"># query/index statistics collector</span>
+<span class="n">default</span><span class="o">[</span><span class="s2">"postgresql"</span><span class="o">][</span><span class="s2">"track_activities"</span><span class="o">]</span>                <span class="o">=</span> <span class="s2">"on"</span>
+<span class="n">default</span><span class="o">[</span><span class="s2">"postgresql"</span><span class="o">][</span><span class="s2">"track_counts"</span><span class="o">]</span>                    <span class="o">=</span> <span class="s2">"on"</span>
+<span class="n">default</span><span class="o">[</span><span class="s2">"postgresql"</span><span class="o">][</span><span class="s2">"track_functions"</span><span class="o">]</span>                 <span class="o">=</span> <span class="s2">"none"</span>
+<span class="n">default</span><span class="o">[</span><span class="s2">"postgresql"</span><span class="o">][</span><span class="s2">"track_activity_query_size"</span><span class="o">]</span>       <span class="o">=</span> <span class="mi">1024</span>
+<span class="n">default</span><span class="o">[</span><span class="s2">"postgresql"</span><span class="o">][</span><span class="s2">"update_process_title"</span><span class="o">]</span>            <span class="o">=</span> <span class="s2">"on"</span>
+<span class="n">default</span><span class="o">[</span><span class="s2">"postgresql"</span><span class="o">][</span><span class="s2">"stats_temp_directory"</span><span class="o">]</span>            <span class="o">=</span> <span class="s1">'pg_stat_tmp'</span>
+
+<span class="c1"># statistics monitoring</span>
+<span class="n">default</span><span class="o">[</span><span class="s2">"postgresql"</span><span class="o">][</span><span class="s2">"log_parser_stats"</span><span class="o">]</span>                <span class="o">=</span> <span class="s2">"off"</span>
+<span class="n">default</span><span class="o">[</span><span class="s2">"postgresql"</span><span class="o">][</span><span class="s2">"log_planner_stats"</span><span class="o">]</span>               <span class="o">=</span> <span class="s2">"off"</span>
+<span class="n">default</span><span class="o">[</span><span class="s2">"postgresql"</span><span class="o">][</span><span class="s2">"log_executor_stats"</span><span class="o">]</span>              <span class="o">=</span> <span class="s2">"off"</span>
+<span class="n">default</span><span class="o">[</span><span class="s2">"postgresql"</span><span class="o">][</span><span class="s2">"log_statement_stats"</span><span class="o">]</span>             <span class="o">=</span> <span class="s2">"off"</span>
+
+
+<span class="c1">#------------------------------------------------------------------------------</span>
+<span class="c1"># AUTOVACUUM PARAMETERS</span>
+<span class="c1">#------------------------------------------------------------------------------</span>
+
+<span class="n">default</span><span class="o">[</span><span class="s2">"postgresql"</span><span class="o">][</span><span class="s2">"autovacuum"</span><span class="o">]</span>                      <span class="o">=</span> <span class="s2">"on"</span>
+<span class="n">default</span><span class="o">[</span><span class="s2">"postgresql"</span><span class="o">][</span><span class="s2">"log_autovacuum_min_duration"</span><span class="o">]</span>     <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+<span class="n">default</span><span class="o">[</span><span class="s2">"postgresql"</span><span class="o">][</span><span class="s2">"autovacuum_max_workers"</span><span class="o">]</span>          <span class="o">=</span> <span class="mi">3</span>
+<span class="n">default</span><span class="o">[</span><span class="s2">"postgresql"</span><span class="o">][</span><span class="s2">"autovacuum_naptime"</span><span class="o">]</span>              <span class="o">=</span> <span class="s2">"1min"</span>
+<span class="n">default</span><span class="o">[</span><span class="s2">"postgresql"</span><span class="o">][</span><span class="s2">"autovacuum_vacuum_threshold"</span><span class="o">]</span>     <span class="o">=</span> <span class="mi">50</span>
+<span class="n">default</span><span class="o">[</span><span class="s2">"postgresql"</span><span class="o">][</span><span class="s2">"autovacuum_analyze_threshold"</span><span class="o">]</span>    <span class="o">=</span> <span class="mi">50</span>
+<span class="n">default</span><span class="o">[</span><span class="s2">"postgresql"</span><span class="o">][</span><span class="s2">"autovacuum_vacuum_scale_factor"</span><span class="o">]</span>  <span class="o">=</span> <span class="mi">0</span><span class="o">.</span><span class="mi">2</span>
+<span class="n">default</span><span class="o">[</span><span class="s2">"postgresql"</span><span class="o">][</span><span class="s2">"autovacuum_analyze_scale_factor"</span><span class="o">]</span> <span class="o">=</span> <span class="mi">0</span><span class="o">.</span><span class="mi">1</span>
+<span class="n">default</span><span class="o">[</span><span class="s2">"postgresql"</span><span class="o">][</span><span class="s2">"autovacuum_freeze_max_age"</span><span class="o">]</span>       <span class="o">=</span> <span class="mi">200000000</span>
+<span class="n">default</span><span class="o">[</span><span class="s2">"postgresql"</span><span class="o">][</span><span class="s2">"autovacuum_vacuum_cost_delay"</span><span class="o">]</span>    <span class="o">=</span> <span class="s2">"20ms"</span>
+<span class="n">default</span><span class="o">[</span><span class="s2">"postgresql"</span><span class="o">][</span><span class="s2">"autovacuum_vacuum_cost_limit"</span><span class="o">]</span>    <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+
+
+<span class="c1">#------------------------------------------------------------------------------</span>
+<span class="c1"># CLIENT CONNECTION DEFAULTS</span>
+<span class="c1">#------------------------------------------------------------------------------</span>
+
+<span class="c1"># statement behavior</span>
+<span class="n">default</span><span class="o">[</span><span class="s2">"postgresql"</span><span class="o">][</span><span class="s2">"search_path"</span><span class="o">]</span>                     <span class="o">=</span> <span class="s1">'"$user",public'</span>
+<span class="n">default</span><span class="o">[</span><span class="s2">"postgresql"</span><span class="o">][</span><span class="s2">"default_tablespace"</span><span class="o">]</span>              <span class="o">=</span> <span class="s2">""</span>
+<span class="n">default</span><span class="o">[</span><span class="s2">"postgresql"</span><span class="o">][</span><span class="s2">"temp_tablespaces"</span><span class="o">]</span>                <span class="o">=</span> <span class="s2">""</span>
+<span class="n">default</span><span class="o">[</span><span class="s2">"postgresql"</span><span class="o">][</span><span class="s2">"check_function_bodies"</span><span class="o">]</span>           <span class="o">=</span> <span class="s2">"on"</span>
+<span class="n">default</span><span class="o">[</span><span class="s2">"postgresql"</span><span class="o">][</span><span class="s2">"default_transaction_isolation"</span><span class="o">]</span>   <span class="o">=</span> <span class="s2">"read committed"</span>
+<span class="n">default</span><span class="o">[</span><span class="s2">"postgresql"</span><span class="o">][</span><span class="s2">"default_transaction_read_only"</span><span class="o">]</span>   <span class="o">=</span> <span class="s2">"off"</span>
+<span class="n">default</span><span class="o">[</span><span class="s2">"postgresql"</span><span class="o">][</span><span class="s2">"default_transaction_deferrable"</span><span class="o">]</span>  <span class="o">=</span> <span class="s2">"off"</span>
+<span class="n">default</span><span class="o">[</span><span class="s2">"postgresql"</span><span class="o">][</span><span class="s2">"session_replication_role"</span><span class="o">]</span>        <span class="o">=</span> <span class="s2">"origin"</span>
+<span class="n">default</span><span class="o">[</span><span class="s2">"postgresql"</span><span class="o">][</span><span class="s2">"statement_timeout"</span><span class="o">]</span>               <span class="o">=</span> <span class="mi">0</span>
+<span class="n">default</span><span class="o">[</span><span class="s2">"postgresql"</span><span class="o">][</span><span class="s2">"vacuum_freeze_min_age"</span><span class="o">]</span>           <span class="o">=</span> <span class="mi">50000000</span>
+<span class="n">default</span><span class="o">[</span><span class="s2">"postgresql"</span><span class="o">][</span><span class="s2">"vacuum_freeze_table_age"</span><span class="o">]</span>         <span class="o">=</span> <span class="mi">150000000</span>
+<span class="n">default</span><span class="o">[</span><span class="s2">"postgresql"</span><span class="o">][</span><span class="s2">"bytea_output"</span><span class="o">]</span>                    <span class="o">=</span> <span class="s2">"hex"</span>
+<span class="n">default</span><span class="o">[</span><span class="s2">"postgresql"</span><span class="o">][</span><span class="s2">"xmlbinary"</span><span class="o">]</span>                       <span class="o">=</span> <span class="s2">"base64"</span>
+<span class="n">default</span><span class="o">[</span><span class="s2">"postgresql"</span><span class="o">][</span><span class="s2">"xmloption"</span><span class="o">]</span>                       <span class="o">=</span> <span class="s2">"content"</span>
+
+<span class="c1"># locale and formatting</span>
+<span class="n">default</span><span class="o">[</span><span class="s2">"postgresql"</span><span class="o">][</span><span class="s2">"datestyle"</span><span class="o">]</span>                       <span class="o">=</span> <span class="s2">"iso, mdy"</span>
+<span class="n">default</span><span class="o">[</span><span class="s2">"postgresql"</span><span class="o">][</span><span class="s2">"intervalstyle"</span><span class="o">]</span>                   <span class="o">=</span> <span class="s2">"postgres"</span>
+<span class="n">default</span><span class="o">[</span><span class="s2">"postgresql"</span><span class="o">][</span><span class="s2">"timezone"</span><span class="o">]</span>                        <span class="o">=</span> <span class="s2">"(defaults to server environment setting)"</span>
+<span class="n">default</span><span class="o">[</span><span class="s2">"postgresql"</span><span class="o">][</span><span class="s2">"timezone_abbreviations"</span><span class="o">]</span>          <span class="o">=</span> <span class="s2">"Default"</span>
+<span class="n">default</span><span class="o">[</span><span class="s2">"postgresql"</span><span class="o">][</span><span class="s2">"extra_float_digits"</span><span class="o">]</span>              <span class="o">=</span> <span class="mi">0</span>
+<span class="n">default</span><span class="o">[</span><span class="s2">"postgresql"</span><span class="o">][</span><span class="s2">"client_encoding"</span><span class="o">]</span>                 <span class="o">=</span> <span class="s2">"sql_ascii"</span>
+
+<span class="c1"># These settings are initialized by initdb, but they can be changed.</span>
+<span class="n">default</span><span class="o">[</span><span class="s2">"postgresql"</span><span class="o">][</span><span class="s2">"lc_messages"</span><span class="o">]</span>                     <span class="o">=</span> <span class="s2">"en_US.UTF-8"</span>
+<span class="n">default</span><span class="o">[</span><span class="s2">"postgresql"</span><span class="o">][</span><span class="s2">"lc_monetary"</span><span class="o">]</span>                     <span class="o">=</span> <span class="s2">"en_US.UTF-8"</span>
+<span class="n">default</span><span class="o">[</span><span class="s2">"postgresql"</span><span class="o">][</span><span class="s2">"lc_numeric"</span><span class="o">]</span>                      <span class="o">=</span> <span class="s2">"en_US.UTF-8"</span>
+<span class="n">default</span><span class="o">[</span><span class="s2">"postgresql"</span><span class="o">][</span><span class="s2">"lc_time"</span><span class="o">]</span>                         <span class="o">=</span> <span class="s2">"en_US.UTF-8"</span>
+
+<span class="c1"># default configuration for text search</span>
+<span class="n">default</span><span class="o">[</span><span class="s2">"postgresql"</span><span class="o">][</span><span class="s2">"default_text_search_config"</span><span class="o">]</span>      <span class="o">=</span> <span class="s2">"pg_catalog.english"</span>
+
+<span class="c1"># other defaults</span>
+<span class="n">default</span><span class="o">[</span><span class="s2">"postgresql"</span><span class="o">][</span><span class="s2">"dynamic_library_path"</span><span class="o">]</span>            <span class="o">=</span> <span class="s2">"$libdir"</span>
+<span class="n">default</span><span class="o">[</span><span class="s2">"postgresql"</span><span class="o">][</span><span class="s2">"local_preload_libraries"</span><span class="o">]</span>         <span class="o">=</span> <span class="s2">""</span>
+
+
+<span class="c1">#------------------------------------------------------------------------------</span>
+<span class="c1"># LOCK MANAGEMENT</span>
+<span class="c1">#------------------------------------------------------------------------------</span>
+
+<span class="n">default</span><span class="o">[</span><span class="s2">"postgresql"</span><span class="o">][</span><span class="s2">"deadlock_timeout"</span><span class="o">]</span>                <span class="o">=</span> <span class="s2">"1s"</span>
+<span class="n">default</span><span class="o">[</span><span class="s2">"postgresql"</span><span class="o">][</span><span class="s2">"max_locks_per_transaction"</span><span class="o">]</span>       <span class="o">=</span> <span class="mi">64</span>
+<span class="n">default</span><span class="o">[</span><span class="s2">"postgresql"</span><span class="o">][</span><span class="s2">"max_pred_locks_per_transaction"</span><span class="o">]</span>  <span class="o">=</span> <span class="mi">64</span>
+
+
+<span class="c1">#------------------------------------------------------------------------------</span>
+<span class="c1"># VERSION/PLATFORM COMPATIBILITY</span>
+<span class="c1">#------------------------------------------------------------------------------</span>
+
+<span class="c1"># previous postgresql versions</span>
+<span class="n">default</span><span class="o">[</span><span class="s2">"postgresql"</span><span class="o">][</span><span class="s2">"array_nulls"</span><span class="o">]</span>                     <span class="o">=</span> <span class="s2">"on"</span>
+<span class="n">default</span><span class="o">[</span><span class="s2">"postgresql"</span><span class="o">][</span><span class="s2">"backslash_quote"</span><span class="o">]</span>                 <span class="o">=</span> <span class="s2">"safe_encoding"</span>
+<span class="n">default</span><span class="o">[</span><span class="s2">"postgresql"</span><span class="o">][</span><span class="s2">"default_with_oids"</span><span class="o">]</span>               <span class="o">=</span> <span class="s2">"off"</span>
+<span class="n">default</span><span class="o">[</span><span class="s2">"postgresql"</span><span class="o">][</span><span class="s2">"escape_string_warning"</span><span class="o">]</span>           <span class="o">=</span> <span class="s2">"on"</span>
+<span class="n">default</span><span class="o">[</span><span class="s2">"postgresql"</span><span class="o">][</span><span class="s2">"lo_compat_privileges"</span><span class="o">]</span>            <span class="o">=</span> <span class="s2">"off"</span>
+<span class="n">default</span><span class="o">[</span><span class="s2">"postgresql"</span><span class="o">][</span><span class="s2">"quote_all_identifiers"</span><span class="o">]</span>           <span class="o">=</span> <span class="s2">"off"</span>
+<span class="n">default</span><span class="o">[</span><span class="s2">"postgresql"</span><span class="o">][</span><span class="s2">"sql_inheritance"</span><span class="o">]</span>                 <span class="o">=</span> <span class="s2">"on"</span>
+<span class="n">default</span><span class="o">[</span><span class="s2">"postgresql"</span><span class="o">][</span><span class="s2">"standard_conforming_strings"</span><span class="o">]</span>     <span class="o">=</span> <span class="s2">"on"</span>
+<span class="n">default</span><span class="o">[</span><span class="s2">"postgresql"</span><span class="o">][</span><span class="s2">"synchronize_seqscans"</span><span class="o">]</span>            <span class="o">=</span> <span class="s2">"on"</span>
+
+<span class="c1"># other platforms and clients</span>
+<span class="n">default</span><span class="o">[</span><span class="s2">"postgresql"</span><span class="o">][</span><span class="s2">"transform_null_equals"</span><span class="o">]</span>           <span class="o">=</span> <span class="s2">"off"</span>
+
+
+<span class="c1">#------------------------------------------------------------------------------</span>
+<span class="c1"># ERROR HANDLING</span>
+<span class="c1">#------------------------------------------------------------------------------</span>
+
+<span class="n">default</span><span class="o">[</span><span class="s2">"postgresql"</span><span class="o">][</span><span class="s2">"exit_on_error"</span><span class="o">]</span>                   <span class="o">=</span> <span class="s2">"off"</span>
+<span class="n">default</span><span class="o">[</span><span class="s2">"postgresql"</span><span class="o">][</span><span class="s2">"restart_after_crash"</span><span class="o">]</span>             <span class="o">=</span> <span class="s2">"on"</span>
+
+
+<span class="c1">#------------------------------------------------------------------------------</span>
+<span class="c1"># CUSTOMIZED OPTIONS</span>
+<span class="c1">#------------------------------------------------------------------------------</span>
+
+<span class="n">default</span><span class="o">[</span><span class="s2">"postgresql"</span><span class="o">][</span><span class="s2">"custom_variable_classes"</span><span class="o">]</span>         <span class="o">=</span> <span class="s2">""</span>
+</pre>
+</div>
+
+
+<h2>TODO</h2>
+
+<ul>
+<li>Add support for replication setup</li>
+<li>Add support for custom config files</li>
+<li>Add installation and configuration for the following packages:</li>
+</ul><pre><code>postgresql-{version}-debversion
+postgresql-{version}-ip4r
+postgresql-{version}-pljava-gcj
+postgresql-plperl-{version}
+postgresql-{version}-pllua
+postgresql-{version}-plproxy
+postgresql-plpython-{version}
+postgresql-{version}-plr
+postgresql-{version}-plsh
+postgresql-pltcl-{version}
+postgresql-server-dev-{version}
+</code></pre>
+
+<h2>Contributing</h2>
+
+<ol>
+<li>Fork it</li>
+<li>Create your feature branch (<code>git checkout -b my-new-feature</code>)</li>
+<li>Commit your changes (<code>git commit -am 'Added some feature'</code>)</li>
+<li>Push to the branch (<code>git push origin my-new-feature</code>)</li>
+<li>Create new Pull Request</li>
+</ol><h2>Contributors</h2>
+
+<p>Many thanks go to the following who have contributed to making this cookbook even better:</p>
+
+<ul>
+<li>
+<strong><a href="https://github.com/flashingpumpkin">@flashingpumpkin</a></strong>
+
+<ul>
+<li>recipe bugfixes</li>
+<li>add <code>pg_user</code> and <code>pg_database</code> definitions</li>
+</ul>
+</li>
+</ul><h2>License</h2>
+
+<p><strong>chef-postgresql</strong></p>
+
+<ul>
+<li>Freely distributable and licensed under the <a href="http://phlipper.mit-license.org/2012/license.html">MIT license</a>.</li>
+<li>Copyright (c) 2012 Phil Cohen (<a href="mailto:github@phlippers.net">github@phlippers.net</a>) <a href="http://coderwall.com/phlipper"><img src="http://api.coderwall.com/phlipper/endorsecount.png" alt="endorse"></a>
+</li>
+<li><a href="http://phlippers.net/">http://phlippers.net/</a></li>
+</ul>
+      </section>
+      <footer>
+        <p>Project maintained by <a href="https://github.com/phlipper">phlipper</a></p>
+        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="http://twitter.com/#!/michigangraham">mattgraham</a></small></p>
+      </footer>
+    </div>
+    <!--[if !IE]><script>fixScale(document);</script><!--<![endif]-->
+              <script type="text/javascript">
+            var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+            document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+          </script>
+          <script type="text/javascript">
+            try {
+              var pageTracker = _gat._getTracker("UA-10172882-2");
+            pageTracker._trackPageview();
+            } catch(err) {}
+          </script>
+
+  </body>
+</html>
