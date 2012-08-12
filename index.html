@@ -4,40 +4,28 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="chrome=1">
     <title>chef-postgresql by phlipper</title>
+
     <link rel="stylesheet" href="stylesheets/styles.css">
     <link rel="stylesheet" href="stylesheets/pygment_trac.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
-    <script src="javascripts/main.js"></script>
-    <!--[if lt IE 9]>
-      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-    <![endif]-->
+    <script src="javascripts/scale.fix.js"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
 
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
   </head>
   <body>
-
+    <div class="wrapper">
       <header>
         <h1>chef-postgresql</h1>
         <p>Chef cookbooks for PostgreSQL components </p>
+        <p class="view"><a href="https://github.com/phlipper/chef-postgresql">View the Project on GitHub <small>phlipper/chef-postgresql</small></a></p>
+        <ul>
+          <li><a href="https://github.com/phlipper/chef-postgresql/zipball/master">Download <strong>ZIP File</strong></a></li>
+          <li><a href="https://github.com/phlipper/chef-postgresql/tarball/master">Download <strong>TAR Ball</strong></a></li>
+          <li><a href="https://github.com/phlipper/chef-postgresql">View On <strong>GitHub</strong></a></li>
+        </ul>
       </header>
-
-      <div id="banner">
-        <span id="logo"></span>
-
-        <a href="https://github.com/phlipper/chef-postgresql" class="button fork"><strong>View On GitHub</strong></a>
-        <div class="downloads">
-          <span>Downloads:</span>
-          <ul>
-            <li><a href="https://github.com/phlipper/chef-postgresql/zipball/master" class="button">ZIP</a></li>
-            <li><a href="https://github.com/phlipper/chef-postgresql/tarball/master" class="button">TAR</a></li>
-          </ul>
-        </div>
-      </div><!-- end banner -->
-
-    <div class="wrapper">
-      <nav>
-        <ul></ul>
-      </nav>
       <section>
         <h1>chef-postgresql</h1>
 
@@ -88,11 +76,16 @@
 
 <p>Additionally this cookbook provides two definitions to create, alter and delete users as well as create and drop databases. Usage is as follows:</p>
 
-<div class="highlight">
-<pre><span class="c1"># create a user</span>
+<div class="highlight"><pre><span class="c1"># create a user</span>
 <span class="n">pg_user</span> <span class="s2">"myuser"</span> <span class="k">do</span>
   <span class="n">privileges</span> <span class="ss">:superuser</span> <span class="o">=&gt;</span> <span class="kp">false</span><span class="p">,</span> <span class="ss">:createdb</span> <span class="o">=&gt;</span> <span class="kp">false</span><span class="p">,</span> <span class="ss">:login</span> <span class="o">=&gt;</span> <span class="kp">true</span>
   <span class="n">password</span> <span class="s2">"mypassword"</span>
+<span class="k">end</span>
+
+<span class="c1"># create a user with an MD5-encrypted password</span>
+<span class="n">pg_user</span> <span class="s2">"myuser"</span> <span class="k">do</span>
+  <span class="n">privileges</span> <span class="ss">:superuser</span> <span class="o">=&gt;</span> <span class="kp">false</span><span class="p">,</span> <span class="ss">:createdb</span> <span class="o">=&gt;</span> <span class="kp">false</span><span class="p">,</span> <span class="ss">:login</span> <span class="o">=&gt;</span> <span class="kp">true</span>
+  <span class="n">encrypted_password</span> <span class="s2">"667ff118ef6d196c96313aeaee7da519"</span>
 <span class="k">end</span>
 
 <span class="c1"># drop a user</span>
@@ -111,14 +104,11 @@
 <span class="n">pg_database</span> <span class="s2">"mydb"</span> <span class="k">do</span>
   <span class="n">action</span> <span class="ss">:drop</span>
 <span class="k">end</span>
-</pre>
-</div>
-
+</pre></div>
 
 <h2>Attributes</h2>
 
-<div class="highlight">
-<pre><span class="n">default</span><span class="o">[</span><span class="s2">"postgresql"</span><span class="o">][</span><span class="s2">"version"</span><span class="o">]</span>                         <span class="o">=</span> <span class="s2">"9.1"</span>
+<div class="highlight"><pre><span class="n">default</span><span class="o">[</span><span class="s2">"postgresql"</span><span class="o">][</span><span class="s2">"version"</span><span class="o">]</span>                         <span class="o">=</span> <span class="s2">"9.1"</span>
 
 <span class="n">default</span><span class="o">[</span><span class="s2">"postgresql"</span><span class="o">][</span><span class="s2">"environment_variables"</span><span class="o">]</span>           <span class="o">=</span> <span class="p">{}</span>
 <span class="n">default</span><span class="o">[</span><span class="s2">"postgresql"</span><span class="o">][</span><span class="s2">"pg_ctl_options"</span><span class="o">]</span>                  <span class="o">=</span> <span class="s2">""</span>
@@ -452,9 +442,7 @@
 <span class="c1">#------------------------------------------------------------------------------</span>
 
 <span class="n">default</span><span class="o">[</span><span class="s2">"postgresql"</span><span class="o">][</span><span class="s2">"custom_variable_classes"</span><span class="o">]</span>         <span class="o">=</span> <span class="s2">""</span>
-</pre>
-</div>
-
+</pre></div>
 
 <h2>TODO</h2>
 
@@ -496,6 +484,13 @@ postgresql-server-dev-{version}
 <li>add <code>pg_user</code> and <code>pg_database</code> definitions</li>
 </ul>
 </li>
+<li>
+<strong><a href="https://github.com/cmer">@cmer</a></strong>
+
+<ul>
+<li>add <code>encrypted_password</code> param for <code>pg_user</code> definition</li>
+</ul>
+</li>
 </ul><h2>License</h2>
 
 <p><strong>chef-postgresql</strong></p>
@@ -507,12 +502,12 @@ postgresql-server-dev-{version}
 <li><a href="http://phlippers.net/">http://phlippers.net/</a></li>
 </ul>
       </section>
-      <footer>
-        <p>Project maintained by <a href="https://github.com/phlipper">phlipper</a></p>
-        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="http://twitter.com/#!/michigangraham">mattgraham</a></small></p>
-      </footer>
     </div>
-    <!--[if !IE]><script>fixScale(document);</script><!--<![endif]-->
+    <footer>
+      <p>Project maintained by <a href="https://github.com/phlipper">phlipper</a></p>
+      <p>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></p>
+    </footer>
+    <!--[if !IE]><script>fixScale(document);</script><![endif]-->
               <script type="text/javascript">
             var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
             document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
