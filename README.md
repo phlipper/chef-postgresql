@@ -49,6 +49,12 @@ pg_user "myuser" do
   password "mypassword"
 end
 
+# create a user with an MD5-encrypted password
+pg_user "myuser" do
+  privileges :superuser => false, :createdb => false, :login => true
+  encrypted_password "667ff118ef6d196c96313aeaee7da519"
+end
+
 # drop a user
 pg_user "myuser" do
   action :drop

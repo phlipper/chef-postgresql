@@ -7,12 +7,14 @@ define :pg_user, :action => :create do
       :login => true
     }
     privileges.merge! params[:privileges] if params[:privileges]
-    
+
     sql = [params[:name]]
-    
+
     sql.push privileges.to_a.map! { |p,b| (b ? '' : 'NO') + p.to_s.upcase }.join ' '
 
-    if params[:password]
+    if params[:encrypted_password]
+      sql.push "ENCRYPTED PASSWORD '#{params[:encrypted_password]}'"
+    elsif params[:password]
       sql.push "PASSWORD '#{params[:password]}'"
     end
 
@@ -24,7 +26,7 @@ define :pg_user, :action => :create do
 
     execute "altering pg user #{params[:name]}" do
       user "postgres"
-      command "psql -c \"ALTER ROLE #{sql}\"" 
+      command "psql -c \"ALTER ROLE #{sql}\""
       only_if exists, :user => "postgres"
     end
 
