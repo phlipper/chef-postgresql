@@ -451,6 +451,8 @@ Many thanks go to the following who have contributed to making this cookbook eve
 * **[@flashingpumpkin](https://github.com/flashingpumpkin)**
   * recipe bugfixes
   * add `pg_user` and `pg_database` definitions
+* **[@cmer](https://github.com/cmer)**
+  * add `encrypted_password` param for `pg_user` definition
 
 
 ## License
