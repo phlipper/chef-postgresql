@@ -74,6 +74,30 @@ pg_database "mydb" do
 end
 ```
 
+Or add the user/database via attributes:
+
+```ruby
+:users => [
+  {
+    :username  => "dickeyxxx",
+    :password  => "password",
+    :superuser => true,
+    :createdb  => true,
+    :login     => true
+  }
+],
+
+:databases => [
+  {
+    :name => "my_db",
+    :owner  => "dickeyxxx",
+    :template  => "template0",
+    :encoding  => "utf8",
+    :locale => "en_US.UTF8"
+  }
+]
+```
+
 
 ## Attributes
 
@@ -408,6 +432,14 @@ default["postgresql"]["restart_after_crash"]             = "on"
 
 
 #------------------------------------------------------------------------------
+# USERS AND DATABASES
+#------------------------------------------------------------------------------
+
+default["postgresql"]["users"]                           = []
+default["postgresql"]["databases"]                       = []
+
+
+#------------------------------------------------------------------------------
 # CUSTOMIZED OPTIONS
 #------------------------------------------------------------------------------
 
@@ -456,6 +488,7 @@ Many thanks go to the following who have contributed to making this cookbook eve
   * add `encrypted_password` param for `pg_user` definition
 * **[@dickeyxxx](https://github.com/dickeyxxx)**
   * added support for specifying database locale
+  * add support for adding users and databases via attributes
 
 
 ## License
