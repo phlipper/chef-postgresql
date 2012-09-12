@@ -98,12 +98,36 @@
   <span class="n">owner</span> <span class="s2">"myuser"</span>
   <span class="n">encoding</span> <span class="s2">"utf8"</span>
   <span class="n">template</span> <span class="s2">"template0"</span>
+  <span class="n">locale</span> <span class="s2">"en_US.UTF8"</span>
 <span class="k">end</span>
 
 <span class="c1"># drop a database</span>
 <span class="n">pg_database</span> <span class="s2">"mydb"</span> <span class="k">do</span>
   <span class="n">action</span> <span class="ss">:drop</span>
 <span class="k">end</span>
+</pre></div>
+
+<p>Or add the user/database via attributes:</p>
+
+<div class="highlight"><pre><span class="ss">:users</span> <span class="o">=&gt;</span> <span class="o">[</span>
+  <span class="p">{</span>
+    <span class="ss">:username</span>  <span class="o">=&gt;</span> <span class="s2">"dickeyxxx"</span><span class="p">,</span>
+    <span class="ss">:password</span>  <span class="o">=&gt;</span> <span class="s2">"password"</span><span class="p">,</span>
+    <span class="ss">:superuser</span> <span class="o">=&gt;</span> <span class="kp">true</span><span class="p">,</span>
+    <span class="ss">:createdb</span>  <span class="o">=&gt;</span> <span class="kp">true</span><span class="p">,</span>
+    <span class="ss">:login</span>     <span class="o">=&gt;</span> <span class="kp">true</span>
+  <span class="p">}</span>
+<span class="o">]</span><span class="p">,</span>
+
+<span class="ss">:databases</span> <span class="o">=&gt;</span> <span class="o">[</span>
+  <span class="p">{</span>
+    <span class="ss">:name</span> <span class="o">=&gt;</span> <span class="s2">"my_db"</span><span class="p">,</span>
+    <span class="ss">:owner</span>  <span class="o">=&gt;</span> <span class="s2">"dickeyxxx"</span><span class="p">,</span>
+    <span class="ss">:template</span>  <span class="o">=&gt;</span> <span class="s2">"template0"</span><span class="p">,</span>
+    <span class="ss">:encoding</span>  <span class="o">=&gt;</span> <span class="s2">"utf8"</span><span class="p">,</span>
+    <span class="ss">:locale</span> <span class="o">=&gt;</span> <span class="s2">"en_US.UTF8"</span>
+  <span class="p">}</span>
+<span class="o">]</span>
 </pre></div>
 
 <h2>Attributes</h2>
@@ -438,6 +462,14 @@
 
 
 <span class="c1">#------------------------------------------------------------------------------</span>
+<span class="c1"># USERS AND DATABASES</span>
+<span class="c1">#------------------------------------------------------------------------------</span>
+
+<span class="n">default</span><span class="o">[</span><span class="s2">"postgresql"</span><span class="o">][</span><span class="s2">"users"</span><span class="o">]</span>                           <span class="o">=</span> <span class="o">[]</span>
+<span class="n">default</span><span class="o">[</span><span class="s2">"postgresql"</span><span class="o">][</span><span class="s2">"databases"</span><span class="o">]</span>                       <span class="o">=</span> <span class="o">[]</span>
+
+
+<span class="c1">#------------------------------------------------------------------------------</span>
 <span class="c1"># CUSTOMIZED OPTIONS</span>
 <span class="c1">#------------------------------------------------------------------------------</span>
 
@@ -489,6 +521,15 @@ postgresql-server-dev-{version}
 
 <ul>
 <li>add <code>encrypted_password</code> param for <code>pg_user</code> definition</li>
+</ul>
+</li>
+<li>
+<strong><a href="https://github.com/dickeyxxx">@dickeyxxx</a></strong>
+
+<ul>
+<li>speed up recipe loading and execution</li>
+<li>add support for specifying database locale</li>
+<li>add support for adding users and databases via attributes</li>
 </ul>
 </li>
 </ul><h2>License</h2>
