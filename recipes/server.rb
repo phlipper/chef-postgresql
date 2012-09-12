@@ -65,6 +65,21 @@ template "/etc/postgresql/#{pg_version}/main/start.conf" do
   notifies :restart, "service[postgresql]", :immediately
 end
 
+node["postgresql"]["users"].each do |user|
+  pg_user user["username"] do
+    privileges :superuser => user["superuser"], :createdb => user["createdb"], :login => user["login"]
+    password user["password"]
+  end
+end
+
+node["postgresql"]["databases"].each do |database|
+  pg_database database["name"] do
+    owner database["owner"]
+    encoding database["encoding"]
+    template database["template"]
+    locale database["locale"]
+  end
+end
 
 # define the service
 service "postgresql" do
