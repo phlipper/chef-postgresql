@@ -6,6 +6,7 @@ define :pg_database, :action => :create do
     :host     => nil,
     :port     => nil,
     :encoding => "utf8",
+    :locale   => nil,
     :template => nil,
     :owner    => nil,
   }
@@ -25,6 +26,7 @@ define :pg_database, :action => :create do
     createdb = ["createdb"]
     createdb.push "-U #{defaults[:username]}" if defaults[:username]
     createdb.push "-E #{defaults[:encoding]}" if defaults[:encoding]
+    createdb.push "--locale #{defaults[:locale]}" if defaults[:locale]
     createdb.push "-T #{defaults[:template]}" if defaults[:template]
     createdb.push "--host #{defaults[:host]}" if defaults[:host]
     createdb.push "--port #{defaults[:port]}" if defaults[:port]

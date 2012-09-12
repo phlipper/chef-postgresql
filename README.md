@@ -65,6 +65,7 @@ pg_database "mydb" do
   owner "myuser"
   encoding "utf8"
   template "template0"
+  locale "en_US.UTF8"
 end
 
 # drop a database
@@ -453,6 +454,8 @@ Many thanks go to the following who have contributed to making this cookbook eve
   * add `pg_user` and `pg_database` definitions
 * **[@cmer](https://github.com/cmer)**
   * add `encrypted_password` param for `pg_user` definition
+* **[@dickeyxxx](https://github.com/dickeyxxx)**
+  * added support for specifying database locale
 
 
 ## License
