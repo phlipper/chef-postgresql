@@ -487,7 +487,8 @@ Many thanks go to the following who have contributed to making this cookbook eve
 * **[@cmer](https://github.com/cmer)**
   * add `encrypted_password` param for `pg_user` definition
 * **[@dickeyxxx](https://github.com/dickeyxxx)**
-  * added support for specifying database locale
+  * speed up recipe loading and execution
+  * add support for specifying database locale
   * add support for adding users and databases via attributes
 
 
