@@ -79,6 +79,12 @@ node["postgresql"]["databases"].each do |database|
     template database["template"]
     locale database["locale"]
   end
+
+  pg_database_extensions database["name"] do
+    extensions database["extensions"]
+    languages database["languages"]
+    postgis database["postgis"]
+  end
 end
 
 # define the service

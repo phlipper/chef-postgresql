@@ -105,7 +105,8 @@ Or add the user/database via attributes:
     :owner  => "dickeyxxx",
     :template  => "template0",
     :encoding  => "utf8",
-    :locale => "en_US.UTF8"
+    :locale => "en_US.UTF8",
+    :extensions => "hstore"
   }
 ]
 ```
