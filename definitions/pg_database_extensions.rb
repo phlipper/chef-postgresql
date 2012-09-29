@@ -1,8 +1,8 @@
 define :pg_database_extensions, :action => :create do
 
   dbname = params[:name]
-  languages = params[:languages] || []
-  extensions = params[:extensions] || []
+  languages = [params[:languages] || []].flatten # Allow single value or array of values
+  extensions = [params[:extensions] || []].flatten
   postgis = params[:postgis]
 
   postgresql_version = node["postgresql"]["version"]
