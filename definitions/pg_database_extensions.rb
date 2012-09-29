@@ -18,7 +18,7 @@ define :pg_database_extensions, :action => :create do
       end
     end
 
-    extensions.uniq.each do |extension|
+    extensions.each do |extension|
       execute "psql -c 'CREATE EXTENSION IF NOT EXISTS #{extension}' #{dbname}" do
         user "postgres"
       end
@@ -42,6 +42,25 @@ define :pg_database_extensions, :action => :create do
           user "postgres"
         end
       end
+    end
+
+  when :drop
+
+    languages.each do |language|
+      execute "droplang #{language} #{dbname}" do
+        user "postgres"
+        only_if "psql -c 'SELECT lanname FROM pg_catalog.pg_language' #{dbname} | grep '^ #{language}$'", :user => "postgres"
+      end
+    end
+
+    extensions.each do |extension|
+      execute "psql -c 'DROP EXTENSION IF EXISTS #{extension}' #{dbname}" do
+        user "postgres"
+      end
+    end
+
+    if postgis
+      Chef::Log.warn("Postgis support dropping isn't supported")
     end
 
   end

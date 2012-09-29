@@ -75,6 +75,11 @@ pg_database_extensions "mydb" do
   postgis true # install postgis support
 end
 
+# drop dblink extension
+pg_database_extensions "mydb" do
+  extensions 'dblink'
+end
+
 # drop a database
 pg_database "mydb" do
   action :drop
