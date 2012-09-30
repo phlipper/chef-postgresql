@@ -74,7 +74,7 @@
 
 <p>This cookbook installs the postgresql components if not present, and pulls updates if they are installed on the system.</p>
 
-<p>Additionally this cookbook provides two definitions to create, alter and delete users as well as create and drop databases. Usage is as follows:</p>
+<p>Additionally this cookbook provides three definitions to create, alter and delete users as well as create and drop databases or setup extensions. Usage is as follows:</p>
 
 <div class="highlight"><pre><span class="c1"># create a user</span>
 <span class="n">pg_user</span> <span class="s2">"myuser"</span> <span class="k">do</span>
@@ -101,6 +101,19 @@
   <span class="n">locale</span> <span class="s2">"en_US.UTF8"</span>
 <span class="k">end</span>
 
+<span class="c1"># install extensions to database</span>
+<span class="n">pg_database_extensions</span> <span class="s2">"mydb"</span> <span class="k">do</span>
+  <span class="n">languages</span> <span class="s2">"plpgsql"</span>              <span class="c1"># install `plpgsql` language - single value may be passed without array</span>
+  <span class="n">extensions</span> <span class="o">[</span><span class="s2">"hstore"</span><span class="p">,</span> <span class="s2">"dblink"</span><span class="o">]</span>  <span class="c1"># install `hstore` and `dblink` extensions - multiple values in array</span>
+  <span class="n">postgis</span> <span class="kp">true</span>                     <span class="c1"># install `postgis` support</span>
+<span class="k">end</span>
+
+<span class="c1"># drop dblink extension</span>
+<span class="n">pg_database_extensions</span> <span class="s2">"mydb"</span> <span class="k">do</span>
+  <span class="n">action</span> <span class="ss">:drop</span>
+  <span class="n">extensions</span> <span class="s2">"dblink"</span>
+<span class="k">end</span>
+
 <span class="c1"># drop a database</span>
 <span class="n">pg_database</span> <span class="s2">"mydb"</span> <span class="k">do</span>
   <span class="n">action</span> <span class="ss">:drop</span>
@@ -125,7 +138,8 @@
     <span class="ss">:owner</span>  <span class="o">=&gt;</span> <span class="s2">"dickeyxxx"</span><span class="p">,</span>
     <span class="ss">:template</span>  <span class="o">=&gt;</span> <span class="s2">"template0"</span><span class="p">,</span>
     <span class="ss">:encoding</span>  <span class="o">=&gt;</span> <span class="s2">"utf8"</span><span class="p">,</span>
-    <span class="ss">:locale</span> <span class="o">=&gt;</span> <span class="s2">"en_US.UTF8"</span>
+    <span class="ss">:locale</span> <span class="o">=&gt;</span> <span class="s2">"en_US.UTF8"</span><span class="p">,</span>
+    <span class="ss">:extensions</span> <span class="o">=&gt;</span> <span class="s2">"hstore"</span>
   <span class="p">}</span>
 <span class="o">]</span>
 </pre></div>
@@ -139,6 +153,11 @@
 <span class="n">default</span><span class="o">[</span><span class="s2">"postgresql"</span><span class="o">][</span><span class="s2">"pg_hba"</span><span class="o">]</span>                          <span class="o">=</span> <span class="o">[]</span>
 <span class="n">default</span><span class="o">[</span><span class="s2">"postgresql"</span><span class="o">][</span><span class="s2">"pg_ident"</span><span class="o">]</span>                        <span class="o">=</span> <span class="o">[]</span>
 <span class="n">default</span><span class="o">[</span><span class="s2">"postgresql"</span><span class="o">][</span><span class="s2">"start"</span><span class="o">]</span>                           <span class="o">=</span> <span class="s2">"auto"</span>  <span class="c1"># auto, manual, disabled</span>
+
+<span class="c1">#------------------------------------------------------------------------------</span>
+<span class="c1"># POSTGIS</span>
+<span class="c1">#------------------------------------------------------------------------------</span>
+<span class="n">default</span><span class="o">[</span><span class="s2">"postgis"</span><span class="o">][</span><span class="s2">"version"</span><span class="o">]</span>                            <span class="o">=</span> <span class="s2">"1.5"</span>
 
 <span class="c1">#------------------------------------------------------------------------------</span>
 <span class="c1"># FILE LOCATIONS</span>
@@ -530,6 +549,14 @@ postgresql-server-dev-{version}
 <li>speed up recipe loading and execution</li>
 <li>add support for specifying database locale</li>
 <li>add support for adding users and databases via attributes</li>
+</ul>
+</li>
+<li>
+<strong><a href="https://github.com/alno">@alno</a></strong>
+
+<ul>
+<li>add support to install additional languages/extensions/postgis to existing databases</li>
+<li>add <code>pg_database_extensions</code> definition</li>
 </ul>
 </li>
 </ul><h2>License</h2>
