@@ -39,7 +39,7 @@ The following platforms are supported by this cookbook, meaning that the recipes
 
 This cookbook installs the postgresql components if not present, and pulls updates if they are installed on the system.
 
-Additionally this cookbook provides two definitions to create, alter and delete users as well as create and drop databases. Usage is as follows:
+Additionally this cookbook provides three definitions to create, alter and delete users as well as create and drop databases or setup extensions. Usage is as follows:
 
 
 ```ruby
@@ -68,6 +68,18 @@ pg_database "mydb" do
   locale "en_US.UTF8"
 end
 
+# install extensions to database
+pg_database_extensions "mydb" do
+  languages 'plpgsql' # instal plpgsql language - single value may be passed without array
+  extensions [ 'hstore', 'dblink' ] # install hstore and dblink extensions - multiple values in array
+  postgis true # install postgis support
+end
+
+# drop dblink extension
+pg_database_extensions "mydb" do
+  extensions 'dblink'
+end
+
 # drop a database
 pg_database "mydb" do
   action :drop
@@ -93,7 +105,8 @@ Or add the user/database via attributes:
     :owner  => "dickeyxxx",
     :template  => "template0",
     :encoding  => "utf8",
-    :locale => "en_US.UTF8"
+    :locale => "en_US.UTF8",
+    :extensions => "hstore"
   }
 ]
 ```

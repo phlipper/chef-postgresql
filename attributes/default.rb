@@ -16,6 +16,12 @@ default["postgresql"]["pg_ident"]                        = []
 default["postgresql"]["start"]                           = "auto"  # auto, manual, disabled
 
 #------------------------------------------------------------------------------
+# POSTGIS
+#------------------------------------------------------------------------------
+
+default["postgis"]["version"]                            = "1.5"
+
+#------------------------------------------------------------------------------
 # FILE LOCATIONS
 #------------------------------------------------------------------------------
 default["postgresql"]["data_directory"]                  = "/var/lib/postgresql/#{node["postgresql"]["version"]}/main"
