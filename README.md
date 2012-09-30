@@ -70,14 +70,15 @@ end
 
 # install extensions to database
 pg_database_extensions "mydb" do
-  languages 'plpgsql' # instal plpgsql language - single value may be passed without array
-  extensions [ 'hstore', 'dblink' ] # install hstore and dblink extensions - multiple values in array
-  postgis true # install postgis support
+  languages "plpgsql"              # install `plpgsql` language - single value may be passed without array
+  extensions ["hstore", "dblink"]  # install `hstore` and `dblink` extensions - multiple values in array
+  postgis true                     # install `postgis` support
 end
 
 # drop dblink extension
 pg_database_extensions "mydb" do
-  extensions 'dblink'
+  action :drop
+  extensions "dblink"
 end
 
 # drop a database
@@ -122,6 +123,11 @@ default["postgresql"]["pg_ctl_options"]                  = ""
 default["postgresql"]["pg_hba"]                          = []
 default["postgresql"]["pg_ident"]                        = []
 default["postgresql"]["start"]                           = "auto"  # auto, manual, disabled
+
+#------------------------------------------------------------------------------
+# POSTGIS
+#------------------------------------------------------------------------------
+default["postgis"]["version"]                            = "1.5"
 
 #------------------------------------------------------------------------------
 # FILE LOCATIONS
@@ -503,6 +509,10 @@ Many thanks go to the following who have contributed to making this cookbook eve
   * speed up recipe loading and execution
   * add support for specifying database locale
   * add support for adding users and databases via attributes
+* **[@alno](https://github.com/alno)**
+  * add support to install additional languages/extensions/postgis to existing databases
+  * add `pg_database_extensions` definition
+
 
 
 ## License
