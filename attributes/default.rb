@@ -7,7 +7,7 @@
 # Copyright 2012, Phil Cohen
 #
 
-default["postgresql"]["version"]                         = "9.1"
+default["postgresql"]["version"]                         = "9.2"
 
 default["postgresql"]["environment_variables"]           = {}
 default["postgresql"]["pg_ctl_options"]                  = ""
@@ -50,6 +50,10 @@ default["postgresql"]["authentication_timeout"]          = "1min"
 default["postgresql"]["ssl"]                             = true
 default["postgresql"]["ssl_ciphers"]                     = "ALL:!ADH:!LOW:!EXP:!MD5:@STRENGTH"
 default["postgresql"]["ssl_renegotiation_limit"]         = "512MB"
+default["postgresql"]["ssl_ca_file"]                     = ""
+default["postgresql"]["ssl_cert_file"]                   = "server.crt"
+default["postgresql"]["ssl_crl_file"]                    = ""
+default["postgresql"]["ssl_key_file"]                    = "server.key"
 default["postgresql"]["password_encryption"]             = "on"
 default["postgresql"]["db_user_namespace"]               = "off"
 
