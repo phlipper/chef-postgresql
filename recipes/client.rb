@@ -3,6 +3,6 @@
 # Recipe:: client
 #
 
-require_recipe "postgresql"
+include_recipe "postgresql"
 
 package "postgresql-client-#{node["postgresql"]["version"]}"

@@ -3,6 +3,6 @@
 # Recipe:: doc
 #
 
-require_recipe "postgresql"
+include_recipe "postgresql"
 
 package "postgresql-doc-#{node["postgresql"]["version"]}"
