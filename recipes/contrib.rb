@@ -3,6 +3,6 @@
 # Recipe:: contrib
 #
 
-require_recipe "postgresql"
+include_recipe "postgresql"
 
 package "postgresql-contrib-#{node["postgresql"]["version"]}"

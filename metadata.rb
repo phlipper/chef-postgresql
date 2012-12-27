@@ -15,4 +15,8 @@ recipe "postgresql::doc",      "Documentation for the PostgreSQL database manage
 recipe "postgresql::libpq",    "PostgreSQL C client library and header files for libpq5 (PostgreSQL library)"
 recipe "postgresql::postgis",  "Geographic objects support for PostgreSQL 9.x"
 
-supports "ubuntu"
+%w[ubuntu debian].each do |os|
+  supports os
+end
+
+depends "apt"

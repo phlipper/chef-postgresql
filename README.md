@@ -12,7 +12,7 @@ Currently supported versions:
 * `9.1`
 * `9.2`
 
-The default version is `9.1`.
+The default version is `9.2`.
 
 ## Requirements
 
@@ -21,6 +21,7 @@ The default version is `9.1`.
 The following platforms are supported by this cookbook, meaning that the recipes run on these platforms without error:
 
 * Ubuntu
+* Debian 6
 
 
 ## Recipes
@@ -116,7 +117,7 @@ Or add the user/database via attributes:
 ## Attributes
 
 ```ruby
-default["postgresql"]["version"]                         = "9.1"
+default["postgresql"]["version"]                         = "9.2"
 
 default["postgresql"]["environment_variables"]           = {}
 default["postgresql"]["pg_ctl_options"]                  = ""

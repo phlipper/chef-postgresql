@@ -3,7 +3,7 @@
 # Recipe:: server
 #
 
-require_recipe "postgresql"
+include_recipe "postgresql"
 
 pg_version = node["postgresql"]["version"]
 

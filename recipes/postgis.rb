@@ -3,6 +3,6 @@
 # Recipe:: postgis
 #
 
-require_recipe "postgresql"
+include_recipe "postgresql"
 
 package "postgresql-#{node["postgresql"]["version"]}-postgis"
