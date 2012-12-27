@@ -117,6 +117,9 @@ Or add the user/database via attributes:
 ## Attributes
 
 ```ruby
+# WARNING: If this version number is changed in your own recipes, the
+# FILE LOCATIONS (see below) attributes *must* also be overridden in
+# order to re-compute the paths with the correct version number.
 default["postgresql"]["version"]                         = "9.2"
 
 default["postgresql"]["environment_variables"]           = {}
