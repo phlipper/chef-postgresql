@@ -3,7 +3,7 @@
 # Recipe:: default
 #
 
-case node['platform']
+case node["platform"]
 when "ubuntu"
 
   apt_repository "pitti-postgresql" do
