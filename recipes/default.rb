@@ -3,8 +3,8 @@
 # Recipe:: default
 #
 
-case node["lsb"]["id"]
-when "Ubuntu"
+case node['platform']
+when "ubuntu"
 
   apt_repository "pitti-postgresql" do
     uri "http://ppa.launchpad.net/pitti/postgresql/ubuntu"
@@ -19,7 +19,7 @@ when "Ubuntu"
   # install common files
   package "postgresql-common"
 
-when "Debian"
+when "debian"
 
   # backports for initial support
   apt_repository "debian-backports" do
