@@ -516,6 +516,8 @@ Many thanks go to the following who have contributed to making this cookbook eve
 * **[@alno](https://github.com/alno)**
   * add support to install additional languages/extensions/postgis to existing databases
   * add `pg_database_extensions` definition
+* **[@ermolaev](https://github.com/ermolaev)**
+  * improve platform check for source repo
 
 
 
