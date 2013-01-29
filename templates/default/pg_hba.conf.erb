@@ -73,7 +73,7 @@
 # configuration parameter, or via the -i or -h command line switches.
 
 <% node["postgresql"]["pg_hba"].each do |hba| %>
-<%= hba %>
+<%= hba['type'] %> <%= hba['db'] %> <%= hba['user'] %> <%= hba['addr'] %> <%= hba['method'] %>
 <% end %>
 
 # DO NOT DISABLE!
@@ -82,11 +82,10 @@
 # Noninteractive access to all databases is required during automatic
 # maintenance (custom daily cronjobs, replication, and similar tasks).
 #
+# TYPE  DATABASE        USER            ADDRESS                 METHOD
+<% if node[:postgresql][:pg_hba_defaults] %>
 # Database administrative login by Unix domain socket
 local   all             postgres                                peer
-
-# TYPE  DATABASE        USER            ADDRESS                 METHOD
-
 # "local" is for Unix domain socket connections only
 local   all             all                                     peer
 # IPv4 local connections:
@@ -98,3 +97,4 @@ host    all             all             ::1/128                 md5
 #local   replication     postgres                                peer
 #host    replication     postgres        127.0.0.1/32            md5
 #host    replication     postgres        ::1/128                 md5
+<% end %>

@@ -12,6 +12,7 @@ default["postgresql"]["version"]                         = "9.2"
 default["postgresql"]["environment_variables"]           = {}
 default["postgresql"]["pg_ctl_options"]                  = ""
 default["postgresql"]["pg_hba"]                          = []
+default["postgresql"]["pg_hba_defaults"]                 = true
 default["postgresql"]["pg_ident"]                        = []
 default["postgresql"]["start"]                           = "auto"  # auto, manual, disabled
 
