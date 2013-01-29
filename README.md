@@ -113,6 +113,20 @@ Or add the user/database via attributes:
 ]
 ```
 
+Or add contents to the pg_hba.conf via attributes:
+
+```ruby
+  "postgresql": {
+      "pg_hba": [
+          { "type": "local", "db": "all", "user": "postgres", "addr": "", "method": "ident" },
+          { "type": "local", "db": "all", "user": "all",      "addr": "", "method": "trust" },
+          { "type": "host",  "db": "all", "user": "all",      "addr": "127.0.0.1/32", "method": "trust" },
+          { "type": "host",  "db": "all", "user": "all",      "addr": "::1/128",      "method": "trust" },
+          { "type": "host",  "db": "all", "user": "postgres",   "addr": "127.0.0.1/32", "method": "trust" },
+          { "type": "host",  "db": "all", "user": "username",   "addr": "127.0.0.1/32", "method": "trust" }
+          ]
+      }
+```
 
 ## Attributes
 
@@ -125,6 +139,7 @@ default["postgresql"]["version"]                         = "9.2"
 default["postgresql"]["environment_variables"]           = {}
 default["postgresql"]["pg_ctl_options"]                  = ""
 default["postgresql"]["pg_hba"]                          = []
+default["postgresql"]["pg_hba_defaults"]                 = true  # Whether to populate the pg_hba.conf with defaults(Default: true)
 default["postgresql"]["pg_ident"]                        = []
 default["postgresql"]["start"]                           = "auto"  # auto, manual, disabled
 
