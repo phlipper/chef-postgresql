@@ -162,6 +162,10 @@ default["postgresql"]["authentication_timeout"]          = "1min"
 default["postgresql"]["ssl"]                             = true
 default["postgresql"]["ssl_ciphers"]                     = "ALL:!ADH:!LOW:!EXP:!MD5:@STRENGTH"
 default["postgresql"]["ssl_renegotiation_limit"]         = "512MB"
+default["postgresql"]["ssl_ca_file"]                     = ""
+default["postgresql"]["ssl_cert_file"]                   = "/etc/ssl/certs/ssl-cert-snakeoil.pem"
+default["postgresql"]["ssl_crl_file"]                    = ""
+default["postgresql"]["ssl_key_file"]                    = "/etc/ssl/private/ssl-cert-snakeoil.key"
 default["postgresql"]["password_encryption"]             = "on"
 default["postgresql"]["db_user_namespace"]               = "off"
 
@@ -518,6 +522,8 @@ Many thanks go to the following who have contributed to making this cookbook eve
   * add `pg_database_extensions` definition
 * **[@ermolaev](https://github.com/ermolaev)**
   * improve platform check for source repo
+* **[@escobera](https://github.com/escobera)**
+  * fix for missing ssl directives in `postgresql.conf`
 
 
 
