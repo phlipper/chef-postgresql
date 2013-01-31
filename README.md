@@ -539,6 +539,8 @@ Many thanks go to the following who have contributed to making this cookbook eve
   * improve platform check for source repo
 * **[@escobera](https://github.com/escobera)**
   * fix for missing ssl directives in `postgresql.conf`
+* **[@cdoughty77](https://github.com/cdoughty77)**
+  * allow finer tuning inside pg_hba.conf file
 
 
 
