@@ -16,6 +16,9 @@ default["postgresql"]["pg_hba_defaults"]                 = true
 default["postgresql"]["pg_ident"]                        = []
 default["postgresql"]["start"]                           = "auto"  # auto, manual, disabled
 
+default["postgresql"]["conf"]                            = {}
+default["postgresql"]["initdb_options"]                  = "--locale=en_US.UTF-8"
+
 #------------------------------------------------------------------------------
 # POSTGIS
 #------------------------------------------------------------------------------
