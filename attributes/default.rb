@@ -4,7 +4,7 @@
 #
 # Author:: Phil Cohen <github@phlippers.net>
 #
-# Copyright 2012, Phil Cohen
+# Copyright 2012-2013, Phil Cohen
 #
 
 default["postgresql"]["version"]                         = "9.2"
