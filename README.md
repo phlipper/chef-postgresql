@@ -40,8 +40,10 @@ The following platforms are supported by this cookbook, meaning that the recipes
 
 This cookbook installs the postgresql components if not present, and pulls updates if they are installed on the system.
 
-Additionally this cookbook provides three definitions to create, alter and delete users as well as create and drop databases or setup extensions. Usage is as follows:
+This cookbook provides three definitions to create, alter, and delete users as well as create and drop databases, or setup extensions. Usage is as follows:
 
+
+### Users
 
 ```ruby
 # create a user
@@ -60,7 +62,27 @@ end
 pg_user "myuser" do
   action :drop
 end
+```
 
+Or add users via attributes:
+
+```json
+"postgresql": {
+  "users": [
+    {
+      "username": "dickeyxxx",
+      "password": "password",
+      "superuser": true,
+      "createdb": true,
+      "login": true
+    }
+  ]
+}
+```
+
+### Databases and Extensions
+
+```ruby
 # create a database
 pg_database "mydb" do
   owner "myuser"
@@ -88,45 +110,56 @@ pg_database "mydb" do
 end
 ```
 
-Or add the user/database via attributes:
+Or add the database via attributes:
 
-```ruby
-:users => [
-  {
-    :username  => "dickeyxxx",
-    :password  => "password",
-    :superuser => true,
-    :createdb  => true,
-    :login     => true
-  }
-],
-
-:databases => [
-  {
-    :name => "my_db",
-    :owner  => "dickeyxxx",
-    :template  => "template0",
-    :encoding  => "utf8",
-    :locale => "en_US.UTF8",
-    :extensions => "hstore"
-  }
-]
-```
-
-Or add contents to the pg_hba.conf via attributes:
-
-```ruby
+```json
 "postgresql": {
-  "pg_hba": [
-    { type: "local", db: "all", user: "postgres",   addr: "",             method: "ident" },
-    { type: "local", db: "all", user: "all",        addr: "",             method: "trust" },
-    { type: "host",  db: "all", user: "all",        addr: "127.0.0.1/32", method: "trust" },
-    { type: "host",  db: "all", user: "all",        addr: "::1/128",      method: "trust" },
-    { type: "host",  db: "all", user: "postgres",   addr: "127.0.0.1/32", method: "trust" },
-    { type: "host",  db: "all", user: "username",   addr: "127.0.0.1/32", method: "trust" }
+  "databases": [
+    {
+      "name": "my_db",
+      "owner": "dickeyxxx",
+      "template": "template0",
+      "encoding": "utf8",
+      "locale": "en_US.UTF8",
+      "extensions": "hstore"
+    }
   ]
 }
 ```
+
+### Configuration
+
+The `postgresql.conf` configuration may be set one of two ways:
+
+* set individual node attributes to be interpolated into the default template
+* create a custom configuration hash to write a custom file
+
+To create a custom configuration, set the `node["postgresql"]["conf"]` hash with your custom settings:
+
+```json
+"postgresql": {
+  "conf": {
+    "data_directory": "/dev/null",
+    // ... all options explicitly set here
+  }
+}
+```
+
+You may also set the contents of `pg_hba.conf` via attributes:
+
+```json
+"postgresql": {
+  "pg_hba": [
+    { "type": "local", "db": "all", "user": "postgres",   "addr": "",             "method": "ident" },
+    { "type": "local", "db": "all", "user": "all",        "addr": "",             "method": "trust" },
+    { "type": "host",  "db": "all", "user": "all",        "addr": "127.0.0.1/32", "method": "trust" },
+    { "type": "host",  "db": "all", "user": "all",        "addr": "::1/128",      "method": "trust" },
+    { "type": "host",  "db": "all", "user": "postgres",   "addr": "127.0.0.1/32", "method": "trust" },
+    { "type": "host",  "db": "all", "user": "username",   "addr": "127.0.0.1/32", "method": "trust" }
+  ]
+}
+```
+
 
 ## Attributes
 
@@ -495,7 +528,6 @@ default["postgresql"]["custom_variable_classes"]         = ""
 ## TODO
 
 * Add support for replication setup
-* Add support for custom config files
 * Add installation and configuration for the following packages:
 
 ```

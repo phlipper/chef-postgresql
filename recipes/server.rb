@@ -68,11 +68,13 @@ template node["postgresql"]["ident_file"] do
 end
 
 # postgresql
+pg_template_source = node["postgresql"]["conf"].any? ? "custom" : "standard"
 template "/etc/postgresql/#{pg_version}/main/postgresql.conf" do
-  source "postgresql.conf.erb"
+  source "postgresql.conf.#{pg_template_source}.erb"
   owner  "postgres"
   group  "postgres"
   mode   "0644"
+  variables(:configuration => node["postgresql"]["conf"])
   notifies :restart, "service[postgresql]"
 end
 
@@ -85,6 +87,7 @@ template "/etc/postgresql/#{pg_version}/main/start.conf" do
   notifies :restart, "service[postgresql]", :immediately
 end
 
+# setup users
 node["postgresql"]["users"].each do |user|
   pg_user user["username"] do
     privileges :superuser => user["superuser"], :createdb => user["createdb"], :login => user["login"]
@@ -92,6 +95,7 @@ node["postgresql"]["users"].each do |user|
   end
 end
 
+# setup databases
 node["postgresql"]["databases"].each do |database|
   pg_database database["name"] do
     owner database["owner"]
