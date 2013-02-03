@@ -559,23 +559,23 @@ postgresql-server-dev-{version}
 Many thanks go to the following who have contributed to making this cookbook even better:
 
 * **[@flashingpumpkin](https://github.com/flashingpumpkin)**
-  * recipe bugfixes
-  * add `pg_user` and `pg_database` definitions
+    * recipe bugfixes
+    * add `pg_user` and `pg_database` definitions
 * **[@cmer](https://github.com/cmer)**
-  * add `encrypted_password` param for `pg_user` definition
+    * add `encrypted_password` param for `pg_user` definition
 * **[@dickeyxxx](https://github.com/dickeyxxx)**
-  * speed up recipe loading and execution
-  * add support for specifying database locale
-  * add support for adding users and databases via attributes
+    * speed up recipe loading and execution
+    * add support for specifying database locale
+    * add support for adding users and databases via attributes
 * **[@alno](https://github.com/alno)**
-  * add support to install additional languages/extensions/postgis to existing databases
-  * add `pg_database_extensions` definition
+    * add support to install additional languages/extensions/postgis to existing databases
+    * add `pg_database_extensions` definition
 * **[@ermolaev](https://github.com/ermolaev)**
-  * improve platform check for source repo
+    * improve platform check for source repo
 * **[@escobera](https://github.com/escobera)**
-  * fix for missing ssl directives in `postgresql.conf`
+    * fix for missing ssl directives in `postgresql.conf`
 * **[@cdoughty77](https://github.com/cdoughty77)**
-  * allow finer tuning inside pg_hba.conf file
+    * allow finer tuning inside pg_hba.conf file
 
 
 
