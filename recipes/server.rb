@@ -11,6 +11,26 @@ pg_version = node["postgresql"]["version"]
 package "postgresql-#{pg_version}"
 
 
+# ensure data directory exists
+directory node["postgresql"]["data_directory"] do
+  owner  "postgres"
+  group  "postgres"
+  mode   "0700"
+  not_if "test -f #{node["postgresql"]["data_directory"]}/PG_VERSION"
+end
+
+# initialize the data directory if necessary
+bash "postgresql initdb" do
+  user "postgres"
+  code <<-EOC
+  /usr/lib/postgresql/#{pg_version}/bin/initdb \
+    #{node["postgresql"]["initdb_options"]} \
+    -U postgres \
+    -D #{node["postgresql"]["data_directory"]}
+  EOC
+  creates "#{node["postgresql"]["data_directory"]}/PG_VERSION"
+end
+
 # environment
 template "/etc/postgresql/#{pg_version}/main/environment" do
   source "environment.erb"
@@ -48,11 +68,13 @@ template node["postgresql"]["ident_file"] do
 end
 
 # postgresql
+pg_template_source = node["postgresql"]["conf"].any? ? "custom" : "standard"
 template "/etc/postgresql/#{pg_version}/main/postgresql.conf" do
-  source "postgresql.conf.erb"
+  source "postgresql.conf.#{pg_template_source}.erb"
   owner  "postgres"
   group  "postgres"
   mode   "0644"
+  variables(:configuration => node["postgresql"]["conf"])
   notifies :restart, "service[postgresql]"
 end
 
@@ -65,6 +87,7 @@ template "/etc/postgresql/#{pg_version}/main/start.conf" do
   notifies :restart, "service[postgresql]", :immediately
 end
 
+# setup users
 node["postgresql"]["users"].each do |user|
   pg_user user["username"] do
     privileges :superuser => user["superuser"], :createdb => user["createdb"], :login => user["login"]
@@ -72,6 +95,7 @@ node["postgresql"]["users"].each do |user|
   end
 end
 
+# setup databases
 node["postgresql"]["databases"].each do |database|
   pg_database database["name"] do
     owner database["owner"]

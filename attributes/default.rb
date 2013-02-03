@@ -4,7 +4,7 @@
 #
 # Author:: Phil Cohen <github@phlippers.net>
 #
-# Copyright 2012, Phil Cohen
+# Copyright 2012-2013, Phil Cohen
 #
 
 default["postgresql"]["version"]                         = "9.2"
@@ -15,6 +15,9 @@ default["postgresql"]["pg_hba"]                          = []
 default["postgresql"]["pg_hba_defaults"]                 = true
 default["postgresql"]["pg_ident"]                        = []
 default["postgresql"]["start"]                           = "auto"  # auto, manual, disabled
+
+default["postgresql"]["conf"]                            = {}
+default["postgresql"]["initdb_options"]                  = "--locale=en_US.UTF-8"
 
 #------------------------------------------------------------------------------
 # POSTGIS
