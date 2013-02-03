@@ -27,9 +27,7 @@
         </ul>
       </header>
       <section>
-        <h1>chef-postgresql</h1>
-
-<h2>Description</h2>
+        <h2>Description</h2>
 
 <p>Installs <a href="http://www.postgresql.org">PostgreSQL</a>, The world's most advanced open source database.</p>
 
@@ -41,7 +39,7 @@
 <li><code>9.0</code></li>
 <li><code>9.1</code></li>
 <li><code>9.2</code></li>
-</ul><p>The default version is <code>9.1</code>.</p>
+</ul><p>The default version is <code>9.2</code>.</p>
 
 <h2>Requirements</h2>
 
@@ -51,6 +49,7 @@
 
 <ul>
 <li>Ubuntu</li>
+<li>Debian 6</li>
 </ul><h2>Recipes</h2>
 
 <ul>
@@ -74,7 +73,9 @@
 
 <p>This cookbook installs the postgresql components if not present, and pulls updates if they are installed on the system.</p>
 
-<p>Additionally this cookbook provides three definitions to create, alter and delete users as well as create and drop databases or setup extensions. Usage is as follows:</p>
+<p>This cookbook provides three definitions to create, alter, and delete users as well as create and drop databases, or setup extensions. Usage is as follows:</p>
+
+<h3>Users</h3>
 
 <div class="highlight"><pre><span class="c1"># create a user</span>
 <span class="n">pg_user</span> <span class="s2">"myuser"</span> <span class="k">do</span>
@@ -92,8 +93,26 @@
 <span class="n">pg_user</span> <span class="s2">"myuser"</span> <span class="k">do</span>
   <span class="n">action</span> <span class="ss">:drop</span>
 <span class="k">end</span>
+</pre></div>
 
-<span class="c1"># create a database</span>
+<p>Or add users via attributes:</p>
+
+<div class="highlight"><pre><span class="s2">"postgresql"</span><span class="err">:</span> <span class="p">{</span>
+  <span class="nt">"users"</span><span class="p">:</span> <span class="p">[</span>
+    <span class="p">{</span>
+      <span class="nt">"username"</span><span class="p">:</span> <span class="s2">"dickeyxxx"</span><span class="p">,</span>
+      <span class="nt">"password"</span><span class="p">:</span> <span class="s2">"password"</span><span class="p">,</span>
+      <span class="nt">"superuser"</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
+      <span class="nt">"createdb"</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
+      <span class="nt">"login"</span><span class="p">:</span> <span class="kc">true</span>
+    <span class="p">}</span>
+  <span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+
+<h3>Databases and Extensions</h3>
+
+<div class="highlight"><pre><span class="c1"># create a database</span>
 <span class="n">pg_database</span> <span class="s2">"mydb"</span> <span class="k">do</span>
   <span class="n">owner</span> <span class="s2">"myuser"</span>
   <span class="n">encoding</span> <span class="s2">"utf8"</span>
@@ -120,39 +139,69 @@
 <span class="k">end</span>
 </pre></div>
 
-<p>Or add the user/database via attributes:</p>
+<p>Or add the database via attributes:</p>
 
-<div class="highlight"><pre><span class="ss">:users</span> <span class="o">=&gt;</span> <span class="o">[</span>
-  <span class="p">{</span>
-    <span class="ss">:username</span>  <span class="o">=&gt;</span> <span class="s2">"dickeyxxx"</span><span class="p">,</span>
-    <span class="ss">:password</span>  <span class="o">=&gt;</span> <span class="s2">"password"</span><span class="p">,</span>
-    <span class="ss">:superuser</span> <span class="o">=&gt;</span> <span class="kp">true</span><span class="p">,</span>
-    <span class="ss">:createdb</span>  <span class="o">=&gt;</span> <span class="kp">true</span><span class="p">,</span>
-    <span class="ss">:login</span>     <span class="o">=&gt;</span> <span class="kp">true</span>
-  <span class="p">}</span>
-<span class="o">]</span><span class="p">,</span>
+<div class="highlight"><pre><span class="s2">"postgresql"</span><span class="err">:</span> <span class="p">{</span>
+  <span class="nt">"databases"</span><span class="p">:</span> <span class="p">[</span>
+    <span class="p">{</span>
+      <span class="nt">"name"</span><span class="p">:</span> <span class="s2">"my_db"</span><span class="p">,</span>
+      <span class="nt">"owner"</span><span class="p">:</span> <span class="s2">"dickeyxxx"</span><span class="p">,</span>
+      <span class="nt">"template"</span><span class="p">:</span> <span class="s2">"template0"</span><span class="p">,</span>
+      <span class="nt">"encoding"</span><span class="p">:</span> <span class="s2">"utf8"</span><span class="p">,</span>
+      <span class="nt">"locale"</span><span class="p">:</span> <span class="s2">"en_US.UTF8"</span><span class="p">,</span>
+      <span class="nt">"extensions"</span><span class="p">:</span> <span class="s2">"hstore"</span>
+    <span class="p">}</span>
+  <span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
 
-<span class="ss">:databases</span> <span class="o">=&gt;</span> <span class="o">[</span>
-  <span class="p">{</span>
-    <span class="ss">:name</span> <span class="o">=&gt;</span> <span class="s2">"my_db"</span><span class="p">,</span>
-    <span class="ss">:owner</span>  <span class="o">=&gt;</span> <span class="s2">"dickeyxxx"</span><span class="p">,</span>
-    <span class="ss">:template</span>  <span class="o">=&gt;</span> <span class="s2">"template0"</span><span class="p">,</span>
-    <span class="ss">:encoding</span>  <span class="o">=&gt;</span> <span class="s2">"utf8"</span><span class="p">,</span>
-    <span class="ss">:locale</span> <span class="o">=&gt;</span> <span class="s2">"en_US.UTF8"</span><span class="p">,</span>
-    <span class="ss">:extensions</span> <span class="o">=&gt;</span> <span class="s2">"hstore"</span>
+<h3>Configuration</h3>
+
+<p>The <code>postgresql.conf</code> configuration may be set one of two ways:</p>
+
+<ul>
+<li>set individual node attributes to be interpolated into the default template</li>
+<li>create a custom configuration hash to write a custom file</li>
+</ul><p>To create a custom configuration, set the <code>node["postgresql"]["conf"]</code> hash with your custom settings:</p>
+
+<div class="highlight"><pre><span class="s2">"postgresql"</span><span class="err">:</span> <span class="p">{</span>
+  <span class="nt">"conf"</span><span class="p">:</span> <span class="p">{</span>
+    <span class="nt">"data_directory"</span><span class="p">:</span> <span class="s2">"/dev/null"</span><span class="p">,</span>
+    <span class="err">//</span> <span class="err">...</span> <span class="err">all</span> <span class="err">options</span> <span class="err">explicitly</span> <span class="err">set</span> <span class="err">here</span>
   <span class="p">}</span>
-<span class="o">]</span>
+<span class="p">}</span>
+</pre></div>
+
+<p>You may also set the contents of <code>pg_hba.conf</code> via attributes:</p>
+
+<div class="highlight"><pre><span class="s2">"postgresql"</span><span class="err">:</span> <span class="p">{</span>
+  <span class="nt">"pg_hba"</span><span class="p">:</span> <span class="p">[</span>
+    <span class="p">{</span> <span class="nt">"type"</span><span class="p">:</span> <span class="s2">"local"</span><span class="p">,</span> <span class="nt">"db"</span><span class="p">:</span> <span class="s2">"all"</span><span class="p">,</span> <span class="nt">"user"</span><span class="p">:</span> <span class="s2">"postgres"</span><span class="p">,</span>   <span class="nt">"addr"</span><span class="p">:</span> <span class="s2">""</span><span class="p">,</span>             <span class="nt">"method"</span><span class="p">:</span> <span class="s2">"ident"</span> <span class="p">},</span>
+    <span class="p">{</span> <span class="nt">"type"</span><span class="p">:</span> <span class="s2">"local"</span><span class="p">,</span> <span class="nt">"db"</span><span class="p">:</span> <span class="s2">"all"</span><span class="p">,</span> <span class="nt">"user"</span><span class="p">:</span> <span class="s2">"all"</span><span class="p">,</span>        <span class="nt">"addr"</span><span class="p">:</span> <span class="s2">""</span><span class="p">,</span>             <span class="nt">"method"</span><span class="p">:</span> <span class="s2">"trust"</span> <span class="p">},</span>
+    <span class="p">{</span> <span class="nt">"type"</span><span class="p">:</span> <span class="s2">"host"</span><span class="p">,</span>  <span class="nt">"db"</span><span class="p">:</span> <span class="s2">"all"</span><span class="p">,</span> <span class="nt">"user"</span><span class="p">:</span> <span class="s2">"all"</span><span class="p">,</span>        <span class="nt">"addr"</span><span class="p">:</span> <span class="s2">"127.0.0.1/32"</span><span class="p">,</span> <span class="nt">"method"</span><span class="p">:</span> <span class="s2">"trust"</span> <span class="p">},</span>
+    <span class="p">{</span> <span class="nt">"type"</span><span class="p">:</span> <span class="s2">"host"</span><span class="p">,</span>  <span class="nt">"db"</span><span class="p">:</span> <span class="s2">"all"</span><span class="p">,</span> <span class="nt">"user"</span><span class="p">:</span> <span class="s2">"all"</span><span class="p">,</span>        <span class="nt">"addr"</span><span class="p">:</span> <span class="s2">"::1/128"</span><span class="p">,</span>      <span class="nt">"method"</span><span class="p">:</span> <span class="s2">"trust"</span> <span class="p">},</span>
+    <span class="p">{</span> <span class="nt">"type"</span><span class="p">:</span> <span class="s2">"host"</span><span class="p">,</span>  <span class="nt">"db"</span><span class="p">:</span> <span class="s2">"all"</span><span class="p">,</span> <span class="nt">"user"</span><span class="p">:</span> <span class="s2">"postgres"</span><span class="p">,</span>   <span class="nt">"addr"</span><span class="p">:</span> <span class="s2">"127.0.0.1/32"</span><span class="p">,</span> <span class="nt">"method"</span><span class="p">:</span> <span class="s2">"trust"</span> <span class="p">},</span>
+    <span class="p">{</span> <span class="nt">"type"</span><span class="p">:</span> <span class="s2">"host"</span><span class="p">,</span>  <span class="nt">"db"</span><span class="p">:</span> <span class="s2">"all"</span><span class="p">,</span> <span class="nt">"user"</span><span class="p">:</span> <span class="s2">"username"</span><span class="p">,</span>   <span class="nt">"addr"</span><span class="p">:</span> <span class="s2">"127.0.0.1/32"</span><span class="p">,</span> <span class="nt">"method"</span><span class="p">:</span> <span class="s2">"trust"</span> <span class="p">}</span>
+  <span class="p">]</span>
+<span class="p">}</span>
 </pre></div>
 
 <h2>Attributes</h2>
 
-<div class="highlight"><pre><span class="n">default</span><span class="o">[</span><span class="s2">"postgresql"</span><span class="o">][</span><span class="s2">"version"</span><span class="o">]</span>                         <span class="o">=</span> <span class="s2">"9.1"</span>
+<div class="highlight"><pre><span class="c1"># WARNING: If this version number is changed in your own recipes, the</span>
+<span class="c1"># FILE LOCATIONS (see below) attributes *must* also be overridden in</span>
+<span class="c1"># order to re-compute the paths with the correct version number.</span>
+<span class="n">default</span><span class="o">[</span><span class="s2">"postgresql"</span><span class="o">][</span><span class="s2">"version"</span><span class="o">]</span>                         <span class="o">=</span> <span class="s2">"9.2"</span>
 
 <span class="n">default</span><span class="o">[</span><span class="s2">"postgresql"</span><span class="o">][</span><span class="s2">"environment_variables"</span><span class="o">]</span>           <span class="o">=</span> <span class="p">{}</span>
 <span class="n">default</span><span class="o">[</span><span class="s2">"postgresql"</span><span class="o">][</span><span class="s2">"pg_ctl_options"</span><span class="o">]</span>                  <span class="o">=</span> <span class="s2">""</span>
 <span class="n">default</span><span class="o">[</span><span class="s2">"postgresql"</span><span class="o">][</span><span class="s2">"pg_hba"</span><span class="o">]</span>                          <span class="o">=</span> <span class="o">[]</span>
+<span class="n">default</span><span class="o">[</span><span class="s2">"postgresql"</span><span class="o">][</span><span class="s2">"pg_hba_defaults"</span><span class="o">]</span>                 <span class="o">=</span> <span class="kp">true</span>  <span class="c1"># Whether to populate the pg_hba.conf with defaults</span>
 <span class="n">default</span><span class="o">[</span><span class="s2">"postgresql"</span><span class="o">][</span><span class="s2">"pg_ident"</span><span class="o">]</span>                        <span class="o">=</span> <span class="o">[]</span>
 <span class="n">default</span><span class="o">[</span><span class="s2">"postgresql"</span><span class="o">][</span><span class="s2">"start"</span><span class="o">]</span>                           <span class="o">=</span> <span class="s2">"auto"</span>  <span class="c1"># auto, manual, disabled</span>
+
+<span class="n">default</span><span class="o">[</span><span class="s2">"postgresql"</span><span class="o">][</span><span class="s2">"conf"</span><span class="o">]</span>                            <span class="o">=</span> <span class="p">{}</span>
+<span class="n">default</span><span class="o">[</span><span class="s2">"postgresql"</span><span class="o">][</span><span class="s2">"initdb_options"</span><span class="o">]</span>                  <span class="o">=</span> <span class="s2">"--locale=en_US.UTF-8"</span>
 
 <span class="c1">#------------------------------------------------------------------------------</span>
 <span class="c1"># POSTGIS</span>
@@ -188,6 +237,10 @@
 <span class="n">default</span><span class="o">[</span><span class="s2">"postgresql"</span><span class="o">][</span><span class="s2">"ssl"</span><span class="o">]</span>                             <span class="o">=</span> <span class="kp">true</span>
 <span class="n">default</span><span class="o">[</span><span class="s2">"postgresql"</span><span class="o">][</span><span class="s2">"ssl_ciphers"</span><span class="o">]</span>                     <span class="o">=</span> <span class="s2">"ALL:!ADH:!LOW:!EXP:!MD5:@STRENGTH"</span>
 <span class="n">default</span><span class="o">[</span><span class="s2">"postgresql"</span><span class="o">][</span><span class="s2">"ssl_renegotiation_limit"</span><span class="o">]</span>         <span class="o">=</span> <span class="s2">"512MB"</span>
+<span class="n">default</span><span class="o">[</span><span class="s2">"postgresql"</span><span class="o">][</span><span class="s2">"ssl_ca_file"</span><span class="o">]</span>                     <span class="o">=</span> <span class="s2">""</span>
+<span class="n">default</span><span class="o">[</span><span class="s2">"postgresql"</span><span class="o">][</span><span class="s2">"ssl_cert_file"</span><span class="o">]</span>                   <span class="o">=</span> <span class="s2">"/etc/ssl/certs/ssl-cert-snakeoil.pem"</span>
+<span class="n">default</span><span class="o">[</span><span class="s2">"postgresql"</span><span class="o">][</span><span class="s2">"ssl_crl_file"</span><span class="o">]</span>                    <span class="o">=</span> <span class="s2">""</span>
+<span class="n">default</span><span class="o">[</span><span class="s2">"postgresql"</span><span class="o">][</span><span class="s2">"ssl_key_file"</span><span class="o">]</span>                    <span class="o">=</span> <span class="s2">"/etc/ssl/private/ssl-cert-snakeoil.key"</span>
 <span class="n">default</span><span class="o">[</span><span class="s2">"postgresql"</span><span class="o">][</span><span class="s2">"password_encryption"</span><span class="o">]</span>             <span class="o">=</span> <span class="s2">"on"</span>
 <span class="n">default</span><span class="o">[</span><span class="s2">"postgresql"</span><span class="o">][</span><span class="s2">"db_user_namespace"</span><span class="o">]</span>               <span class="o">=</span> <span class="s2">"off"</span>
 
@@ -499,7 +552,6 @@
 
 <ul>
 <li>Add support for replication setup</li>
-<li>Add support for custom config files</li>
 <li>Add installation and configuration for the following packages:</li>
 </ul><pre><code>postgresql-{version}-debversion
 postgresql-{version}-ip4r
@@ -559,13 +611,35 @@ postgresql-server-dev-{version}
 <li>add <code>pg_database_extensions</code> definition</li>
 </ul>
 </li>
+<li>
+<strong><a href="https://github.com/ermolaev">@ermolaev</a></strong>
+
+<ul>
+<li>improve platform check for source repo</li>
+</ul>
+</li>
+<li>
+<strong><a href="https://github.com/escobera">@escobera</a></strong>
+
+<ul>
+<li>fix for missing ssl directives in <code>postgresql.conf</code>
+</li>
+</ul>
+</li>
+<li>
+<strong><a href="https://github.com/cdoughty77">@cdoughty77</a></strong>
+
+<ul>
+<li>allow finer tuning inside pg_hba.conf file</li>
+</ul>
+</li>
 </ul><h2>License</h2>
 
 <p><strong>chef-postgresql</strong></p>
 
 <ul>
-<li>Freely distributable and licensed under the <a href="http://phlipper.mit-license.org/2012/license.html">MIT license</a>.</li>
-<li>Copyright (c) 2012 Phil Cohen (<a href="mailto:github@phlippers.net">github@phlippers.net</a>) <a href="http://coderwall.com/phlipper"><img src="http://api.coderwall.com/phlipper/endorsecount.png" alt="endorse"></a>
+<li>Freely distributable and licensed under the <a href="http://phlipper.mit-license.org/2012-2013/license.html">MIT license</a>.</li>
+<li>Copyright (c) 2012-2013 Phil Cohen (<a href="mailto:github@phlippers.net">github@phlippers.net</a>) <a href="http://coderwall.com/phlipper"><img src="http://api.coderwall.com/phlipper/endorsecount.png" alt="endorse"></a>
 </li>
 <li><a href="http://phlippers.net/">http://phlippers.net/</a></li>
 </ul>
