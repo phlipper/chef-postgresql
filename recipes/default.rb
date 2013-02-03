@@ -13,7 +13,6 @@ when "ubuntu"
     keyserver "keyserver.ubuntu.com"
     key "8683D8A2"
     action :add
-    notifies :run, "execute[apt-get update]", :immediately
   end
 
   # install common files
@@ -27,7 +26,6 @@ when "debian"
     distribution "#{node["lsb"]["codename"]}-backports"
     components ["main"]
     action :add
-    notifies :run, "execute[apt-get update]", :immediately
   end
 
   cookbook_file "/etc/apt/preferences.d/pgdg.pref" do
@@ -48,6 +46,5 @@ when "debian"
     components ["main"]
     key "http://apt.postgresql.org/pub/repos/apt/ACCC4CF8.asc"
     action :add
-    notifies :run, "execute[apt-get update]", :immediately
   end
 end
