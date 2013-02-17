@@ -16,6 +16,11 @@ recipe "postgresql::libpq",    "PostgreSQL C client library and header files for
 recipe "postgresql::postgis",  "Geographic objects support for PostgreSQL 9.x"
 recipe "postgresql::apt_repository", "Internal recipe to setup the apt repository"
 recipe "postgresql::debian_backports", "Internal recipe to manage debian backports"
+recipe "postgresql::configuration", "Internal recipe to manage configuration files"
+recipe "postgresql::data_directory", "Internal recipe to setup the data directory"
+recipe "postgresql::pg_database", "Internal recipe to manage specified databases"
+recipe "postgresql::pg_user", "Internal recipe to manage specified users"
+recipe "postgresql::service", "Internal recipe to declare the system service"
 
 %w[ubuntu debian].each do |os|
   supports os

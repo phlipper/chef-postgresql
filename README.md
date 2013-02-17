@@ -36,6 +36,11 @@ The following platforms are supported by this cookbook, meaning that the recipes
 * `postgresql::postgis` - Geographic objects support for PostgreSQL 9.x
 * `postgresql::apt_repository` - Internal recipe to setup the apt repository
 * `postgresql::debian_backports` - Internal recipe to manage debian backports
+* `postgresql::configuration` - Internal recipe to manage configuration files
+* `postgresql::data_directory` - Internal recipe to setup the data directory
+* `postgresql::pg_database` - Internal recipe to manage specified databases
+* `postgresql::pg_user` - Internal recipe to manage specified users
+* `postgresql::service` - Internal recipe to declare the system service
 
 
 ## Usage
