@@ -27,19 +27,20 @@ The following platforms are supported by this cookbook, meaning that the recipes
 ## Recipes
 
 * `postgresql` - Set up the apt repository and install dependent packages
+* `postgresql::apt_repository` - Internal recipe to setup the apt repository
 * `postgresql::client` - Front-end programs for PostgreSQL 9.x
-* `postgresql::server` - Object-relational SQL database, version 9.x server
+* `postgresql::configuration` - Internal recipe to manage configuration files
 * `postgresql::contrib` - Additional facilities for PostgreSQL
+* `postgresql::data_directory` - Internal recipe to setup the data directory
 * `postgresql::dbg` - Debug symbols for the server daemon
+* `postgresql::debian_backports` - Internal recipe to manage debian backports
 * `postgresql::doc` - Documentation for the PostgreSQL database management system
 * `postgresql::libpq` - PostgreSQL C client library and header files for libpq5 (PostgreSQL library)
-* `postgresql::postgis` - Geographic objects support for PostgreSQL 9.x
-* `postgresql::apt_repository` - Internal recipe to setup the apt repository
-* `postgresql::debian_backports` - Internal recipe to manage debian backports
-* `postgresql::configuration` - Internal recipe to manage configuration files
-* `postgresql::data_directory` - Internal recipe to setup the data directory
 * `postgresql::pg_database` - Internal recipe to manage specified databases
 * `postgresql::pg_user` - Internal recipe to manage specified users
+* `postgresql::postgis` - Geographic objects support for PostgreSQL 9.x
+* `postgresql::server` - Object-relational SQL database, version 9.x server
+* `postgresql::server_dev` - Development files for PostgreSQL server-side programming
 * `postgresql::service` - Internal recipe to declare the system service
 
 
