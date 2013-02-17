@@ -12,3 +12,6 @@ apt_repository "apt.postgresql.org" do
   key "http://apt.postgresql.org/pub/repos/apt/ACCC4CF8.asc"
   action :add
 end
+
+# automatically get repository key updates
+package "pgdg-keyring"
