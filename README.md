@@ -34,6 +34,8 @@ The following platforms are supported by this cookbook, meaning that the recipes
 * `postgresql::doc` - Documentation for the PostgreSQL database management system
 * `postgresql::libpq` - PostgreSQL C client library and header files for libpq5 (PostgreSQL library)
 * `postgresql::postgis` - Geographic objects support for PostgreSQL 9.x
+* `postgresql::apt_repository` - Internal recipe to setup the apt repository
+* `postgresql::debian_backports` - Internal recipe to manage debian backports
 
 
 ## Usage
