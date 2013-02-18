@@ -81,8 +81,10 @@ ssl = <%= node["postgresql"]["ssl"] %>        # (change requires restart)
 #ssl_ciphers = '<%= node["postgresql"]["ssl_ciphers"] %>'  # allowed SSL ciphers
           # (change requires restart)
 #ssl_renegotiation_limit = <%= node["postgresql"]["ssl_renegotiation_limit"] %>  # amount of data between renegotiations
+<% if node["postgresql"]["version"].to_f > 9.1 %>
 ssl_cert_file = '<%= node["postgresql"]["ssl_cert_file"] %>' # (change requires restart)
 ssl_key_file = '<%= node["postgresql"]["ssl_key_file"] %>'   # (change requires restart)
+<% end %>
 #password_encryption = <%= node["postgresql"]["password_encryption"] %>
 #db_user_namespace = <%= node["postgresql"]["db_user_namespace"] %>
 
