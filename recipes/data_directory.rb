@@ -9,6 +9,7 @@ directory node["postgresql"]["data_directory"] do
   owner  "postgres"
   group  "postgres"
   mode   "0700"
+  recursive true
   not_if "test -f #{node["postgresql"]["data_directory"]}/PG_VERSION"
 end
 
