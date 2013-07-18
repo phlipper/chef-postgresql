@@ -168,6 +168,19 @@ You may also set the contents of `pg_hba.conf` via attributes:
 }
 ```
 
+### Change APT distribution
+
+Currently the APT distributions are sourced from [http://apt.postgresql.org/pub/repos/apt/](http://apt.postgresql.org/pub/repos/apt/).
+In some cases this source might not immediately contain a package for the distribution of your target system.
+
+The `node["postgresql"]["apt_distribution"]` attribute can be used to install PostgreSQL from a different compatible
+distribution:
+
+```json
+"postgresql": {
+  "apt_distribution": "precise"
+}
+```
 
 ## Attributes
 
@@ -176,6 +189,7 @@ You may also set the contents of `pg_hba.conf` via attributes:
 # FILE LOCATIONS (see below) attributes *must* also be overridden in
 # order to re-compute the paths with the correct version number.
 default["postgresql"]["version"]                         = "9.2"
+default["postgresql"]["apt_distribution"]                = node["lsb"]["codename"]
 
 default["postgresql"]["environment_variables"]           = {}
 default["postgresql"]["pg_ctl_options"]                  = ""
