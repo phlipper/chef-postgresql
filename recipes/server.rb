@@ -5,6 +5,11 @@
 
 include_recipe "postgresql"
 
+# don't auto-start the service to allow custom configuration
+dpkg_autostart "postgresql" do
+  allow false
+end
+
 # install the package
 package "postgresql-#{node["postgresql"]["version"]}"
 
