@@ -605,6 +605,8 @@ Many thanks go to the following who have contributed to making this cookbook eve
     * allow finer tuning inside pg_hba.conf file
 * **[@NOX73](https://github.com/NOX73)**
     * fix `postgresql.conf` ssl parameter failure on 9.1
+* **[@navinpeiris](https://github.com/navinpeiris)**
+    * add ability to configure apt distribution
 
 
 
