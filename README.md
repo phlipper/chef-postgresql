@@ -23,6 +23,11 @@ The following platforms are supported by this cookbook, meaning that the recipes
 * Ubuntu
 * Debian 6
 
+### Cookbooks
+
+* [http://community.opscode.com/cookbooks/apt](apt)
+* [http://community.opscode.com/cookbooks/dpkg_autostart](dpkg_autostart)
+
 
 ## Recipes
 
