@@ -5,8 +5,16 @@
 
 
 # backports for initial support
+backports_uri = case node["lsb"]["codename"]
+                  when 'wheezy'
+                    "http://cdn.debian.net/debian"
+                  else
+                    "http://backports.debian.org/debian-backports"
+                end
+
+
 apt_repository "debian-backports" do
-  uri "http://backports.debian.org/debian-backports"
+  uri backports_uri
   distribution "#{node["lsb"]["codename"]}-backports"
   components ["main"]
   action :add
