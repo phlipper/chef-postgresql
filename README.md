@@ -599,6 +599,7 @@ Many thanks go to the following who have contributed to making this cookbook eve
     * add `pg_database_extensions` definition
 * **[@ermolaev](https://github.com/ermolaev)**
     * improve platform check for source repo
+    * support debian 7 (wheezy)
 * **[@escobera](https://github.com/escobera)**
     * fix for missing ssl directives in `postgresql.conf`
 * **[@cdoughty77](https://github.com/cdoughty77)**
@@ -607,7 +608,6 @@ Many thanks go to the following who have contributed to making this cookbook eve
     * fix `postgresql.conf` ssl parameter failure on 9.1
 * **[@navinpeiris](https://github.com/navinpeiris)**
     * add ability to configure apt distribution
-
 
 
 ## License
