@@ -608,6 +608,8 @@ Many thanks go to the following who have contributed to making this cookbook eve
     * fix `postgresql.conf` ssl parameter failure on 9.1
 * **[@navinpeiris](https://github.com/navinpeiris)**
     * add ability to configure apt distribution
+* **[@michihuber](https://github.com/michihuber)**
+    * create data/config dirs recursively
 
 
 ## License
