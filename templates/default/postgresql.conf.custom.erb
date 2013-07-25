@@ -5,6 +5,6 @@
 # -----------------------------
 #
 
-<% @configuration.each_pair do |key, value| %>
+<% node['postgresql']['conf'].each_pair do |key, value| %>
 <%= "#{key} = '#{value}'" %>
 <% end %>

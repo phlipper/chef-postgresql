@@ -55,7 +55,6 @@ template "/etc/postgresql/#{pg_version}/main/postgresql.conf" do
   owner  "postgres"
   group  "postgres"
   mode   "0644"
-  variables(:configuration => node["postgresql"]["conf"])
   notifies :restart, "service[postgresql]"
 end
 
