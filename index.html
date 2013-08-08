@@ -27,7 +27,8 @@
         </ul>
       </header>
       <section>
-        <h2>Description</h2>
+        <h2>
+<a name="description" class="anchor" href="#description"><span class="octicon octicon-link"></span></a>Description</h2>
 
 <p>Installs <a href="http://www.postgresql.org">PostgreSQL</a>, The world's most advanced open source database.</p>
 
@@ -41,41 +42,68 @@
 <li><code>9.2</code></li>
 </ul><p>The default version is <code>9.2</code>.</p>
 
-<h2>Requirements</h2>
+<h2>
+<a name="requirements" class="anchor" href="#requirements"><span class="octicon octicon-link"></span></a>Requirements</h2>
 
-<h3>Supported Platforms</h3>
+<h3>
+<a name="supported-platforms" class="anchor" href="#supported-platforms"><span class="octicon octicon-link"></span></a>Supported Platforms</h3>
 
 <p>The following platforms are supported by this cookbook, meaning that the recipes run on these platforms without error:</p>
 
 <ul>
 <li>Ubuntu</li>
 <li>Debian 6</li>
-</ul><h2>Recipes</h2>
+</ul><h3>
+<a name="cookbooks" class="anchor" href="#cookbooks"><span class="octicon octicon-link"></span></a>Cookbooks</h3>
+
+<ul>
+<li><a href="http://community.opscode.com/cookbooks/apt">apt</a></li>
+<li><a href="http://community.opscode.com/cookbooks/dpkg_autostart">dpkg_autostart</a></li>
+</ul><h2>
+<a name="recipes" class="anchor" href="#recipes"><span class="octicon octicon-link"></span></a>Recipes</h2>
 
 <ul>
 <li>
 <code>postgresql</code> - Set up the apt repository and install dependent packages</li>
 <li>
+<code>postgresql::apt_repository</code> - Internal recipe to setup the apt repository</li>
+<li>
 <code>postgresql::client</code> - Front-end programs for PostgreSQL 9.x</li>
 <li>
-<code>postgresql::server</code> - Object-relational SQL database, version 9.x server</li>
+<code>postgresql::configuration</code> - Internal recipe to manage configuration files</li>
 <li>
 <code>postgresql::contrib</code> - Additional facilities for PostgreSQL</li>
 <li>
+<code>postgresql::data_directory</code> - Internal recipe to setup the data directory</li>
+<li>
 <code>postgresql::dbg</code> - Debug symbols for the server daemon</li>
+<li>
+<code>postgresql::debian_backports</code> - Internal recipe to manage debian backports</li>
 <li>
 <code>postgresql::doc</code> - Documentation for the PostgreSQL database management system</li>
 <li>
 <code>postgresql::libpq</code> - PostgreSQL C client library and header files for libpq5 (PostgreSQL library)</li>
 <li>
+<code>postgresql::pg_database</code> - Internal recipe to manage specified databases</li>
+<li>
+<code>postgresql::pg_user</code> - Internal recipe to manage specified users</li>
+<li>
 <code>postgresql::postgis</code> - Geographic objects support for PostgreSQL 9.x</li>
-</ul><h2>Usage</h2>
+<li>
+<code>postgresql::server</code> - Object-relational SQL database, version 9.x server</li>
+<li>
+<code>postgresql::server_dev</code> - Development files for PostgreSQL server-side programming</li>
+<li>
+<code>postgresql::service</code> - Internal recipe to declare the system service</li>
+</ul><h2>
+<a name="usage" class="anchor" href="#usage"><span class="octicon octicon-link"></span></a>Usage</h2>
 
 <p>This cookbook installs the postgresql components if not present, and pulls updates if they are installed on the system.</p>
 
 <p>This cookbook provides three definitions to create, alter, and delete users as well as create and drop databases, or setup extensions. Usage is as follows:</p>
 
-<h3>Users</h3>
+<h3>
+<a name="users" class="anchor" href="#users"><span class="octicon octicon-link"></span></a>Users</h3>
 
 <div class="highlight"><pre><span class="c1"># create a user</span>
 <span class="n">pg_user</span> <span class="s2">"myuser"</span> <span class="k">do</span>
@@ -110,7 +138,8 @@
 <span class="p">}</span>
 </pre></div>
 
-<h3>Databases and Extensions</h3>
+<h3>
+<a name="databases-and-extensions" class="anchor" href="#databases-and-extensions"><span class="octicon octicon-link"></span></a>Databases and Extensions</h3>
 
 <div class="highlight"><pre><span class="c1"># create a database</span>
 <span class="n">pg_database</span> <span class="s2">"mydb"</span> <span class="k">do</span>
@@ -155,7 +184,8 @@
 <span class="p">}</span>
 </pre></div>
 
-<h3>Configuration</h3>
+<h3>
+<a name="configuration" class="anchor" href="#configuration"><span class="octicon octicon-link"></span></a>Configuration</h3>
 
 <p>The <code>postgresql.conf</code> configuration may be set one of two ways:</p>
 
@@ -186,12 +216,28 @@
 <span class="p">}</span>
 </pre></div>
 
-<h2>Attributes</h2>
+<h3>
+<a name="change-apt-distribution" class="anchor" href="#change-apt-distribution"><span class="octicon octicon-link"></span></a>Change APT distribution</h3>
+
+<p>Currently the APT distributions are sourced from <a href="http://apt.postgresql.org/pub/repos/apt/">http://apt.postgresql.org/pub/repos/apt/</a>.
+In some cases this source might not immediately contain a package for the distribution of your target system.</p>
+
+<p>The <code>node["postgresql"]["apt_distribution"]</code> attribute can be used to install PostgreSQL from a different compatible
+distribution:</p>
+
+<div class="highlight"><pre><span class="s2">"postgresql"</span><span class="err">:</span> <span class="p">{</span>
+  <span class="nt">"apt_distribution"</span><span class="p">:</span> <span class="s2">"precise"</span>
+<span class="p">}</span>
+</pre></div>
+
+<h2>
+<a name="attributes" class="anchor" href="#attributes"><span class="octicon octicon-link"></span></a>Attributes</h2>
 
 <div class="highlight"><pre><span class="c1"># WARNING: If this version number is changed in your own recipes, the</span>
 <span class="c1"># FILE LOCATIONS (see below) attributes *must* also be overridden in</span>
 <span class="c1"># order to re-compute the paths with the correct version number.</span>
 <span class="n">default</span><span class="o">[</span><span class="s2">"postgresql"</span><span class="o">][</span><span class="s2">"version"</span><span class="o">]</span>                         <span class="o">=</span> <span class="s2">"9.2"</span>
+<span class="n">default</span><span class="o">[</span><span class="s2">"postgresql"</span><span class="o">][</span><span class="s2">"apt_distribution"</span><span class="o">]</span>                <span class="o">=</span> <span class="n">node</span><span class="o">[</span><span class="s2">"lsb"</span><span class="o">][</span><span class="s2">"codename"</span><span class="o">]</span>
 
 <span class="n">default</span><span class="o">[</span><span class="s2">"postgresql"</span><span class="o">][</span><span class="s2">"environment_variables"</span><span class="o">]</span>           <span class="o">=</span> <span class="p">{}</span>
 <span class="n">default</span><span class="o">[</span><span class="s2">"postgresql"</span><span class="o">][</span><span class="s2">"pg_ctl_options"</span><span class="o">]</span>                  <span class="o">=</span> <span class="s2">""</span>
@@ -548,7 +594,8 @@
 <span class="n">default</span><span class="o">[</span><span class="s2">"postgresql"</span><span class="o">][</span><span class="s2">"custom_variable_classes"</span><span class="o">]</span>         <span class="o">=</span> <span class="s2">""</span>
 </pre></div>
 
-<h2>TODO</h2>
+<h2>
+<a name="todo" class="anchor" href="#todo"><span class="octicon octicon-link"></span></a>TODO</h2>
 
 <ul>
 <li>Add support for replication setup</li>
@@ -566,7 +613,8 @@ postgresql-pltcl-{version}
 postgresql-server-dev-{version}
 </code></pre>
 
-<h2>Contributing</h2>
+<h2>
+<a name="contributing" class="anchor" href="#contributing"><span class="octicon octicon-link"></span></a>Contributing</h2>
 
 <ol>
 <li>Fork it</li>
@@ -574,7 +622,8 @@ postgresql-server-dev-{version}
 <li>Commit your changes (<code>git commit -am 'Added some feature'</code>)</li>
 <li>Push to the branch (<code>git push origin my-new-feature</code>)</li>
 <li>Create new Pull Request</li>
-</ol><h2>Contributors</h2>
+</ol><h2>
+<a name="contributors" class="anchor" href="#contributors"><span class="octicon octicon-link"></span></a>Contributors</h2>
 
 <p>Many thanks go to the following who have contributed to making this cookbook even better:</p>
 
@@ -616,6 +665,7 @@ postgresql-server-dev-{version}
 
 <ul>
 <li>improve platform check for source repo</li>
+<li>support debian 7 (wheezy)</li>
 </ul>
 </li>
 <li>
@@ -633,7 +683,36 @@ postgresql-server-dev-{version}
 <li>allow finer tuning inside pg_hba.conf file</li>
 </ul>
 </li>
-</ul><h2>License</h2>
+<li>
+<strong><a href="https://github.com/NOX73">@NOX73</a></strong>
+
+<ul>
+<li>fix <code>postgresql.conf</code> ssl parameter failure on 9.1</li>
+</ul>
+</li>
+<li>
+<strong><a href="https://github.com/navinpeiris">@navinpeiris</a></strong>
+
+<ul>
+<li>add ability to configure apt distribution</li>
+</ul>
+</li>
+<li>
+<strong><a href="https://github.com/michihuber">@michihuber</a></strong>
+
+<ul>
+<li>create data/config dirs recursively</li>
+</ul>
+</li>
+<li>
+<strong><a href="https://github.com/sethcall">@sethcall</a></strong>
+
+<ul>
+<li>allow 'lazy' evaluation of configs in the custom template</li>
+</ul>
+</li>
+</ul><h2>
+<a name="license" class="anchor" href="#license"><span class="octicon octicon-link"></span></a>License</h2>
 
 <p><strong>chef-postgresql</strong></p>
 
