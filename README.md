@@ -610,6 +610,8 @@ Many thanks go to the following who have contributed to making this cookbook eve
     * add ability to configure apt distribution
 * **[@michihuber](https://github.com/michihuber)**
     * create data/config dirs recursively
+* **[@sethcall](https://github.com/sethcall)**
+    * allow 'lazy' evaluation of configs in the custom template
 
 
 ## License
