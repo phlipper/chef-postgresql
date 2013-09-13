@@ -564,17 +564,18 @@ default["postgis"]["version"] = "2.0"
 * Add installation and configuration for the following packages:
 
 ```
-postgresql-{version}-debversion
 postgresql-{version}-ip4r
-postgresql-{version}-pljava-gcj
-postgresql-plperl-{version}
-postgresql-{version}-pllua
-postgresql-{version}-plproxy
-postgresql-plpython-{version}
-postgresql-{version}-plr
+postgresql-{version}-pgq3
 postgresql-{version}-plsh
-postgresql-pltcl-{version}
-postgresql-server-dev-{version}
+postgresql-{version}-pgmp
+postgresql-{version}-plproxy
+postgresql-{version}-plv8
+postgresql-{version}-repmgr
+postgresql-{version}-debversion
+postgresql-{version}-pgpool2
+postgresql-{version}-plr
+postgresql-{version}-postgis-2.0-scripts
+postgresql-{version}-slony1-2
 ```
 
 
