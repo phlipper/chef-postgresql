@@ -1,20 +1,20 @@
-define :pg_database, :action => :create do
+define :pg_database, action: :create do
 
   defaults    = {
-    :user     => "postgres",
-    :username => nil,
-    :host     => nil,
-    :port     => nil,
-    :encoding => "utf8",
-    :locale   => nil,
-    :template => nil,
-    :owner    => nil,
+    user: "postgres",
+    username: nil,
+    host: nil,
+    port: nil,
+    encoding: "utf8",
+    locale: nil,
+    template: nil,
+    owner: nil,
   }
   
   defaults.merge! params
 
   exists = ["psql"]
-  exists.push "-c \"SELECT datname from pg_database WHERE datname='#{params[:name]}'\""
+  exists.push %(-c "SELECT datname from pg_database WHERE datname='#{params[:name]}'")
   exists.push "--host #{defaults[:host]}" if defaults[:host]
   exists.push "--port #{defaults[:port]}" if defaults[:port]
   exists.push "| grep #{params[:name]}"
@@ -34,12 +34,12 @@ define :pg_database, :action => :create do
 
     createdb.push params[:name]
 
-    createdb = createdb.join ' '
+    createdb = createdb.join(" ")
 
     execute "creating pg database #{params[:name]}" do
       user defaults[:user]
       command createdb
-      not_if exists, :user => defaults[:user]
+      not_if exists, user: defaults[:user]
     end
 
   when :drop
@@ -50,12 +50,12 @@ define :pg_database, :action => :create do
 
     dropdb.push params[:name]
 
-    dropdb = dropdb.join ' '
+    dropdb = dropdb.join(" ")
 
     execute "dropping pg database #{params[:name]}" do
       user defaults[:user]
       command dropdb
-      only_if exists, :user => defaults[:user]
+      only_if exists, user: defaults[:user]
     end
   end
 end

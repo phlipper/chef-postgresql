@@ -5,8 +5,10 @@
 
 
 # pin default package preferences
-cookbook_file "/etc/apt/preferences.d/pgdg.pref" do
-  source "pgdg.pref"
+apt_preference "pgdg.pref" do
+  glob "*"
+  pin "release o=apt.postgresql.org"
+  pin_priority "500"
 end
 
 case node["platform"]
