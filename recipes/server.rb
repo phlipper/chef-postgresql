@@ -6,8 +6,10 @@
 include_recipe "postgresql"
 
 # don't auto-start the service to allow custom configuration
-dpkg_autostart "postgresql" do
-  allow false
+file "/usr/sbin/policy-rc.d" do
+  mode "0755"
+  content("#!/bin/sh\nexit 101\n")
+  not_if "pgrep postgres"
 end
 
 # install the package
@@ -27,6 +29,3 @@ include_recipe "postgresql::pg_user"
 
 # setup databases
 include_recipe "postgresql::pg_database"
-
-
-

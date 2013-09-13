@@ -28,4 +28,3 @@ recipe "postgresql::service",          "Internal recipe to declare the system se
 end
 
 depends "apt"
-depends "dpkg_autostart"
