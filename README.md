@@ -60,13 +60,13 @@ This cookbook provides three definitions to create, alter, and delete users as w
 ```ruby
 # create a user
 pg_user "myuser" do
-  privileges :superuser => false, :createdb => false, :login => true
+  privileges superuser: false, createdb: false, login: true
   password "mypassword"
 end
 
 # create a user with an MD5-encrypted password
 pg_user "myuser" do
-  privileges :superuser => false, :createdb => false, :login => true
+  privileges superuser: false, createdb: false, login: true
   encrypted_password "667ff118ef6d196c96313aeaee7da519"
 end
 
