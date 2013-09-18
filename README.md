@@ -4,7 +4,7 @@
 
 Installs [PostgreSQL](http://www.postgresql.org), The world's most advanced open source database.
 
-This installs postgres 9.x from the [PostgreSQL backports for stable Ubuntu releases](https://launchpad.net/~pitti/+archive/postgresql).
+This installs postgres 9.x from the [PostgreSQL Apt Repository](https://wiki.postgresql.org/wiki/Apt).
 
 Currently supported versions:
 
