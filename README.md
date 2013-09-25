@@ -626,6 +626,7 @@ Many thanks go to the following who have contributed to making this cookbook eve
     * allow 'lazy' evaluation of configs in the custom template
 * **[@jherdman](https://github.com/jherdman)**
     * update README to include updated apt repository link
+    * add support for version 9.3
 
 
 ## License
