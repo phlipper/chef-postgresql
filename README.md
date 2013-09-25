@@ -576,7 +576,6 @@ postgresql-{version}-repmgr
 postgresql-{version}-debversion
 postgresql-{version}-pgpool2
 postgresql-{version}-plr
-postgresql-{version}-postgis-2.0-scripts
 postgresql-{version}-slony1-2
 ```
 
