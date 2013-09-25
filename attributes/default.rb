@@ -7,7 +7,7 @@
 # Copyright 2012-2013, Phil Cohen
 #
 
-default["postgresql"]["version"]                         = "9.2"
+default["postgresql"]["version"]                         = "9.3"
 default["postgresql"]["apt_distribution"]                = node["lsb"]["codename"]
 
 default["postgresql"]["environment_variables"]           = {}

@@ -8,4 +8,4 @@
 #
 
 
-default["postgis"]["version"] = "2.0"
+default["postgis"]["version"] = "2.1"
