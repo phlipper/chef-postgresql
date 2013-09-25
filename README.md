@@ -11,6 +11,7 @@ Currently supported versions:
 * `9.0`
 * `9.1`
 * `9.2`
+* `9.3`
 
 The default version is `9.2`.
 
@@ -228,7 +229,8 @@ default["postgresql"]["listen_addresses"]                = "localhost"
 default["postgresql"]["port"]                            = 5432
 default["postgresql"]["max_connections"]                 = 100
 default["postgresql"]["superuser_reserved_connections"]  = 3
-default["postgresql"]["unix_socket_directory"]           = "/var/run/postgresql"
+default["postgresql"]["unix_socket_directories"]         = "/var/run/postgresql"
+default["postgresql"]["unix_socket_directory"]           = "/var/run/postgresql" # for < 9.3
 default["postgresql"]["unix_socket_group"]               = ""
 default["postgresql"]["unix_socket_permissions"]         = "0777"
 default["postgresql"]["bonjour"]                         = "off"
