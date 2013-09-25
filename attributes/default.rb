@@ -49,7 +49,7 @@ default["postgresql"]["unix_socket_permissions"]         = "0777"
 default["postgresql"]["bonjour"]                         = "off"
 default["postgresql"]["bonjour_name"]                    = ""
 
-if default["postgresql"]["version"] =~ /^9.3/
+if Gem::Version.new(node["postgresql"]["version"]) >= Gem::Version.new("9.3")
   default["postgresql"]["unix_socket_directories"]       = "/var/run/postgresql"
 else
   default["postgresql"]["unix_socket_directory"]         = "/var/run/postgresql"

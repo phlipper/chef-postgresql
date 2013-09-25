@@ -65,11 +65,13 @@ max_connections = <%= node["postgresql"]["max_connections"] %>     # (change req
 # Note:  Increasing max_connections costs ~400 bytes of shared memory per
 # connection slot, plus lock space (see max_locks_per_transaction).
 #superuser_reserved_connections = <%= node["postgresql"]["superuser_reserved_connections"] %> # (change requires restart)
-<%- if node["postgresql"]["version"] =~ /^9.3/ %>
+
+<%- if Gem::Version.new(node["postgresql"]["version"]) >= Gem::Version.new("9.3") %>
   unix_socket_directories = '<%= node["postgresql"]["unix_socket_directories"] %>'   # (change requires restart)
 <% else %>
   unix_socket_directory = '<%= node["postgresql"]["unix_socket_directory"] %>'   # (change requires restart)
 <% end %>
+
 #unix_socket_group = '<%= node["postgresql"]["unix_socket_group"] %>'     # (change requires restart)
 #unix_socket_permissions = <%= node["postgresql"]["unix_socket_permissions"] %>   # begin with 0 to use octal notation
           # (change requires restart)
