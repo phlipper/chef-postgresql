@@ -13,7 +13,7 @@ Currently supported versions:
 * `9.2`
 * `9.3`
 
-The default version is `9.2`.
+The default version is `9.3`.
 
 ## Requirements
 
@@ -193,7 +193,7 @@ distribution:
 # WARNING: If this version number is changed in your own recipes, the
 # FILE LOCATIONS (see below) attributes *must* also be overridden in
 # order to re-compute the paths with the correct version number.
-default["postgresql"]["version"]                         = "9.2"
+default["postgresql"]["version"]                         = "9.3"
 default["postgresql"]["apt_distribution"]                = node["lsb"]["codename"]
 
 default["postgresql"]["environment_variables"]           = {}
@@ -209,7 +209,7 @@ default["postgresql"]["initdb_options"]                  = "--locale=en_US.UTF-8
 #------------------------------------------------------------------------------
 # POSTGIS
 #------------------------------------------------------------------------------
-default["postgis"]["version"]                            = "1.5"
+default["postgis"]["version"]                            = "2.1"
 
 #------------------------------------------------------------------------------
 # FILE LOCATIONS
