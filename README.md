@@ -13,7 +13,7 @@ Currently supported versions:
 * `9.2`
 * `9.3`
 
-The default version is `9.2`.
+The default version is `9.3`.
 
 ## Requirements
 
@@ -193,7 +193,7 @@ distribution:
 # WARNING: If this version number is changed in your own recipes, the
 # FILE LOCATIONS (see below) attributes *must* also be overridden in
 # order to re-compute the paths with the correct version number.
-default["postgresql"]["version"]                         = "9.2"
+default["postgresql"]["version"]                         = "9.3"
 default["postgresql"]["apt_distribution"]                = node["lsb"]["codename"]
 
 default["postgresql"]["environment_variables"]           = {}
@@ -209,7 +209,7 @@ default["postgresql"]["initdb_options"]                  = "--locale=en_US.UTF-8
 #------------------------------------------------------------------------------
 # POSTGIS
 #------------------------------------------------------------------------------
-default["postgis"]["version"]                            = "1.5"
+default["postgis"]["version"]                            = "2.1"
 
 #------------------------------------------------------------------------------
 # FILE LOCATIONS
@@ -229,12 +229,16 @@ default["postgresql"]["listen_addresses"]                = "localhost"
 default["postgresql"]["port"]                            = 5432
 default["postgresql"]["max_connections"]                 = 100
 default["postgresql"]["superuser_reserved_connections"]  = 3
-default["postgresql"]["unix_socket_directories"]         = "/var/run/postgresql"
-default["postgresql"]["unix_socket_directory"]           = "/var/run/postgresql" # for < 9.3
 default["postgresql"]["unix_socket_group"]               = ""
 default["postgresql"]["unix_socket_permissions"]         = "0777"
 default["postgresql"]["bonjour"]                         = "off"
 default["postgresql"]["bonjour_name"]                    = ""
+
+if Gem::Version.new(node["postgresql"]["version"]) >= Gem::Version.new("9.3")
+  default["postgresql"]["unix_socket_directories"]       = "/var/run/postgresql"
+else
+  default["postgresql"]["unix_socket_directory"]         = "/var/run/postgresql"
+end
 
 # security and authentication
 default["postgresql"]["authentication_timeout"]          = "1min"
@@ -576,7 +580,6 @@ postgresql-{version}-repmgr
 postgresql-{version}-debversion
 postgresql-{version}-pgpool2
 postgresql-{version}-plr
-postgresql-{version}-postgis-2.0-scripts
 postgresql-{version}-slony1-2
 ```
 
@@ -623,6 +626,7 @@ Many thanks go to the following who have contributed to making this cookbook eve
     * allow 'lazy' evaluation of configs in the custom template
 * **[@jherdman](https://github.com/jherdman)**
     * update README to include updated apt repository link
+    * add support for version 9.3
 
 
 ## License

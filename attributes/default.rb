@@ -7,7 +7,7 @@
 # Copyright 2012-2013, Phil Cohen
 #
 
-default["postgresql"]["version"]                         = "9.2"
+default["postgresql"]["version"]                         = "9.3"
 default["postgresql"]["apt_distribution"]                = node["lsb"]["codename"]
 
 default["postgresql"]["environment_variables"]           = {}
@@ -49,7 +49,7 @@ default["postgresql"]["unix_socket_permissions"]         = "0777"
 default["postgresql"]["bonjour"]                         = "off"
 default["postgresql"]["bonjour_name"]                    = ""
 
-if default["postgresql"]["version"] =~ /^9.3/
+if Gem::Version.new(node["postgresql"]["version"]) >= Gem::Version.new("9.3")
   default["postgresql"]["unix_socket_directories"]       = "/var/run/postgresql"
 else
   default["postgresql"]["unix_socket_directory"]         = "/var/run/postgresql"
