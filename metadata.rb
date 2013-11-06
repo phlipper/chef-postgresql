@@ -27,4 +27,4 @@ recipe "postgresql::service",          "Internal recipe to declare the system se
   supports os
 end
 
-depends "apt"
+depends "apt", ">= 1.9.0"
