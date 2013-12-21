@@ -27,12 +27,14 @@
         </ul>
       </header>
       <section>
-        <h2>
+        <p><a href="https://travis-ci.org/phlipper/chef-postgresql"><img src="http://img.shields.io/travis-ci/phlipper/chef-postgresql.png" alt="Build Status"></a></p>
+
+<h2>
 <a name="description" class="anchor" href="#description"><span class="octicon octicon-link"></span></a>Description</h2>
 
 <p>Installs <a href="http://www.postgresql.org">PostgreSQL</a>, The world's most advanced open source database.</p>
 
-<p>This installs postgres 9.x from the <a href="https://launchpad.net/%7Epitti/+archive/postgresql">PostgreSQL backports for stable Ubuntu releases</a>.</p>
+<p>This installs postgres 9.x from the <a href="https://wiki.postgresql.org/wiki/Apt">PostgreSQL Apt Repository</a>.</p>
 
 <p>Currently supported versions:</p>
 
@@ -40,7 +42,8 @@
 <li><code>9.0</code></li>
 <li><code>9.1</code></li>
 <li><code>9.2</code></li>
-</ul><p>The default version is <code>9.2</code>.</p>
+<li><code>9.3</code></li>
+</ul><p>The default version is <code>9.3</code>.</p>
 
 <h2>
 <a name="requirements" class="anchor" href="#requirements"><span class="octicon octicon-link"></span></a>Requirements</h2>
@@ -58,7 +61,6 @@
 
 <ul>
 <li><a href="http://community.opscode.com/cookbooks/apt">apt</a></li>
-<li><a href="http://community.opscode.com/cookbooks/dpkg_autostart">dpkg_autostart</a></li>
 </ul><h2>
 <a name="recipes" class="anchor" href="#recipes"><span class="octicon octicon-link"></span></a>Recipes</h2>
 
@@ -105,15 +107,15 @@
 <h3>
 <a name="users" class="anchor" href="#users"><span class="octicon octicon-link"></span></a>Users</h3>
 
-<div class="highlight"><pre><span class="c1"># create a user</span>
+<div class="highlight highlight-ruby"><pre><span class="c1"># create a user</span>
 <span class="n">pg_user</span> <span class="s2">"myuser"</span> <span class="k">do</span>
-  <span class="n">privileges</span> <span class="ss">:superuser</span> <span class="o">=&gt;</span> <span class="kp">false</span><span class="p">,</span> <span class="ss">:createdb</span> <span class="o">=&gt;</span> <span class="kp">false</span><span class="p">,</span> <span class="ss">:login</span> <span class="o">=&gt;</span> <span class="kp">true</span>
+  <span class="n">privileges</span> <span class="ss">superuser</span><span class="p">:</span> <span class="kp">false</span><span class="p">,</span> <span class="ss">createdb</span><span class="p">:</span> <span class="kp">false</span><span class="p">,</span> <span class="ss">login</span><span class="p">:</span> <span class="kp">true</span>
   <span class="n">password</span> <span class="s2">"mypassword"</span>
 <span class="k">end</span>
 
 <span class="c1"># create a user with an MD5-encrypted password</span>
 <span class="n">pg_user</span> <span class="s2">"myuser"</span> <span class="k">do</span>
-  <span class="n">privileges</span> <span class="ss">:superuser</span> <span class="o">=&gt;</span> <span class="kp">false</span><span class="p">,</span> <span class="ss">:createdb</span> <span class="o">=&gt;</span> <span class="kp">false</span><span class="p">,</span> <span class="ss">:login</span> <span class="o">=&gt;</span> <span class="kp">true</span>
+  <span class="n">privileges</span> <span class="ss">superuser</span><span class="p">:</span> <span class="kp">false</span><span class="p">,</span> <span class="ss">createdb</span><span class="p">:</span> <span class="kp">false</span><span class="p">,</span> <span class="ss">login</span><span class="p">:</span> <span class="kp">true</span>
   <span class="n">encrypted_password</span> <span class="s2">"667ff118ef6d196c96313aeaee7da519"</span>
 <span class="k">end</span>
 
@@ -125,7 +127,7 @@
 
 <p>Or add users via attributes:</p>
 
-<div class="highlight"><pre><span class="s2">"postgresql"</span><span class="err">:</span> <span class="p">{</span>
+<div class="highlight highlight-json"><pre><span class="s2">"postgresql"</span><span class="err">:</span> <span class="p">{</span>
   <span class="nt">"users"</span><span class="p">:</span> <span class="p">[</span>
     <span class="p">{</span>
       <span class="nt">"username"</span><span class="p">:</span> <span class="s2">"dickeyxxx"</span><span class="p">,</span>
@@ -141,7 +143,7 @@
 <h3>
 <a name="databases-and-extensions" class="anchor" href="#databases-and-extensions"><span class="octicon octicon-link"></span></a>Databases and Extensions</h3>
 
-<div class="highlight"><pre><span class="c1"># create a database</span>
+<div class="highlight highlight-ruby"><pre><span class="c1"># create a database</span>
 <span class="n">pg_database</span> <span class="s2">"mydb"</span> <span class="k">do</span>
   <span class="n">owner</span> <span class="s2">"myuser"</span>
   <span class="n">encoding</span> <span class="s2">"utf8"</span>
@@ -170,7 +172,7 @@
 
 <p>Or add the database via attributes:</p>
 
-<div class="highlight"><pre><span class="s2">"postgresql"</span><span class="err">:</span> <span class="p">{</span>
+<div class="highlight highlight-json"><pre><span class="s2">"postgresql"</span><span class="err">:</span> <span class="p">{</span>
   <span class="nt">"databases"</span><span class="p">:</span> <span class="p">[</span>
     <span class="p">{</span>
       <span class="nt">"name"</span><span class="p">:</span> <span class="s2">"my_db"</span><span class="p">,</span>
@@ -194,7 +196,7 @@
 <li>create a custom configuration hash to write a custom file</li>
 </ul><p>To create a custom configuration, set the <code>node["postgresql"]["conf"]</code> hash with your custom settings:</p>
 
-<div class="highlight"><pre><span class="s2">"postgresql"</span><span class="err">:</span> <span class="p">{</span>
+<div class="highlight highlight-json"><pre><span class="s2">"postgresql"</span><span class="err">:</span> <span class="p">{</span>
   <span class="nt">"conf"</span><span class="p">:</span> <span class="p">{</span>
     <span class="nt">"data_directory"</span><span class="p">:</span> <span class="s2">"/dev/null"</span><span class="p">,</span>
     <span class="err">//</span> <span class="err">...</span> <span class="err">all</span> <span class="err">options</span> <span class="err">explicitly</span> <span class="err">set</span> <span class="err">here</span>
@@ -204,7 +206,7 @@
 
 <p>You may also set the contents of <code>pg_hba.conf</code> via attributes:</p>
 
-<div class="highlight"><pre><span class="s2">"postgresql"</span><span class="err">:</span> <span class="p">{</span>
+<div class="highlight highlight-json"><pre><span class="s2">"postgresql"</span><span class="err">:</span> <span class="p">{</span>
   <span class="nt">"pg_hba"</span><span class="p">:</span> <span class="p">[</span>
     <span class="p">{</span> <span class="nt">"type"</span><span class="p">:</span> <span class="s2">"local"</span><span class="p">,</span> <span class="nt">"db"</span><span class="p">:</span> <span class="s2">"all"</span><span class="p">,</span> <span class="nt">"user"</span><span class="p">:</span> <span class="s2">"postgres"</span><span class="p">,</span>   <span class="nt">"addr"</span><span class="p">:</span> <span class="s2">""</span><span class="p">,</span>             <span class="nt">"method"</span><span class="p">:</span> <span class="s2">"ident"</span> <span class="p">},</span>
     <span class="p">{</span> <span class="nt">"type"</span><span class="p">:</span> <span class="s2">"local"</span><span class="p">,</span> <span class="nt">"db"</span><span class="p">:</span> <span class="s2">"all"</span><span class="p">,</span> <span class="nt">"user"</span><span class="p">:</span> <span class="s2">"all"</span><span class="p">,</span>        <span class="nt">"addr"</span><span class="p">:</span> <span class="s2">""</span><span class="p">,</span>             <span class="nt">"method"</span><span class="p">:</span> <span class="s2">"trust"</span> <span class="p">},</span>
@@ -225,7 +227,7 @@ In some cases this source might not immediately contain a package for the distri
 <p>The <code>node["postgresql"]["apt_distribution"]</code> attribute can be used to install PostgreSQL from a different compatible
 distribution:</p>
 
-<div class="highlight"><pre><span class="s2">"postgresql"</span><span class="err">:</span> <span class="p">{</span>
+<div class="highlight highlight-json"><pre><span class="s2">"postgresql"</span><span class="err">:</span> <span class="p">{</span>
   <span class="nt">"apt_distribution"</span><span class="p">:</span> <span class="s2">"precise"</span>
 <span class="p">}</span>
 </pre></div>
@@ -233,10 +235,10 @@ distribution:</p>
 <h2>
 <a name="attributes" class="anchor" href="#attributes"><span class="octicon octicon-link"></span></a>Attributes</h2>
 
-<div class="highlight"><pre><span class="c1"># WARNING: If this version number is changed in your own recipes, the</span>
+<div class="highlight highlight-ruby"><pre><span class="c1"># WARNING: If this version number is changed in your own recipes, the</span>
 <span class="c1"># FILE LOCATIONS (see below) attributes *must* also be overridden in</span>
 <span class="c1"># order to re-compute the paths with the correct version number.</span>
-<span class="n">default</span><span class="o">[</span><span class="s2">"postgresql"</span><span class="o">][</span><span class="s2">"version"</span><span class="o">]</span>                         <span class="o">=</span> <span class="s2">"9.2"</span>
+<span class="n">default</span><span class="o">[</span><span class="s2">"postgresql"</span><span class="o">][</span><span class="s2">"version"</span><span class="o">]</span>                         <span class="o">=</span> <span class="s2">"9.3"</span>
 <span class="n">default</span><span class="o">[</span><span class="s2">"postgresql"</span><span class="o">][</span><span class="s2">"apt_distribution"</span><span class="o">]</span>                <span class="o">=</span> <span class="n">node</span><span class="o">[</span><span class="s2">"lsb"</span><span class="o">][</span><span class="s2">"codename"</span><span class="o">]</span>
 
 <span class="n">default</span><span class="o">[</span><span class="s2">"postgresql"</span><span class="o">][</span><span class="s2">"environment_variables"</span><span class="o">]</span>           <span class="o">=</span> <span class="p">{}</span>
@@ -252,7 +254,7 @@ distribution:</p>
 <span class="c1">#------------------------------------------------------------------------------</span>
 <span class="c1"># POSTGIS</span>
 <span class="c1">#------------------------------------------------------------------------------</span>
-<span class="n">default</span><span class="o">[</span><span class="s2">"postgis"</span><span class="o">][</span><span class="s2">"version"</span><span class="o">]</span>                            <span class="o">=</span> <span class="s2">"1.5"</span>
+<span class="n">default</span><span class="o">[</span><span class="s2">"postgis"</span><span class="o">][</span><span class="s2">"version"</span><span class="o">]</span>                            <span class="o">=</span> <span class="s2">"2.1"</span>
 
 <span class="c1">#------------------------------------------------------------------------------</span>
 <span class="c1"># FILE LOCATIONS</span>
@@ -272,11 +274,16 @@ distribution:</p>
 <span class="n">default</span><span class="o">[</span><span class="s2">"postgresql"</span><span class="o">][</span><span class="s2">"port"</span><span class="o">]</span>                            <span class="o">=</span> <span class="mi">5432</span>
 <span class="n">default</span><span class="o">[</span><span class="s2">"postgresql"</span><span class="o">][</span><span class="s2">"max_connections"</span><span class="o">]</span>                 <span class="o">=</span> <span class="mi">100</span>
 <span class="n">default</span><span class="o">[</span><span class="s2">"postgresql"</span><span class="o">][</span><span class="s2">"superuser_reserved_connections"</span><span class="o">]</span>  <span class="o">=</span> <span class="mi">3</span>
-<span class="n">default</span><span class="o">[</span><span class="s2">"postgresql"</span><span class="o">][</span><span class="s2">"unix_socket_directory"</span><span class="o">]</span>           <span class="o">=</span> <span class="s2">"/var/run/postgresql"</span>
 <span class="n">default</span><span class="o">[</span><span class="s2">"postgresql"</span><span class="o">][</span><span class="s2">"unix_socket_group"</span><span class="o">]</span>               <span class="o">=</span> <span class="s2">""</span>
 <span class="n">default</span><span class="o">[</span><span class="s2">"postgresql"</span><span class="o">][</span><span class="s2">"unix_socket_permissions"</span><span class="o">]</span>         <span class="o">=</span> <span class="s2">"0777"</span>
 <span class="n">default</span><span class="o">[</span><span class="s2">"postgresql"</span><span class="o">][</span><span class="s2">"bonjour"</span><span class="o">]</span>                         <span class="o">=</span> <span class="s2">"off"</span>
 <span class="n">default</span><span class="o">[</span><span class="s2">"postgresql"</span><span class="o">][</span><span class="s2">"bonjour_name"</span><span class="o">]</span>                    <span class="o">=</span> <span class="s2">""</span>
+
+<span class="k">if</span> <span class="no">Gem</span><span class="o">::</span><span class="no">Version</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">node</span><span class="o">[</span><span class="s2">"postgresql"</span><span class="o">][</span><span class="s2">"version"</span><span class="o">]</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="no">Gem</span><span class="o">::</span><span class="no">Version</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s2">"9.3"</span><span class="p">)</span>
+  <span class="n">default</span><span class="o">[</span><span class="s2">"postgresql"</span><span class="o">][</span><span class="s2">"unix_socket_directories"</span><span class="o">]</span>       <span class="o">=</span> <span class="s2">"/var/run/postgresql"</span>
+<span class="k">else</span>
+  <span class="n">default</span><span class="o">[</span><span class="s2">"postgresql"</span><span class="o">][</span><span class="s2">"unix_socket_directory"</span><span class="o">]</span>         <span class="o">=</span> <span class="s2">"/var/run/postgresql"</span>
+<span class="k">end</span>
 
 <span class="c1"># security and authentication</span>
 <span class="n">default</span><span class="o">[</span><span class="s2">"postgresql"</span><span class="o">][</span><span class="s2">"authentication_timeout"</span><span class="o">]</span>          <span class="o">=</span> <span class="s2">"1min"</span>
@@ -592,6 +599,13 @@ distribution:</p>
 <span class="c1">#------------------------------------------------------------------------------</span>
 
 <span class="n">default</span><span class="o">[</span><span class="s2">"postgresql"</span><span class="o">][</span><span class="s2">"custom_variable_classes"</span><span class="o">]</span>         <span class="o">=</span> <span class="s2">""</span>
+
+
+<span class="c1">#------------------------------------------------------------------------------</span>
+<span class="c1"># POSTGIS OPTIONS</span>
+<span class="c1">#------------------------------------------------------------------------------</span>
+
+<span class="n">default</span><span class="o">[</span><span class="s2">"postgis"</span><span class="o">][</span><span class="s2">"version"</span><span class="o">]</span> <span class="o">=</span> <span class="s2">"2.0"</span>
 </pre></div>
 
 <h2>
@@ -600,17 +614,17 @@ distribution:</p>
 <ul>
 <li>Add support for replication setup</li>
 <li>Add installation and configuration for the following packages:</li>
-</ul><pre><code>postgresql-{version}-debversion
-postgresql-{version}-ip4r
-postgresql-{version}-pljava-gcj
-postgresql-plperl-{version}
-postgresql-{version}-pllua
-postgresql-{version}-plproxy
-postgresql-plpython-{version}
-postgresql-{version}-plr
+</ul><pre><code>postgresql-{version}-ip4r
+postgresql-{version}-pgq3
 postgresql-{version}-plsh
-postgresql-pltcl-{version}
-postgresql-server-dev-{version}
+postgresql-{version}-pgmp
+postgresql-{version}-plproxy
+postgresql-{version}-plv8
+postgresql-{version}-repmgr
+postgresql-{version}-debversion
+postgresql-{version}-pgpool2
+postgresql-{version}-plr
+postgresql-{version}-slony1-2
 </code></pre>
 
 <h2>
@@ -711,17 +725,32 @@ postgresql-server-dev-{version}
 <li>allow 'lazy' evaluation of configs in the custom template</li>
 </ul>
 </li>
+<li>
+<strong><a href="https://github.com/jherdman">@jherdman</a></strong>
+
+<ul>
+<li>update README to include updated apt repository link</li>
+<li>add support for version 9.3</li>
+</ul>
+</li>
+<li>
+<strong><a href="https://github.com/stianselland">@stianselland</a></strong>
+
+<ul>
+<li>fix idempotence for <code>pg_user</code> definition</li>
+</ul>
+</li>
 </ul><h2>
 <a name="license" class="anchor" href="#license"><span class="octicon octicon-link"></span></a>License</h2>
 
 <p><strong>chef-postgresql</strong></p>
 
 <ul>
-<li>Freely distributable and licensed under the <a href="http://phlipper.mit-license.org/2012-2013/license.html">MIT license</a>.</li>
-<li>Copyright (c) 2012-2013 Phil Cohen (<a href="mailto:github@phlippers.net">github@phlippers.net</a>) <a href="http://coderwall.com/phlipper"><img src="http://api.coderwall.com/phlipper/endorsecount.png" alt="endorse"></a>
+<li>Freely distributable and licensed under the <a href="http://phlipper.mit-license.org/2012-2014/license.html">MIT license</a>.</li>
+<li>Copyright (c) 2012-2014 Phil Cohen (<a href="mailto:github@phlippers.net">github@phlippers.net</a>) <a href="http://coderwall.com/phlipper"><img src="http://api.coderwall.com/phlipper/endorsecount.png" alt="endorse"></a>  <a href="https://www.gittip.com/phlipper/"><img src="http://img.shields.io/gittip/phlipper.png" alt="Gittip"></a>
 </li>
 <li><a href="http://phlippers.net/">http://phlippers.net/</a></li>
-</ul>
+</ul><p><a href="https://bitdeli.com/free" title="Bitdeli Badge"><img src="https://d2weczhvl823v0.cloudfront.net/phlipper/chef-postgresql/trend.png" alt="Bitdeli Badge"></a></p>
       </section>
     </div>
     <footer>
