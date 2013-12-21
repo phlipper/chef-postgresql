@@ -1,4 +1,4 @@
-# chef-postgresql
+# chef-postgresql  [![Build Status](http://img.shields.io/travis-ci/phlipper/chef-postgresql.png)](https://travis-ci.org/phlipper/chef-postgresql)
 
 ## Description
 
@@ -636,7 +636,7 @@ Many thanks go to the following who have contributed to making this cookbook eve
 **chef-postgresql**
 
 * Freely distributable and licensed under the [MIT license](http://phlipper.mit-license.org/2012-2014/license.html).
-* Copyright (c) 2012-2014 Phil Cohen (github@phlippers.net) [![endorse](http://api.coderwall.com/phlipper/endorsecount.png)](http://coderwall.com/phlipper)
+* Copyright (c) 2012-2014 Phil Cohen (github@phlippers.net) [![endorse](http://api.coderwall.com/phlipper/endorsecount.png)](http://coderwall.com/phlipper)  [![Gittip](http://img.shields.io/gittip/phlipper.png)](https://www.gittip.com/phlipper/)
 * http://phlippers.net/
 
 
