@@ -627,6 +627,8 @@ Many thanks go to the following who have contributed to making this cookbook eve
 * **[@jherdman](https://github.com/jherdman)**
     * update README to include updated apt repository link
     * add support for version 9.3
+* **[@stianselland](https://github.com/stianselland)**
+    * fix idempotence for `pg_user` definition
 
 
 ## License
