@@ -629,6 +629,10 @@ Many thanks go to the following who have contributed to making this cookbook eve
     * add support for version 9.3
 * **[@stianselland](https://github.com/stianselland)**
     * fix idempotence for `pg_user` definition
+* **[@alenia](https://github.com/alenia)**
+    * conditionally override attributes in `postgresql.conf`
+* **[@Randommood](https://github.com/Randommood)**
+    * conditionally override attributes in `postgresql.conf`
 
 
 ## License
