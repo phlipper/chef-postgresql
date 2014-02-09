@@ -1,9 +1,13 @@
 #!/usr/bin/env rake
 
+require "kitchen/rake_tasks"
+Kitchen::RakeTasks.new
+
+
 task default: "test"
 
 desc "Runs all tests"
-task test: [:knife, :foodcritic, :chefspec]
+task test: [:knife, :foodcritic, :chefspec, :kitchen]
 
 desc "Runs foodcritic linter"
 task foodcritic: :prepare_sandbox do
@@ -24,6 +28,12 @@ task chefspec: :prepare_sandbox do
   end
 end
 
+desc "Runs integration tests with test kitchen"
+task :kitchen do
+  args = ENV["CI"] ? "test --destroy=always" : "verify"
+  sh "bundle exec kitchen #{args} -pl info"
+end
+
 task :prepare_sandbox do
   files = %w[
     *.md *.rb attributes definitions libraries files providers recipes
@@ -39,11 +49,4 @@ private
 
 def sandbox_path
   File.join(File.dirname(__FILE__), %w[tmp cookbooks cookbook])
-end
-
-begin
-  require 'kitchen/rake_tasks'
-  Kitchen::RakeTasks.new
-rescue LoadError
-  puts ">>>>> Kitchen gem not loaded, omitting tasks" unless ENV['CI']
 end
