@@ -3,7 +3,7 @@
 task default: "test"
 
 desc "Runs all tests"
-task test: [:knife, :foodcritic]
+task test: [:knife, :foodcritic, :chefspec]
 
 desc "Runs foodcritic linter"
 task foodcritic: :prepare_sandbox do
@@ -13,6 +13,15 @@ end
 desc "Runs knife cookbook test"
 task knife: :prepare_sandbox do
   sh "bundle exec knife cookbook test cookbook -c test/.chef/knife.rb -o #{sandbox_path}/../"
+end
+
+desc "Runs specs with chefspec"
+task chefspec: :prepare_sandbox do
+  if Bundler.rubygems.find_name("chef").first.version < Gem::Version.new(11)
+    puts "Skipping `chefspec` due to older Chef version"
+  else
+    sh "bundle exec rspec --color"
+  end
 end
 
 task :prepare_sandbox do
