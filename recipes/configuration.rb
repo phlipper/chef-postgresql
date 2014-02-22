@@ -3,7 +3,6 @@
 # Recipe:: configuration
 #
 
-
 pg_version = node["postgresql"]["version"]
 
 directory "/etc/postgresql/#{pg_version}/main/" do

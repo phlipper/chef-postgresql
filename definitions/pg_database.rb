@@ -8,54 +8,47 @@ define :pg_database, action: :create do
     encoding: "utf8",
     locale: nil,
     template: nil,
-    owner: nil,
+    owner: nil
   }
 
   defaults.merge! params
 
-  exists = ["psql"]
-  exists.push %(-c "SELECT datname from pg_database WHERE datname='#{params[:name]}'")
-  exists.push "--host #{defaults[:host]}" if defaults[:host]
-  exists.push "--port #{defaults[:port]}" if defaults[:port]
-  exists.push "| grep #{params[:name]}"
+  db_name = params[:name]
 
-  exists = exists.join ' '
+  db_exists = %(psql -c "SELECT datname from pg_database WHERE datname='#{db_name}'") # rubocop:disable LineLength
+  db_exists << " --host #{defaults[:host]}" if defaults[:host]
+  db_exists << " --port #{defaults[:port]}" if defaults[:port]
+  db_exists << " | grep #{db_name}"
 
   case params[:action]
   when :create
-    createdb = ["createdb"]
-    createdb.push "-U #{defaults[:username]}" if defaults[:username]
-    createdb.push "-E #{defaults[:encoding]}" if defaults[:encoding]
-    createdb.push "--locale #{defaults[:locale]}" if defaults[:locale]
-    createdb.push "-T #{defaults[:template]}" if defaults[:template]
-    createdb.push "--host #{defaults[:host]}" if defaults[:host]
-    createdb.push "--port #{defaults[:port]}" if defaults[:port]
-    createdb.push "-O #{defaults[:owner]}" if defaults[:owner]
+    createdb_cmd = "createdb"
+    createdb_cmd << " -U #{defaults[:username]}" if defaults[:username]
+    createdb_cmd << " -E #{defaults[:encoding]}" if defaults[:encoding]
+    createdb_cmd << " --locale #{defaults[:locale]}" if defaults[:locale]
+    createdb_cmd << " -T #{defaults[:template]}" if defaults[:template]
+    createdb_cmd << " --host #{defaults[:host]}" if defaults[:host]
+    createdb_cmd << " --port #{defaults[:port]}" if defaults[:port]
+    createdb_cmd << " -O #{defaults[:owner]}" if defaults[:owner]
+    createdb_cmd << " #{db_name}"
 
-    createdb.push params[:name]
-
-    createdb = createdb.join(" ")
-
-    execute "creating pg database #{params[:name]}" do
+    execute "create pg database #{db_name}" do
       user defaults[:user]
-      command createdb
-      not_if exists, user: defaults[:user]
+      command createdb_cmd
+      not_if db_exists, user: defaults[:user]
     end
 
   when :drop
-    dropdb = ["dropdb"]
-    dropdb.push "-U #{defaults[:username]}" if defaults[:username]
-    dropdb.push "--host #{defaults[:host]}" if defaults[:host]
-    dropdb.push "--port #{defaults[:port]}" if defaults[:port]
+    dropdb_cmd = "dropdb"
+    dropdb_cmd << " -U #{defaults[:username]}" if defaults[:username]
+    dropdb_cmd << " --host #{defaults[:host]}" if defaults[:host]
+    dropdb_cmd << " --port #{defaults[:port]}" if defaults[:port]
+    dropdb_cmd << " #{db_name}"
 
-    dropdb.push params[:name]
-
-    dropdb = dropdb.join(" ")
-
-    execute "dropping pg database #{params[:name]}" do
+    execute "drop pg database #{db_name}" do
       user defaults[:user]
-      command dropdb
-      only_if exists, user: defaults[:user]
+      command dropdb_cmd
+      only_if db_exists, user: defaults[:user]
     end
   end
 end

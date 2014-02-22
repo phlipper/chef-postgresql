@@ -3,7 +3,6 @@
 # Recipe:: pg_database
 #
 
-
 # setup databases
 node["postgresql"]["databases"].each do |database|
   pg_database database["name"] do

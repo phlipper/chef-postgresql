@@ -1,4 +1,6 @@
 define :pg_user, action: :create do
+  role_name = params[:name]
+
   case params[:action]
   when :create
     privileges = {
@@ -8,38 +10,34 @@ define :pg_user, action: :create do
     }
     privileges.merge! params[:privileges] if params[:privileges]
 
-    sql = [params[:name]]
+    role_sql = role_name
 
-    sql.push privileges.to_a.map!{ |p,b| (b ? "" : "NO") + p.to_s.upcase }.join(" ")
+    role_sql << Array(privileges).map! { |priv, bool| (bool ? "" : "NO") + priv.to_s.upcase }.join(" ") # rubocop:disable LineLength
 
-    if params[:encrypted_password]
-      sql.push "ENCRYPTED PASSWORD '#{params[:encrypted_password]}'"
-    elsif params[:password]
-      sql.push "PASSWORD '#{params[:password]}'"
+    role_sql << if params[:encrypted_password]
+                  "ENCRYPTED PASSWORD '#{params[:encrypted_password]}'"
+                elsif params[:password]
+                  "PASSWORD '#{params[:password]}'"
+                end
+
+    role_exists = %(psql -c "SELECT rolname FROM pg_roles WHERE rolname='#{role_name}'" | grep #{role_name}) # rubocop:disable LineLength
+
+    execute "alter pg user #{role_name}" do
+      user "postgres"
+      command %(psql -c "ALTER ROLE #{role_sql}")
+      only_if role_exists, user: "postgres"
     end
 
-    sql = sql.join(" ")
-
-    exists = [%(psql -c "SELECT rolname FROM pg_roles WHERE rolname='#{params[:name]}'")]
-    exists.push "| grep #{params[:name]}"
-    exists = exists.join ' '
-
-    execute "altering pg user #{params[:name]}" do
+    execute "create pg user #{role_name}" do
       user "postgres"
-      command %(psql -c "ALTER ROLE #{sql}")
-      only_if exists, user: "postgres"
-    end
-
-    execute "creating pg user #{params[:name]}" do
-      user "postgres"
-      command %(psql -c "CREATE ROLE #{sql}")
-      not_if exists, user: "postgres"
+      command %(psql -c "CREATE ROLE #{role_sql}")
+      not_if role_exists, user: "postgres"
     end
 
   when :drop
-    execute "dropping pg user #{params[:name]}" do
+    execute "drop pg user #{role_name}" do
       user "postgres"
-      command %(psql -c "DROP ROLE IF EXISTS #{params[:name]}")
+      command %(psql -c "DROP ROLE IF EXISTS #{role_name}")
     end
   end
 end

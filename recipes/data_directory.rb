@@ -3,7 +3,6 @@
 # Recipe:: data_directory
 #
 
-
 # ensure data directory exists
 directory node["postgresql"]["data_directory"] do
   owner  "postgres"
