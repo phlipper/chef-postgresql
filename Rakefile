@@ -7,7 +7,7 @@ Kitchen::RakeTasks.new
 task default: "test"
 
 desc "Runs all tests"
-task test: [:knife, :foodcritic, :chefspec, :kitchen]
+task test: [:knife, :rubocop, :foodcritic, :chefspec, :kitchen]
 
 desc "Runs foodcritic linter"
 task foodcritic: :prepare_sandbox do
@@ -36,6 +36,11 @@ task :kitchen do
   end
   args = ENV["CI"] ? "test --destroy=always" : "verify"
   sh "bundle exec kitchen #{args} -pl info"
+end
+
+desc "Runs RuboCop style checks"
+task rubocop: :prepare_sandbox do
+  sh "bundle exec rubocop #{sandbox_path}"
 end
 
 task :prepare_sandbox do

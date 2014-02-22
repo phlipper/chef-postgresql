@@ -1,0 +1,11 @@
+LineLength:
+  Max: 80
+  Exclude:
+    - "*/attributes/default.rb"
+    - metadata.rb
+
+StringLiterals:
+  EnforcedStyle: double_quotes
+
+inherit_from: test/rubocop/enabled.yml
+inherit_from: test/rubocop/disabled.yml
