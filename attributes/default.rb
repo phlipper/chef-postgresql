@@ -8,7 +8,16 @@
 #
 
 default["postgresql"]["version"]                         = "9.3"
-default["postgresql"]["apt_distribution"]                = node["lsb"]["codename"]
+
+#------------------------------------------------------------------------------
+# APT Repository
+#------------------------------------------------------------------------------
+
+default["postgresql"]["apt_distribution"] = node["lsb"]["codename"]
+default["postgresql"]["apt_repository"]   = "apt.postgresql.org"
+default["postgresql"]["apt_uri"]          = "http://apt.postgresql.org/pub/repos/apt"
+default["postgresql"]["apt_components"]   = ["main"]
+default["postgresql"]["apt_key"]          = "http://apt.postgresql.org/pub/repos/apt/ACCC4CF8.asc"
 
 default["postgresql"]["environment_variables"]           = {}
 default["postgresql"]["pg_ctl_options"]                  = ""
