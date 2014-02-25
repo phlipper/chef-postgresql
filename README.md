@@ -639,6 +639,7 @@ Many thanks go to the following who have contributed to making this cookbook eve
     * fix idempotence for `pg_user` definition
 * **[@alenia](https://github.com/alenia)**
     * conditionally override attributes in `postgresql.conf`
+    * support for customizable apt sources
 * **[@Randommood](https://github.com/Randommood)**
     * conditionally override attributes in `postgresql.conf`
 
