@@ -5,12 +5,12 @@
 
 
 # use `apt.postgresql.org` for primary package installation support
-apt_repository "apt.postgresql.org" do
-  uri "http://apt.postgresql.org/pub/repos/apt"
+apt_repository node["postgresql"]["apt_repository"] do
+  uri          node["postgresql"]["apt_uri"]
   distribution "#{node["postgresql"]["apt_distribution"]}-pgdg"
-  components ["main"]
-  key "http://apt.postgresql.org/pub/repos/apt/ACCC4CF8.asc"
-  action :add
+  components   node["postgresql"]["apt_components"]
+  key          node["postgresql"]["apt_key"]
+  action       :add
 end
 
 # automatically get repository key updates
