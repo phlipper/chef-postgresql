@@ -203,6 +203,7 @@ default["postgresql"]["apt_repository"]                  = "apt.postgresql.org"
 default["postgresql"]["apt_uri"]                         = "http://apt.postgresql.org/pub/repos/apt"
 default["postgresql"]["apt_components"]                  = ["main"]
 default["postgresql"]["apt_key"]                         = "http://apt.postgresql.org/pub/repos/apt/ACCC4CF8.asc"
+# You can set default["postgresql"]["apt_keyserver"] if you want to use a keyserver
 
 default["postgresql"]["environment_variables"]           = {}
 default["postgresql"]["pg_ctl_options"]                  = ""
