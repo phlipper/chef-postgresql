@@ -641,8 +641,11 @@ Many thanks go to the following who have contributed to making this cookbook eve
 * **[@alenia](https://github.com/alenia)**
     * conditionally override attributes in `postgresql.conf`
     * support for customizable apt sources
+    * add ability to use an apt keyserver
 * **[@Randommood](https://github.com/Randommood)**
     * conditionally override attributes in `postgresql.conf`
+    * support for customizable apt sources
+    * add ability to use an apt keyserver
 
 
 ## License
