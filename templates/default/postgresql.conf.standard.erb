@@ -188,7 +188,7 @@ wal_level = <%= node["postgresql"]["wal_level"] %>      # minimal, archive, or h
 wal_buffers = <%= node["postgresql"]["wal_buffers"] %>     # min 32kB, -1 sets based on shared_buffers
 <%- end %>
           # (change requires restart)
-#wal_writer_delay = <%= node["postgresql"]["wal_writer_delay"] %>   # 1-10000 milliseconds
+wal_writer_delay = <%= node["postgresql"]["wal_writer_delay"] %>   # 1-10000 milliseconds
 
 #commit_delay = <%= node["postgresql"]["commit_delay"] %>     # range 0-100000, in microseconds
 #commit_siblings = <%= node["postgresql"]["commit_siblings"] %>      # range 1-1000
