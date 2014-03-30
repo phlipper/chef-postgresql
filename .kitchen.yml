@@ -1,83 +1,28 @@
-<%
-ci_cloud = ENV.fetch("CI_CLOUD", "vagrant")
-cloud_map = {
-  "vagrant" => {
-    "user" => "vagrant",
-    "debian-6" => { "image_id" => "", "user" => "vagrant" },
-    "debian-7" => { "image_id" => "", "user" => "vagrant" },
-  },
-  "aws" => {
-    "user" => "admin",
-    "debian-6" => { "image_id" => "ami-decf5aee", "user" => "admin" },
-    "debian-7" => { "image_id" => "ami-7298fc42", "user" => "admin" },
-  },
-  "digitalocean" => {
-    "user" => "root",
-    "debian-6" => { "image_id" => "12573", "user" => "root" },
-    "debian-7" => { "image_id" => "308287", "user" => "root" },
-  }
-}
-%>
----
 driver:
   require_chef_omnibus: <%= ENV.fetch("CHEF_VERSION", "latest") %>
   ssh_key: <%= File.expand_path("./test/support/keys/vagrant") %>
-<% if ENV["CI"] && ci_cloud == "aws" %>
-  name: ec2
-  aws_access_key_id: <%= ENV["AWS_ACCESS_KEY_ID"] %>
-  aws_secret_access_key: <%= ENV["AWS_SECRET_ACCESS_KEY"] %>
-  flavor_id: m3.large
-  aws_ssh_key_id: vagrant
-  ssh_key: <%= File.expand_path("./test/support/keys/vagrant") %>
-  region: us-west-2
-  availability_zone: us-west-2b
-  security_group_ids: ["sg-24f8fa14"]
-<% elsif ENV["CI"] && ci_cloud == "digitalocean" %>
-  name: digitalocean
-  region_id: 4
-  flavor_id: 61
-<% else %>
   name: vagrant
-<% end %>
 
 provisioner:
-  name: chef_solo
+  name: chef_zero
 
 platforms:
+  - name: debian-6.0.8
+  - name: debian-7.2.0
   - name: ubuntu-12.04
-    box_url: http://opscode-vm-bento.s3.amazonaws.com/vagrant/virtualbox/opscode_ubuntu-12.04_chef-provisionerless.box
-    driver:
-      username: <%= cloud_map[ci_cloud]["user"] %>
-
-  - name: ubuntu-13.04
+  - name: ubuntu-13.10
     attributes:
       postgresql:
         apt_distribution: "precise"
-    box_url: http://opscode-vm-bento.s3.amazonaws.com/vagrant/virtualbox/opscode_ubuntu-13.10_chef-provisionerless.box
-    driver:
-      username: <%= cloud_map[ci_cloud]["user"] %>
 
-  - name: debian-6.0.8
-    box_url: http://opscode-vm-bento.s3.amazonaws.com/vagrant/virtualbox/opscode_debian-6.0.8_chef-provisionerless.box
-    <% if ci_cloud != "vagrant" %>
-    driver:
-      image_id: <%= cloud_map[ci_cloud]["debian-6"]["image_id"] %>
-      username: <%= cloud_map[ci_cloud]["debian-6"]["user"] %>
-    <% end %>
-
-  - name: debian-7.2.0
-    box_url: http://opscode-vm-bento.s3.amazonaws.com/vagrant/virtualbox/opscode_debian-7.2.0_chef-provisionerless.box
-    driver:
-      image_id: <%= cloud_map[ci_cloud]["debian-7"]["image_id"] %>
-      username: <%= cloud_map[ci_cloud]["debian-7"]["user"] %>
 
 suites:
   - name: default
     run_list:
       - recipe[postgresql]
-    attributes:
+    attributes: {}
 
   - name: server
     run_list:
       - recipe[postgresql::server]
-    attributes:
+    attributes: {}

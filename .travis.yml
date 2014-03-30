@@ -5,6 +5,9 @@ rvm:
 - 1.9.3
 - 2.0.0
 - 2.1.0
+before_install:
+- wget -O /tmp/vagrant_1.5.1_x86_64.deb https://dl.bintray.com/mitchellh/vagrant/vagrant_1.5.1_x86_64.deb
+- sudo dpkg -i /tmp/vagrant_1.5.1_x86_64.deb
 script:
 - bundle exec rake
 env:

@@ -30,6 +30,10 @@ end
 
 desc "Runs integration tests with test kitchen"
 task :kitchen do
+  if ENV["CI"]
+    puts "Skipping Kitchen tests for now due to CI environment..."
+    exit
+  end
   args = ENV["CI"] ? "test --destroy=always" : "verify"
   sh "bundle exec kitchen #{args} -pl info"
 end
