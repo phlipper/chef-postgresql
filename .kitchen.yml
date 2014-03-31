@@ -1,0 +1,28 @@
+driver:
+  require_chef_omnibus: <%= ENV.fetch("CHEF_VERSION", "latest") %>
+  ssh_key: <%= File.expand_path("./test/support/keys/vagrant") %>
+  name: vagrant
+
+provisioner:
+  name: chef_zero
+
+platforms:
+  - name: debian-6.0.8
+  - name: debian-7.2.0
+  - name: ubuntu-12.04
+  - name: ubuntu-13.10
+    attributes:
+      postgresql:
+        apt_distribution: "precise"
+
+
+suites:
+  - name: default
+    run_list:
+      - recipe[postgresql]
+    attributes: {}
+
+  - name: server
+    run_list:
+      - recipe[postgresql::server]
+    attributes: {}

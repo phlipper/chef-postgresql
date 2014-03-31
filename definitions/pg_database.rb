@@ -10,7 +10,7 @@ define :pg_database, action: :create do
     template: nil,
     owner: nil,
   }
-  
+
   defaults.merge! params
 
   exists = ["psql"]

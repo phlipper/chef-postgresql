@@ -1,9 +1,13 @@
 #!/usr/bin/env rake
 
+require "kitchen/rake_tasks"
+Kitchen::RakeTasks.new
+
+
 task default: "test"
 
 desc "Runs all tests"
-task test: [:knife, :foodcritic, :chefspec]
+task test: [:knife, :foodcritic, :chefspec, :kitchen]
 
 desc "Runs foodcritic linter"
 task foodcritic: :prepare_sandbox do
@@ -22,6 +26,16 @@ task chefspec: :prepare_sandbox do
   else
     sh "bundle exec rspec --color"
   end
+end
+
+desc "Runs integration tests with test kitchen"
+task :kitchen do
+  if ENV["CI"]
+    puts "Skipping Kitchen tests for now due to CI environment..."
+    exit
+  end
+  args = ENV["CI"] ? "test --destroy=always" : "verify"
+  sh "bundle exec kitchen #{args} -pl info"
 end
 
 task :prepare_sandbox do

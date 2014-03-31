@@ -1,10 +1,23 @@
 language: ruby
 gemfile:
-   - test/support/chef-10.gemfile
-   - test/support/chef-11.gemfile
+- test/support/Gemfile
 rvm:
-  - 1.9.3
-  - 2.0.0
-  - 2.1.0
+- 1.9.3
+- 2.0.0
+- 2.1.0
+before_install:
+- wget -O /tmp/vagrant_1.5.1_x86_64.deb https://dl.bintray.com/mitchellh/vagrant/vagrant_1.5.1_x86_64.deb
+- sudo dpkg -i /tmp/vagrant_1.5.1_x86_64.deb
 script:
-  - bundle exec rake test
+- bundle exec rake
+env:
+  matrix:
+  - CHEF_VERSION: 10.30.2
+  - CHEF_VERSION: 11.10.0
+  global:
+  - CI_CLOUD: digitalocean
+  - secure: KbG/DwrYxUhxZzmG3X6PD1DCe1PTM+Qrts53omZ1rrufQMFry1gSr/RlDA+bFs5exaBWC+wXc2TJBMHi5JgWXlNg+cj6c4Oq8barN2twzwUCe0OQNjeXO5JLCAeD93ZZIvpXezD0C2TJoobJqGokm/+s5Gzx/gFTjIaJGHsZxlA=
+  - secure: hoHRfjvSODYpDrkXFduO31NGIE0ZHH2N5RsNYplnJY3lHgD3Rasgy82npnrpM11UnbsUpVyzMkjzeuq2GgoWTWVZPUpDQaeFi4C73N8xuVfCnY9+jhSHeLAuS7LvFLf4itcBOerS+Oms2A5pvMIcOsa461AuokeKuEcwy23ZKNg=
+  - secure: CGbL1K/ATrOBhIgWyTnp2NThP1/12ZikF35Sm3fuk05ReC66zPr3cRbau3I9MgQ9Yu/jw2ohsmlE8xVPOBgL1gX4Alr3rMb2a2RL3xDNRz5e0ElIWf0xxGvitMv6Y8SaEzzdwSo7pjlMLf5285bSp0VR0TdJouY4tCXnvQNiLs0=
+  - secure: iXmkOPHEaFrEnSWQ8v6bdk9Wu78BNFCQAw7Dnb6k00nWkiUkWfpocCM6ua57KPGoglalgRB4RjrjiRkTD07TKw7ffIaUwomow8TeLdjwaUG8rEK/xXHfFViAkenJhTTCEvn5J/CvWjarx34bwgstMHpouiGgvrcCZxuZvwkq24M=
+  - secure: eKU69RCj+i5QVuOKIC/FYtAl7PF1z3FIqVCuYwd71Usk7eTfQZKeDOjOQbykxbGBZfQI2j3ndpqUv/GKZdXyGYYxyhudjlg8iXv1JtVcwuM07sQ1MBYhVN8NWUMjxlcIOcP68VFjbPE15ACR+w7FXvsdq5r9MjzCQZDgESkWpSE=

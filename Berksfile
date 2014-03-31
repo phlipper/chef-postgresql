@@ -1,1 +1,3 @@
-cookbook "postgresql", path: "."
+site :opscode
+
+metadata
