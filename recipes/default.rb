@@ -3,7 +3,6 @@
 # Recipe:: default
 #
 
-
 # pin default package preferences
 apt_preference "pgdg.pref" do
   glob "*"

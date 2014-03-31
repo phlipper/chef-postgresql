@@ -5,4 +5,7 @@
 
 include_recipe "postgresql"
 
-package "postgresql-#{node["postgresql"]["version"]}-postgis-#{node["postgis"]["version"]}"
+pg_version = node["postgresql"]["version"]
+postgis_version = node["postgis"]["version"]
+
+package "postgresql-#{pg_version}-postgis-#{postgis_version}"

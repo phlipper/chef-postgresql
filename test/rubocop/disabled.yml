@@ -1,0 +1,29 @@
+Encoding:
+  Description: 'Use UTF-8 as the source file encoding.'
+  Enabled: false
+
+SymbolArray:
+  Description: 'Use %i or %I for arrays of symbols.'
+  Enabled: false
+
+##################### Rails ##################################
+
+DefaultScope:
+  Description: 'Checks if the argument passed to default_scope is a block.'
+  Enabled: false
+
+HasAndBelongsToMany:
+  Description: 'Prefer has_many :through to has_and_belongs_to_many.'
+  Enabled: false
+
+Output:
+  Description: 'Checks for calls to puts, print, etc.'
+  Enabled: false
+
+ReadAttribute:
+  Description: 'Prefer self[:attribute] over read_attribute(:attribute).'
+  Enabled: false
+
+Validation:
+  Description: 'Use sexy validations.'
+  Enabled: false

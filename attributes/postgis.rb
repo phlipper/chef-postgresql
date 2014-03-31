@@ -7,5 +7,4 @@
 # Copyright 2012-2013, Phil Cohen
 #
 
-
 default["postgis"]["version"] = "2.1"

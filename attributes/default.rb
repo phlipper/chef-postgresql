@@ -43,7 +43,6 @@ default["postgresql"]["hba_file"]                        = "/etc/postgresql/#{no
 default["postgresql"]["ident_file"]                      = "/etc/postgresql/#{node["postgresql"]["version"]}/main/pg_ident.conf"
 default["postgresql"]["external_pid_file"]               = "/var/run/postgresql/#{node["postgresql"]["version"]}-main.pid"
 
-
 #------------------------------------------------------------------------------
 # CONNECTIONS AND AUTHENTICATION
 #------------------------------------------------------------------------------
@@ -87,7 +86,6 @@ default["postgresql"]["tcp_keepalives_idle"]             = 0
 default["postgresql"]["tcp_keepalives_interval"]         = 0
 default["postgresql"]["tcp_keepalives_count"]            = 0
 
-
 #------------------------------------------------------------------------------
 # RESOURCE USAGE (except WAL)
 #------------------------------------------------------------------------------
@@ -119,7 +117,6 @@ default["postgresql"]["bgwriter_lru_multiplier"]         = 2.0
 # asynchronous behavior
 default["postgresql"]["effective_io_concurrency"]        = 1
 
-
 #------------------------------------------------------------------------------
 # WRITE AHEAD LOG
 #------------------------------------------------------------------------------
@@ -146,7 +143,6 @@ default["postgresql"]["archive_mode"]                    = "off"
 default["postgresql"]["archive_command"]                 = ""
 default["postgresql"]["archive_timeout"]                 = 0
 
-
 #------------------------------------------------------------------------------
 # REPLICATION
 #------------------------------------------------------------------------------
@@ -165,7 +161,6 @@ default["postgresql"]["max_standby_archive_delay"]       = "30s"
 default["postgresql"]["max_standby_streaming_delay"]     = "30s"
 default["postgresql"]["wal_receiver_status_interval"]    = "10s"
 default["postgresql"]["hot_standby_feedback"]            = "off"
-
 
 #------------------------------------------------------------------------------
 # QUERY TUNING
@@ -206,7 +201,6 @@ default["postgresql"]["constraint_exclusion"]            = "partition"
 default["postgresql"]["cursor_tuple_fraction"]           = 0.1
 default["postgresql"]["from_collapse_limit"]             = 8
 default["postgresql"]["join_collapse_limit"]             = 8
-
 
 #------------------------------------------------------------------------------
 # ERROR REPORTING AND LOGGING
@@ -250,7 +244,6 @@ default["postgresql"]["log_statement"]                   = "none"
 default["postgresql"]["log_temp_files"]                  = -1
 default["postgresql"]["log_timezone"]                    = "(defaults to server environment setting)"
 
-
 #------------------------------------------------------------------------------
 # RUNTIME STATISTICS
 #------------------------------------------------------------------------------
@@ -261,14 +254,13 @@ default["postgresql"]["track_counts"]                    = "on"
 default["postgresql"]["track_functions"]                 = "none"
 default["postgresql"]["track_activity_query_size"]       = 1024
 default["postgresql"]["update_process_title"]            = "on"
-default["postgresql"]["stats_temp_directory"]            = 'pg_stat_tmp'
+default["postgresql"]["stats_temp_directory"]            = "pg_stat_tmp"
 
 # statistics monitoring
 default["postgresql"]["log_parser_stats"]                = "off"
 default["postgresql"]["log_planner_stats"]               = "off"
 default["postgresql"]["log_executor_stats"]              = "off"
 default["postgresql"]["log_statement_stats"]             = "off"
-
 
 #------------------------------------------------------------------------------
 # AUTOVACUUM PARAMETERS
@@ -282,10 +274,9 @@ default["postgresql"]["autovacuum_vacuum_threshold"]     = 50
 default["postgresql"]["autovacuum_analyze_threshold"]    = 50
 default["postgresql"]["autovacuum_vacuum_scale_factor"]  = 0.2
 default["postgresql"]["autovacuum_analyze_scale_factor"] = 0.1
-default["postgresql"]["autovacuum_freeze_max_age"]       = 200000000
+default["postgresql"]["autovacuum_freeze_max_age"]       = 200_000_000
 default["postgresql"]["autovacuum_vacuum_cost_delay"]    = "20ms"
 default["postgresql"]["autovacuum_vacuum_cost_limit"]    = -1
-
 
 #------------------------------------------------------------------------------
 # CLIENT CONNECTION DEFAULTS
@@ -301,8 +292,8 @@ default["postgresql"]["default_transaction_read_only"]   = "off"
 default["postgresql"]["default_transaction_deferrable"]  = "off"
 default["postgresql"]["session_replication_role"]        = "origin"
 default["postgresql"]["statement_timeout"]               = 0
-default["postgresql"]["vacuum_freeze_min_age"]           = 50000000
-default["postgresql"]["vacuum_freeze_table_age"]         = 150000000
+default["postgresql"]["vacuum_freeze_min_age"]           = 50_000_000
+default["postgresql"]["vacuum_freeze_table_age"]         = 150_000_000
 default["postgresql"]["bytea_output"]                    = "hex"
 default["postgresql"]["xmlbinary"]                       = "base64"
 default["postgresql"]["xmloption"]                       = "content"
@@ -328,7 +319,6 @@ default["postgresql"]["default_text_search_config"]      = "pg_catalog.english"
 default["postgresql"]["dynamic_library_path"]            = "$libdir"
 default["postgresql"]["local_preload_libraries"]         = ""
 
-
 #------------------------------------------------------------------------------
 # LOCK MANAGEMENT
 #------------------------------------------------------------------------------
@@ -336,7 +326,6 @@ default["postgresql"]["local_preload_libraries"]         = ""
 default["postgresql"]["deadlock_timeout"]                = "1s"
 default["postgresql"]["max_locks_per_transaction"]       = 64
 default["postgresql"]["max_pred_locks_per_transaction"]  = 64
-
 
 #------------------------------------------------------------------------------
 # VERSION/PLATFORM COMPATIBILITY
@@ -356,7 +345,6 @@ default["postgresql"]["synchronize_seqscans"]            = "on"
 # other platforms and clients
 default["postgresql"]["transform_null_equals"]           = "off"
 
-
 #------------------------------------------------------------------------------
 # ERROR HANDLING
 #------------------------------------------------------------------------------
@@ -364,14 +352,12 @@ default["postgresql"]["transform_null_equals"]           = "off"
 default["postgresql"]["exit_on_error"]                   = "off"
 default["postgresql"]["restart_after_crash"]             = "on"
 
-
 #------------------------------------------------------------------------------
 # USERS AND DATABASES
 #------------------------------------------------------------------------------
 
 default["postgresql"]["users"]                           = []
 default["postgresql"]["databases"]                       = []
-
 
 #------------------------------------------------------------------------------
 # CUSTOMIZED OPTIONS
