@@ -646,6 +646,8 @@ Many thanks go to the following who have contributed to making this cookbook eve
     * conditionally override attributes in `postgresql.conf`
     * support for customizable apt sources
     * add ability to use an apt keyserver
+* **[@vrischmann](https://github.com/vrischmann)**
+    * uncomment `wal_writer_delay` attribute
 
 
 ## License
