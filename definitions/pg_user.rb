@@ -10,14 +10,14 @@ define :pg_user, action: :create do
     }
     privileges.merge! params[:privileges] if params[:privileges]
 
-    role_sql = role_name
+    role_sql = "#{role_name} "
 
     role_sql << Array(privileges).map! { |priv, bool| (bool ? "" : "NO") + priv.to_s.upcase }.join(" ") # rubocop:disable LineLength
 
     role_sql << if params[:encrypted_password]
-                  "ENCRYPTED PASSWORD '#{params[:encrypted_password]}'"
+                  " ENCRYPTED PASSWORD '#{params[:encrypted_password]}'"
                 elsif params[:password]
-                  "PASSWORD '#{params[:password]}'"
+                  " PASSWORD '#{params[:password]}'"
                 end
 
     role_exists = %(psql -c "SELECT rolname FROM pg_roles WHERE rolname='#{role_name}'" | grep #{role_name}) # rubocop:disable LineLength
