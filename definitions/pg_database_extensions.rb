@@ -16,8 +16,11 @@ define :pg_database_extensions, action: :create do
     end
 
     extensions.each do |extension|
+      # quote extension with dashes, like `uuid-ossp`
+      extension = %|"#{extension}"| if extension.match("-")
+
       execute "create #{extension} extension" do
-        command %(psql -c "CREATE EXTENSION IF NOT EXISTS '#{extension}'" #{dbname}) # rubocop:disable LineLength
+        command %(psql -c 'CREATE EXTENSION IF NOT EXISTS #{extension}' #{dbname}) # rubocop:disable LineLength
         user "postgres"
       end
     end
@@ -27,7 +30,7 @@ define :pg_database_extensions, action: :create do
 
       %w[postgis postgis_topology].each do |ext|
         execute "create #{ext} extension" do
-          command %(psql -c "CREATE EXTENSION IF NOT EXISTS '#{ext}'" #{dbname})
+          command %(psql -c "CREATE EXTENSION IF NOT EXISTS #{ext}" #{dbname})
           user "postgres"
         end
       end
@@ -43,8 +46,11 @@ define :pg_database_extensions, action: :create do
     end
 
     extensions.each do |extension|
+      # quote extension with dashes, like `uuid-ossp`
+      extension = %|"#{extension}"| if extension.match("-")
+
       execute "drop #{extension} extension" do
-        command %(psql -c "DROP EXTENSION IF EXISTS '#{extension}'" #{dbname})
+        command %(psql -c 'DROP EXTENSION IF EXISTS #{extension}' #{dbname})
         user "postgres"
       end
     end
@@ -52,7 +58,7 @@ define :pg_database_extensions, action: :create do
     if postgis
       %w[postgis postgis_topology].each do |ext|
         execute "drop #{ext} extension" do
-          command %(psql -c "DROP EXTENSION IF EXISTS '#{ext}'" #{dbname})
+          command %(psql -c "DROP EXTENSION IF EXISTS #{ext}" #{dbname})
           user "postgres"
         end
       end
