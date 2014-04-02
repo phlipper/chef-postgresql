@@ -13,16 +13,33 @@ platforms:
   - name: ubuntu-13.10
     attributes:
       postgresql:
-        apt_distribution: "precise"
+        apt_distribution: precise
 
 
 suites:
-  - name: default
-    run_list:
-      - recipe[postgresql]
-    attributes: {}
-
   - name: server
     run_list:
       - recipe[postgresql::server]
-    attributes: {}
+      - recipe[postgresql::client]
+      - recipe[postgresql::contrib]
+      - recipe[postgresql::dbg]
+      - recipe[postgresql::doc]
+      - recipe[postgresql::libpq]
+      - recipe[postgresql::server_dev]
+    attributes:
+      postgresql:
+        users:
+          - username: testuser
+            password: s3kr1t
+            login: true
+        databases:
+          - name: testdb
+            owner: testuser
+            template: template0
+            encoding: utf8
+            locale: en_US.UTF8
+            # postgis: true
+            extensions:
+              - hstore
+              - dblink
+              - uuid-ossp

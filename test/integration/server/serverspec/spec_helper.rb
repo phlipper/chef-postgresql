@@ -19,3 +19,20 @@ module SpecInfra
     end
   end
 end
+
+def database_role_exists?(role)
+  cmd = "sudo -u postgres "
+  cmd << %(psql -c "SELECT rolname FROM pg_roles WHERE rolname='#{role}'")
+  cmd << " | grep #{role}"
+
+  expect(command cmd).to return_exit_status(0)
+end
+
+def database_exists?(database)
+  expect(command %(sudo -u postgres psql -l | grep #{database})).to be_true
+end
+
+def database_extension_exists?(database, extension)
+  cmd = %(sudo -u postgres psql -c "\\dx" #{database} | grep #{extension})
+  expect(command cmd).to return_exit_status(0)
+end
