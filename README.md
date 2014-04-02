@@ -43,7 +43,7 @@ The following platforms are supported by this cookbook, meaning that the recipes
 * `postgresql::libpq` - PostgreSQL C client library and header files for libpq5 (PostgreSQL library)
 * `postgresql::pg_database` - Internal recipe to manage specified databases
 * `postgresql::pg_user` - Internal recipe to manage specified users
-* `postgresql::postgis` - Geographic objects support for PostgreSQL 9.x
+* `postgresql::postgis` - Geographic objects support for PostgreSQL 9.x _(currently Ubuntu only)_
 * `postgresql::server` - Object-relational SQL database, version 9.x server
 * `postgresql::server_dev` - Development files for PostgreSQL server-side programming
 * `postgresql::service` - Internal recipe to declare the system service
