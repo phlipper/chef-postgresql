@@ -7,9 +7,7 @@ databases = Array(node["postgresql"]["databases"])
 extensions = databases.map { |db| db["extensions"] }.flatten.compact
 
 # include `contrib` recipe if there are any extensions to install
-if extensions.any?
-  include_recipe "postgresql::contrib"
-end
+include_recipe "postgresql::contrib" if extensions.any?
 
 # setup databases
 databases.each do |database|
