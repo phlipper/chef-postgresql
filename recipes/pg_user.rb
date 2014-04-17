@@ -11,6 +11,7 @@ node["postgresql"]["users"].each do |user|
       createdb:  user["createdb"],
       login:     user["login"]
     )
-    password user["password"]
+    password           user["password"]
+    encrypted_password user["encrypted_password"]
   end
 end
