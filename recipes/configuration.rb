@@ -17,7 +17,7 @@ template "/etc/postgresql/#{pg_version}/main/environment" do
   owner  "postgres"
   group  "postgres"
   mode   "0644"
-  notifies :restart, "service[postgresql]"
+  notifies node["postgresql"]["cfg_update_action"], "service[postgresql]"
 end
 
 # pg_ctl
@@ -26,7 +26,7 @@ template "/etc/postgresql/#{pg_version}/main/pg_ctl.conf" do
   owner  "postgres"
   group  "postgres"
   mode   "0644"
-  notifies :restart, "service[postgresql]"
+  notifies node["postgresql"]["cfg_update_action"], "service[postgresql]"
 end
 
 # pg_hba
@@ -35,7 +35,7 @@ template node["postgresql"]["hba_file"] do
   owner  "postgres"
   group  "postgres"
   mode   "0640"
-  notifies :restart, "service[postgresql]"
+  notifies node["postgresql"]["cfg_update_action"], "service[postgresql]"
 end
 
 # pg_ident
@@ -44,7 +44,7 @@ template node["postgresql"]["ident_file"] do
   owner  "postgres"
   group  "postgres"
   mode   "0640"
-  notifies :restart, "service[postgresql]"
+  notifies node["postgresql"]["cfg_update_action"], "service[postgresql]"
 end
 
 # postgresql
@@ -54,7 +54,7 @@ template "/etc/postgresql/#{pg_version}/main/postgresql.conf" do
   owner  "postgres"
   group  "postgres"
   mode   "0644"
-  notifies :restart, "service[postgresql]"
+  notifies node["postgresql"]["cfg_update_action"], "service[postgresql]"
 end
 
 # start
@@ -63,5 +63,5 @@ template "/etc/postgresql/#{pg_version}/main/start.conf" do
   owner  "postgres"
   group  "postgres"
   mode   "0644"
-  notifies :restart, "service[postgresql]", :immediately
+  notifies node["postgresql"]["cfg_update_action"], "service[postgresql]", :immediately
 end

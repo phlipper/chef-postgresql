@@ -8,6 +8,7 @@
 #
 
 default["postgresql"]["version"]                         = "9.3"
+default["postgresql"]["cfg_update_action"]               = :restart
 
 #------------------------------------------------------------------------------
 # APT Repository
