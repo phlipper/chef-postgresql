@@ -648,6 +648,8 @@ Many thanks go to the following who have contributed to making this cookbook eve
     * add ability to use an apt keyserver
 * **[@vrischmann](https://github.com/vrischmann)**
     * uncomment `wal_writer_delay` attribute
+* **[@brainopia](https://github.com/brainopia)**
+    * support `encrypted_password` in the `pg_user` recipe
 
 
 ## License
