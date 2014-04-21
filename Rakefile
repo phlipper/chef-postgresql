@@ -1,8 +1,11 @@
 #!/usr/bin/env rake
 
-require "kitchen/rake_tasks"
-Kitchen::RakeTasks.new
-
+begin
+  require "kitchen/rake_tasks"
+  Kitchen::RakeTasks.new
+rescue LoadError
+  puts "Unable to require `kitchen/rake_tasks`"
+end
 
 task default: "test"
 
