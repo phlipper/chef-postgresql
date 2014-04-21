@@ -4,16 +4,13 @@ gemfile:
 rvm:
 - 1.9.3
 - 2.0.0
-- 2.1.0
-before_install:
-- wget -O /tmp/vagrant_1.5.1_x86_64.deb https://dl.bintray.com/mitchellh/vagrant/vagrant_1.5.1_x86_64.deb
-- sudo dpkg -i /tmp/vagrant_1.5.1_x86_64.deb
+- 2.1.1
 script:
 - bundle exec rake
 env:
   matrix:
-  - CHEF_VERSION: 10.30.2
-  - CHEF_VERSION: 11.10.0
+  - CHEF_VERSION: "10.30"
+  - CHEF_VERSION: "11.10"
   global:
   - CI_CLOUD: digitalocean
   - secure: KbG/DwrYxUhxZzmG3X6PD1DCe1PTM+Qrts53omZ1rrufQMFry1gSr/RlDA+bFs5exaBWC+wXc2TJBMHi5JgWXlNg+cj6c4Oq8barN2twzwUCe0OQNjeXO5JLCAeD93ZZIvpXezD0C2TJoobJqGokm/+s5Gzx/gFTjIaJGHsZxlA=
