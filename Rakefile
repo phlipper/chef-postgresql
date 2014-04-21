@@ -35,7 +35,7 @@ task :kitchen do
     exit
   end
   args = ENV["CI"] ? "test --destroy=always" : "verify"
-  sh "bundle exec kitchen #{args} -pl info"
+  sh "bundle exec kitchen #{args}"
 end
 
 desc "Runs RuboCop style checks"
