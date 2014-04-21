@@ -11,7 +11,7 @@ task test: [:knife, :rubocop, :foodcritic, :chefspec, :kitchen]
 
 desc "Runs foodcritic linter"
 task foodcritic: :prepare_sandbox do
-  sh "bundle exec foodcritic #{sandbox_path}"
+  sh "bundle exec foodcritic #{sandbox_path} -f any --tags ~FC015"
 end
 
 desc "Runs knife cookbook test"

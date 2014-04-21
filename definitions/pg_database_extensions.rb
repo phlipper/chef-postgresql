@@ -1,4 +1,4 @@
-define :pg_database_extensions, action: :create do
+define :pg_database_extensions, action: :create do  # ~FC022
 
   dbname = params[:name]
   languages = Array(params[:languages]) # Allow single value or array of values
