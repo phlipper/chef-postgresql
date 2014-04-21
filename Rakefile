@@ -1,8 +1,11 @@
 #!/usr/bin/env rake
 
-require "kitchen/rake_tasks"
-Kitchen::RakeTasks.new
-
+begin
+  require "kitchen/rake_tasks"
+  Kitchen::RakeTasks.new
+rescue LoadError
+  puts "Unable to require `kitchen/rake_tasks`"
+end
 
 task default: "test"
 
@@ -11,7 +14,7 @@ task test: [:knife, :rubocop, :foodcritic, :chefspec, :kitchen]
 
 desc "Runs foodcritic linter"
 task foodcritic: :prepare_sandbox do
-  sh "bundle exec foodcritic #{sandbox_path}"
+  sh "bundle exec foodcritic #{sandbox_path} -f any --tags ~FC015"
 end
 
 desc "Runs knife cookbook test"
@@ -35,7 +38,7 @@ task :kitchen do
     exit
   end
   args = ENV["CI"] ? "test --destroy=always" : "verify"
-  sh "bundle exec kitchen #{args} -pl info"
+  sh "bundle exec kitchen #{args}"
 end
 
 desc "Runs RuboCop style checks"

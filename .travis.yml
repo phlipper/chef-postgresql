@@ -1,6 +1,5 @@
 language: ruby
-gemfile:
-- test/support/Gemfile
+bundler_args: --without integration
 rvm:
 - 1.9.3
 - 2.0.0

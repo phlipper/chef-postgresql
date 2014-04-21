@@ -1,4 +1,4 @@
-define :pg_database_extensions, action: :create do
+define :pg_database_extensions, action: :create do  # ~FC022
 
   dbname = params[:name]
   languages = Array(params[:languages]) # Allow single value or array of values
@@ -17,7 +17,7 @@ define :pg_database_extensions, action: :create do
 
     extensions.each do |extension|
       # quote extension with dashes, like `uuid-ossp`
-      extension = %|"#{extension}"| if extension.match("-")
+      extension = %("#{extension}") if extension.match("-")
 
       execute "create #{extension} extension" do
         command %(psql -c 'CREATE EXTENSION IF NOT EXISTS #{extension}' #{dbname}) # rubocop:disable LineLength
@@ -47,7 +47,7 @@ define :pg_database_extensions, action: :create do
 
     extensions.each do |extension|
       # quote extension with dashes, like `uuid-ossp`
-      extension = %|"#{extension}"| if extension.match("-")
+      extension = %("#{extension}") if extension.match("-")
 
       execute "drop #{extension} extension" do
         command %(psql -c 'DROP EXTENSION IF EXISTS #{extension}' #{dbname})

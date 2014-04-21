@@ -7,5 +7,12 @@ LineLength:
 StringLiterals:
   EnforcedStyle: double_quotes
 
+PercentLiteralDelimiters:
+  PreferredDelimiters:
+    "%w": "[]"  # Arrays use brackets
+
+SingleSpaceBeforeFirstArg:
+  Enabled: false  # too strict about metadata and certain formatting
+
 inherit_from: test/rubocop/enabled.yml
 inherit_from: test/rubocop/disabled.yml
