@@ -99,9 +99,9 @@ Or add users via attributes:
 # create a database
 pg_database "mydb" do
   owner "myuser"
-  encoding "utf8"
+  encoding "UTF-8"
   template "template0"
-  locale "en_US.UTF8"
+  locale "en_US.UTF-8"
 end
 
 # install extensions to database
@@ -132,8 +132,8 @@ Or add the database via attributes:
       "name": "my_db",
       "owner": "dickeyxxx",
       "template": "template0",
-      "encoding": "utf8",
-      "locale": "en_US.UTF8",
+      "encoding": "UTF-8",
+      "locale": "en_US.UTF-8",
       "extensions": "hstore"
     }
   ]
