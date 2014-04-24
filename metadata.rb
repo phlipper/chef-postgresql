@@ -27,3 +27,4 @@ supports "ubuntu"
 supports "debian"
 
 depends "apt", ">= 1.9.0"
+suggests "minitest-handler"

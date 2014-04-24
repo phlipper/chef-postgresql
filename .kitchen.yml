@@ -26,6 +26,7 @@ suites:
       - recipe[postgresql::doc]
       - recipe[postgresql::libpq]
       - recipe[postgresql::server_dev]
+      - recipe[minitest-handler]
     attributes:
       postgresql:
         users:
