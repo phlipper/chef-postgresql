@@ -5,7 +5,11 @@ rvm:
 - 2.0.0
 - 2.1.1
 script:
-- bundle exec rake
+- bundle exec rake knife
+- bundle exec rake rubocop
+- bundle exec rake foodcritic
+- bundle exec rake chefspec
+- bundle exec rake kitchen
 env:
   matrix:
   - CHEF_VERSION: "10.30"
