@@ -650,6 +650,8 @@ Many thanks go to the following who have contributed to making this cookbook eve
     * uncomment `wal_writer_delay` attribute
 * **[@brainopia](https://github.com/brainopia)**
     * support `encrypted_password` in the `pg_user` recipe
+* **[@tpitale](https://github.com/tpitale)**
+    * update example encoding/locales in README to fix error
 
 
 ## License
