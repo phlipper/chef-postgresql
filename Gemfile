@@ -1,6 +1,6 @@
 source "https://rubygems.org"
 
-chef_version = ENV.fetch("CHEF_VERSION", "11.10.0")
+chef_version = ENV.fetch("CHEF_VERSION", "11.10")
 
 gem "chef", "~> #{chef_version}"
 gem "chefspec", "~> 3.4" if chef_version =~ /^11/
