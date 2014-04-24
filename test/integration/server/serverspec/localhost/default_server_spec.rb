@@ -18,15 +18,18 @@ describe "PostgreSQL `apt` setup" do
 end
 
 describe "Package installation" do
-  it { expect(package "postgresql-common").to be_installed }
-  it { expect(package "postgresql-9.3").to be_installed }
-  it { expect(package "postgresql-client-9.3").to be_installed }
-  it { expect(package "postgresql-contrib-9.3").to be_installed }
-  it { expect(package "postgresql-9.3-dbg").to be_installed }
-  it { expect(package "postgresql-doc-9.3").to be_installed }
-  it { expect(package "libpq5").to be_installed }
-  it { expect(package "libpq-dev").to be_installed }
-  it { expect(package "postgresql-server-dev-9.3").to be_installed }
+  version = "9.3"
+  packages = %w[
+    postgresql-common postgresql-%s postgresql-client-%s postgresql-contrib-%s
+    postgresql-%s-dbg postgresql-doc-%s libpq5 libpq-dev
+    postgresql-server-dev-%s
+  ].map { |pkg| pkg % version }
+
+  packages.each do |pkg|
+    it "installed the `#{pkg}` package" do
+      expect(package pkg).to be_installed
+    end
+  end
 end
 
 describe "PostgreSQL server installation" do
