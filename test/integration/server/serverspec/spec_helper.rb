@@ -10,16 +10,6 @@ RSpec.configure do |c|
   end
 end
 
-module SpecInfra
-  module Command
-    class Debian < Linux
-      def check_running(service)
-        "pgrep #{escape(service)} | grep -E '[0-9]+'"
-      end
-    end
-  end
-end
-
 def database_role_exists?(role)
   cmd = "sudo -u postgres "
   cmd << %(psql -c "SELECT rolname FROM pg_roles WHERE rolname='#{role}'")
