@@ -196,6 +196,14 @@ distribution:
 # order to re-compute the paths with the correct version number.
 default["postgresql"]["version"]                         = "9.3"
 
+# control how the postgres service is signaled when configuration files are
+# updated. by default the service is told to `:restart` (stop, start). if you
+# run high availability installation and do not want the service to restart via
+# chef you can change this to `:reload`. the caveat is that you will need to
+# manually restart the postgres server if you change a setting that requires
+# a full restart.
+default["postgresql"]["cfg_update_action"]               = :restart
+
 #----------------------------------------------------------------------------
 # APT Repository
 #----------------------------------------------------------------------------
