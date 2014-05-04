@@ -18,6 +18,8 @@ define :pg_user, action: :create do
                   " ENCRYPTED PASSWORD '#{params[:encrypted_password]}'"
                 elsif params[:password]
                   " PASSWORD '#{params[:password]}'"
+                else
+                  ""
                 end
 
     role_exists = %(psql -c "SELECT rolname FROM pg_roles WHERE rolname='#{role_name}'" | grep #{role_name}) # rubocop:disable LineLength
