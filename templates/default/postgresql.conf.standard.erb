@@ -331,11 +331,11 @@ logging_collector = <%= node["postgresql"]["logging_collector"] %>    # Enable c
           # (change requires restart)
 
 # These are only used if logging_collector is on:
-#log_directory = '<%= node["postgresql"]["log_directory"] %>'   # directory where log files are written,
+log_directory = '<%= node["postgresql"]["log_directory"] %>'   # directory where log files are written,
           # can be absolute or relative to PGDATA
 #log_filename = '<%= node["postgresql"]["log_filename"] %>'  # log file name pattern,
           # can include strftime() escapes
-#log_file_mode = <%= node["postgresql"]["log_file_mode"] %>     # creation mode for log files,
+log_file_mode = <%= node["postgresql"]["log_file_mode"] %>     # creation mode for log files,
           # begin with 0 to use octal notation
 #log_truncate_on_rotation = <%= node["postgresql"]["log_truncate_on_rotation"] %>   # If on, an existing log file with the
           # same name as the new log file will be
