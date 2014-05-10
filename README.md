@@ -657,6 +657,8 @@ Many thanks go to the following who have contributed to making this cookbook eve
     * uncomment various configuration settings
 * **[@RichardWigley](https://github.com/RichardWigley)**
     * fix empty password causes exception
+* **[@phumpal](https://github.com/phumpal)**
+    * update `default["postgresql"]["apt_key"]` to new location
 
 
 ## License
