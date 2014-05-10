@@ -667,6 +667,8 @@ Many thanks go to the following who have contributed to making this cookbook eve
     * fix empty password causes exception
 * **[@phumpal](https://github.com/phumpal)**
     * update `default["postgresql"]["apt_key"]` to new location
+* **[@mjallday](https://github.com/mjallday)**
+    * allow controlling how to restart postgres
 
 
 ## License
