@@ -64,7 +64,7 @@ describe "postgresql::configuration" do
       mode:   "0640"
     )
     expect(chef_run.template(pg_hba_template)).to(
-      notify("service[postgresql]").to(:restart)
+      notify("service[postgresql]").to(:reload)
     )
   end
 
@@ -78,7 +78,7 @@ describe "postgresql::configuration" do
       mode:   "0640"
     )
     expect(chef_run.template(pg_ident_template)).to(
-      notify("service[postgresql]").to(:restart)
+      notify("service[postgresql]").to(:reload)
     )
   end
 
