@@ -59,7 +59,7 @@ template "/etc/postgresql/#{pg_version}/main/postgresql.conf" do
 end
 
 # start
-template "/etc/postgresql/#{pg_version}/main/start.conf" do
+template "/etc/postgresql/#{pg_version}/main/start.conf" do # ~FC037 variable ok
   source "start.conf.erb"
   owner  "postgres"
   group  "postgres"
