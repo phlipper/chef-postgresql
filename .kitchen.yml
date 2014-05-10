@@ -14,6 +14,7 @@ platforms:
     attributes:
       postgresql:
         apt_distribution: precise
+  - name: ubuntu-14.04
 
 
 suites:
