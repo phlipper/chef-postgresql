@@ -4,7 +4,7 @@ maintainer_email "github@phlippers.net"
 license          "MIT"
 description      "Installs PostgreSQL, The world's most advanced open source database."
 long_description IO.read(File.join(File.dirname(__FILE__), "README.md"))
-version          "0.13.3"
+version          "0.14.0"
 
 recipe "postgresql",                   "Set up the apt repository and install dependent packages"
 recipe "postgresql::apt_repository",   "Internal recipe to setup the apt repository"
