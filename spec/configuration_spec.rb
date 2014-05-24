@@ -2,9 +2,10 @@ require "spec_helper"
 
 describe "postgresql::configuration" do
   let(:chef_run) do
-    ChefSpec::Runner.new{ |node|
+    ChefSpec::Runner.new do |node|
       node.set["postgresql"]["version"] = "9.3"
-    }.converge("recipe[postgresql::service]", described_recipe)
+      node.set["postgresql"]["conf"] = { "foo" => "bar" }
+    end.converge("recipe[postgresql::service]", described_recipe)
   end
 
   let(:template_paths) do
@@ -88,39 +89,58 @@ describe "postgresql::configuration" do
         postgresql_template = template_paths["postgresql.conf"]
 
         expect(chef_run).to create_template(postgresql_template).with(
-          source: "postgresql.conf.standard.erb",
+          source: "postgresql.conf.erb",
           owner:  "postgres",
           group:  "postgres",
           mode:   "0644"
         )
+
+        expect(chef_run).to(
+          render_file(postgresql_template).with_content(
+            /^# PostgreSQL configuration file/
+          )
+        )
+
+        expect(chef_run).to(
+          render_file(postgresql_template).with_content(/foo = 'bar'/)
+        )
+
         expect(chef_run.template(postgresql_template)).to(
           notify("service[postgresql]").to(:restart)
         )
       end
-    end
 
-    context "using the `custom` template" do
-      let(:chef_run) do
-        ChefSpec::Runner.new{ |node|
-          node.set["postgresql"]["version"] = "9.3"
-          node.set["postgresql"]["conf"] = { "foo" => "bar" }
-        }.converge("recipe[postgresql::service]", described_recipe)
-      end
+      context "using the `conf_custom` attribute" do
+        let(:chef_run) do
+          ChefSpec::Runner.new do |node|
+            node.set["postgresql"]["conf"] = { "foo" => "bar" }
+            node.set["postgresql"]["conf_custom"] = true
+          end.converge("recipe[postgresql::service]", described_recipe)
+        end
 
-      it "creates the file" do
-        postgresql_template = template_paths["postgresql.conf"]
-        tmpl = chef_run.template(postgresql_template)
+        it "creates the file" do
+          postgresql_template = template_paths["postgresql.conf"]
 
-        expect(chef_run).to create_template(postgresql_template).with(
-          source: "postgresql.conf.custom.erb",
-          owner:  "postgres",
-          group:  "postgres",
-          mode:   "0644"
-        )
-        expect(chef_run).to(
-          render_file(postgresql_template).with_content(%|foo = 'bar'|)
-        )
-        expect(tmpl).to notify("service[postgresql]").to(:restart)
+          expect(chef_run).to create_file(postgresql_template).with(
+            owner:  "postgres",
+            group:  "postgres",
+            mode:   "0644"
+          )
+
+          expect(chef_run).to_not(
+            render_file(postgresql_template).with_content(
+              /^# PostgreSQL configuration file/
+            )
+          )
+
+          expect(chef_run).to(
+            render_file(postgresql_template).with_content("foo = 'bar'")
+          )
+
+          expect(chef_run.file(postgresql_template)).to(
+            notify("service[postgresql]").to(:restart)
+          )
+        end
       end
     end
   end
@@ -134,6 +154,7 @@ describe "postgresql::configuration" do
       group:  "postgres",
       mode:   "0644"
     )
+
     expect(chef_run.template(start_template)).to(
       notify("service[postgresql]").to(:restart).immediately
     )

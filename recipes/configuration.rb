@@ -49,13 +49,22 @@ template node["postgresql"]["ident_file"] do
 end
 
 # postgresql
-pg_template_source = node["postgresql"]["conf"].any? ? "custom" : "standard"
-template "/etc/postgresql/#{pg_version}/main/postgresql.conf" do
-  source "postgresql.conf.#{pg_template_source}.erb"
-  owner  "postgres"
-  group  "postgres"
-  mode   "0644"
-  notifies restart_action, "service[postgresql]"
+if node["postgresql"]["conf_custom"]
+  file "/etc/postgresql/#{pg_version}/main/postgresql.conf" do
+    content node["postgresql"]["conf"].map { |k, v| "#{k} = '#{v}'" }.join("\n")
+    owner  "postgres"
+    group  "postgres"
+    mode   "0644"
+    notifies restart_action, "service[postgresql]"
+  end
+else
+  template "/etc/postgresql/#{pg_version}/main/postgresql.conf" do
+    source "postgresql.conf.erb"
+    owner  "postgres"
+    group  "postgres"
+    mode   "0644"
+    notifies restart_action, "service[postgresql]"
+  end
 end
 
 # start
