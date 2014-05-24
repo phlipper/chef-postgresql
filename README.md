@@ -663,6 +663,7 @@ Many thanks go to the following who have contributed to making this cookbook eve
     * update example encoding/locales in README to fix error
 * **[@seamusabshere](https://github.com/seamusabshere)**
     * uncomment various configuration settings
+    * uncomment more configuration settings
 * **[@RichardWigley](https://github.com/RichardWigley)**
     * fix empty password causes exception
 * **[@phumpal](https://github.com/phumpal)**
