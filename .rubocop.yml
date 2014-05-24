@@ -1,8 +1,8 @@
 LineLength:
   Max: 80
   Exclude:
-    - "*/attributes/default.rb"
-    - metadata.rb
+    - "**/attributes/*.rb"
+    - "**/metadata.rb"
 
 StringLiterals:
   EnforcedStyle: double_quotes
