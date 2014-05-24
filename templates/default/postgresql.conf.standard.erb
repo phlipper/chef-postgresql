@@ -424,11 +424,27 @@ log_min_duration_statement = <%= node["postgresql"]["log_min_duration_statement"
 #debug_print_rewritten = <%= node["postgresql"]["debug_print_rewritten"] %>
 #debug_print_plan = <%= node["postgresql"]["debug_print_plan"] %>
 #debug_pretty_print = <%= node["postgresql"]["debug_pretty_print"] %>
-#log_checkpoints = <%= node["postgresql"]["log_checkpoints"] %>
-#log_connections = <%= node["postgresql"]["log_connections"] %>
-#log_disconnections = <%= node["postgresql"]["log_disconnections"] %>
-#log_duration = <%= node["postgresql"]["log_duration"] %>
-#log_error_verbosity = <%= node["postgresql"]["log_error_verbosity"] %>    # terse, default, or verbose messages
+
+<%- if node["postgresql"]["log_checkpoints"] %>
+log_checkpoints = <%= node["postgresql"]["log_checkpoints"] %>
+<%- end %>
+
+<%- if node["postgresql"]["log_connections"] %>
+log_connections = <%= node["postgresql"]["log_connections"] %>
+<%- end %>
+
+<%- if node["postgresql"]["log_disconnections"] %>
+log_disconnections = <%= node["postgresql"]["log_disconnections"] %>
+<%- end %>
+
+<%- if node["postgresql"]["log_duration"] %>
+log_duration = <%= node["postgresql"]["log_duration"] %>
+<%- end %>
+
+<%- if node["postgresql"]["log_error_verbosity"] %>
+log_error_verbosity = <%= node["postgresql"]["log_error_verbosity"] %>    # terse, default, or verbose messages
+<%- end %>
+
 #log_hostname = <%= node["postgresql"]["log_hostname"] %>
 log_line_prefix = '<%= node["postgresql"]["log_line_prefix"] %>'     # special values:
           #   %a = application name
@@ -450,11 +466,18 @@ log_line_prefix = '<%= node["postgresql"]["log_line_prefix"] %>'     # special v
           #        processes
           #   %% = '%'
           # e.g. '[%u%%%d] '
-#log_lock_waits = <%= node["postgresql"]["log_lock_waits"] %>     # log lock waits >= deadlock_timeout
+<%- if node["postgresql"]["log_lock_waits"] %>
+log_lock_waits = <%= node["postgresql"]["log_lock_waits"] %>     # log lock waits >= deadlock_timeout
+<%- end %>
+
 #log_statement = '<%= node["postgresql"]["log_statement"] %>'     # none, ddl, mod, all
-#log_temp_files = <%= node["postgresql"]["log_temp_files"] %>      # log temporary files equal or larger
+
+<%- if node["postgresql"]["log_temp_files"] %>
+log_temp_files = <%= node["postgresql"]["log_temp_files"] %>      # log temporary files equal or larger
           # than the specified size in kilobytes;
           # -1 disables, 0 logs all temp files
+<%- end %>
+
 #log_timezone = '<%= node["postgresql"]["log_timezone"] %>'
 
 
@@ -486,10 +509,13 @@ log_line_prefix = '<%= node["postgresql"]["log_line_prefix"] %>'     # special v
 
 #autovacuum = <%= node["postgresql"]["autovacuum"] %>      # Enable autovacuum subprocess?  'on'
           # requires track_counts to also be on.
-#log_autovacuum_min_duration = <%= node["postgresql"]["log_autovacuum_min_duration"] %> # -1 disables, 0 logs all actions and
+<%- if node["postgresql"]["log_autovacuum_min_duration"] %>
+log_autovacuum_min_duration = <%= node["postgresql"]["log_autovacuum_min_duration"] %> # -1 disables, 0 logs all actions and
           # their durations, > 0 logs only
           # actions running at least this number
           # of milliseconds.
+<%- end %>
+
 #autovacuum_max_workers = <%= node["postgresql"]["autovacuum_max_workers"] %>   # max number of autovacuum subprocesses
           # (change requires restart)
 #autovacuum_naptime = <%= node["postgresql"]["autovacuum_naptime"] %>    # time between autovacuum runs
