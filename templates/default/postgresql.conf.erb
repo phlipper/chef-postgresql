@@ -120,7 +120,9 @@ ssl_key_file = '<%= node["postgresql"]["ssl_key_file"] %>'   # (change requires 
 
 shared_buffers = <%= node["postgresql"]["shared_buffers"] %>     # min 128kB
           # (change requires restart)
-#temp_buffers = <%= node["postgresql"]["temp_buffers"] %>     # min 800kB
+<%- if node["postgresql"]["temp_buffers"] %>
+temp_buffers = <%= node["postgresql"]["temp_buffers"] %>     # min 800kB
+<%- end %>
 <%- if node["postgresql"]["max_prepared_transactions"] %>
 max_prepared_transactions = <%= node["postgresql"]["max_prepared_transactions"] %>    # zero disables the feature
 <%- end%>
@@ -194,7 +196,9 @@ wal_buffers = <%= node["postgresql"]["wal_buffers"] %>     # min 32kB, -1 sets b
           # (change requires restart)
 wal_writer_delay = <%= node["postgresql"]["wal_writer_delay"] %>   # 1-10000 milliseconds
 
-#commit_delay = <%= node["postgresql"]["commit_delay"] %>     # range 0-100000, in microseconds
+<%- if node["postgresql"]["commit_delay"] %>
+commit_delay = <%= node["postgresql"]["commit_delay"] %>     # range 0-100000, in microseconds
+<%- end %>
 #commit_siblings = <%= node["postgresql"]["commit_siblings"] %>      # range 1-1000
 
 # - Checkpoints -
