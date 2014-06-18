@@ -15,7 +15,7 @@ define :pg_database, action: :create do
 
   db_name = params[:name]
 
-  db_exists = %(psql -c "SELECT datname from pg_database WHERE datname='#{db_name}'") # rubocop:disable LineLength
+  db_exists = %(psql -c "SELECT datname from pg_database WHERE datname='#{db_name}'" postgres) # rubocop:disable LineLength
   db_exists << " --host #{defaults[:host]}" if defaults[:host]
   db_exists << " --port #{defaults[:port]}" if defaults[:port]
   db_exists << " | grep #{db_name}"
