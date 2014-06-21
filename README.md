@@ -674,6 +674,8 @@ Many thanks go to the following who have contributed to making this cookbook eve
     * allow controlling how to restart postgres
 * **[@cgunther](https://github.com/cgunther)**
     * uncomment `log_filename` attribute
+* **[@rosenfeld](https://github.com/rosenfeld)**
+    * ensure proper database is selected in `pg_database` definition
 
 
 ## License
