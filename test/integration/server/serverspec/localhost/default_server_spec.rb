@@ -1,8 +1,13 @@
 require "spec_helper"
 
 describe "PostgreSQL `apt` setup" do
-  let(:apt_src){ "/etc/apt/sources.list.d/apt.postgresql.org.list" }
-  let(:apt_pref){ "/etc/apt/preferences.d/pgdg.pref" }
+  let(:apt_src) do
+    "/etc/apt/sources.list.d/apt.postgresql.org.list"
+  end
+
+  let(:apt_pref) do
+    "/etc/apt/preferences.d/pgdg.pref"
+  end
 
   it "set up default apt preferences" do
     expect(file apt_pref).to be_file
@@ -33,7 +38,10 @@ describe "Package installation" do
 end
 
 describe "PostgreSQL server installation" do
-  let(:config_path){ "/etc/postgresql/9.3/main" }
+  let(:config_path) do
+    "/etc/postgresql/9.3/main"
+  end
+
   let(:hba_contents) do
     "local   all             postgres                                peer"
   end

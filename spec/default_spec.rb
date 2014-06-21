@@ -17,7 +17,6 @@ describe "postgresql::default" do
     expect(chef_run).to_not include_recipe("postgresql::debian_backports")
   end
 
-
   # debian family setup
   context "using debian platform" do
     let(:chef_run) do
