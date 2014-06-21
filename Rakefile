@@ -21,7 +21,7 @@ begin
     t.rspec_opts = "--color --format progress"
   end
 rescue LoadError
-  puts "Unable to run `chefspec`"
+  task(:chefspec) { puts "Unable to run `chefspec`" }
 end
 
 # test-kitchen integration tests
@@ -29,5 +29,5 @@ begin
   require "kitchen/rake_tasks"
   Kitchen::RakeTasks.new
 rescue LoadError
-  puts "Unable to run `test-kitchen`"
+  task("kitchen:all") { puts "Unable to run `test-kitchen`" }
 end
