@@ -671,6 +671,8 @@ Many thanks go to the following who have contributed to making this cookbook eve
     * update `default["postgresql"]["apt_key"]` to new location
 * **[@mjallday](https://github.com/mjallday)**
     * allow controlling how to restart postgres
+* **[@cgunther](https://github.com/cgunther)**
+    * uncomment `log_filename` attribute
 
 
 ## License
