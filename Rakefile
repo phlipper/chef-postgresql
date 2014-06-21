@@ -1,64 +1,33 @@
-#!/usr/bin/env rake
+desc "Run all tests except `kitchen`"
+task test: [:rubocop, :foodcritic, :chefspec]
 
+desc "Run all tests"
+task all_tests: [:rubocop, :foodcritic, :chefspec, "kitchen:all"]
+
+# rubocop style checker
+require "rubocop/rake_task"
+RuboCop::RakeTask.new
+
+# foodcritic chef lint
+require "foodcritic"
+FoodCritic::Rake::LintTask.new do |t|
+  t.options = { fail_tags: ["any"], tags: ["~FC015"] }
+end
+
+# chefspec unit tests
+begin
+  require "rspec/core/rake_task"
+  RSpec::Core::RakeTask.new(:chefspec) do |t|
+    t.rspec_opts = "--color --format progress"
+  end
+rescue LoadError
+  task(:chefspec) { puts "Unable to run `chefspec`" }
+end
+
+# test-kitchen integration tests
 begin
   require "kitchen/rake_tasks"
   Kitchen::RakeTasks.new
 rescue LoadError
-  puts "Unable to require `kitchen/rake_tasks`"
-end
-
-task default: "test"
-
-desc "Runs all tests"
-task test: [:knife, :rubocop, :foodcritic, :chefspec, :kitchen]
-
-desc "Runs foodcritic linter"
-task foodcritic: :prepare_sandbox do
-  sh "bundle exec foodcritic #{sandbox_path} -f any --tags ~FC015"
-end
-
-desc "Runs knife cookbook test"
-task knife: :prepare_sandbox do
-  sh "bundle exec knife cookbook test cookbook -c test/.chef/knife.rb -o #{sandbox_path}/../"
-end
-
-desc "Runs specs with chefspec"
-task chefspec: :prepare_sandbox do
-  if Bundler.rubygems.find_name("chef").first.version < Gem::Version.new(11)
-    puts "Skipping `chefspec` due to older Chef version"
-  else
-    sh "bundle exec rspec --color"
-  end
-end
-
-desc "Runs integration tests with test kitchen"
-task :kitchen do
-  if ENV["CI"]
-    puts "Skipping Kitchen tests for now due to CI environment..."
-    exit
-  end
-  args = ENV["CI"] ? "test --destroy=always" : "verify"
-  sh "bundle exec kitchen #{args}"
-end
-
-desc "Runs RuboCop style checks"
-task rubocop: :prepare_sandbox do
-  sh "bundle exec rubocop #{sandbox_path}"
-end
-
-task :prepare_sandbox do
-  files = %w[
-    *.md *.rb attributes definitions libraries files providers recipes
-    resources templates
-  ]
-
-  rm_rf sandbox_path
-  mkdir_p sandbox_path
-  cp_r Dir.glob("{#{files.join(",")}}"), sandbox_path
-end
-
-private
-
-def sandbox_path
-  File.join(File.dirname(__FILE__), %w[tmp cookbooks cookbook])
+  task("kitchen:all") { puts "Unable to run `test-kitchen`" }
 end

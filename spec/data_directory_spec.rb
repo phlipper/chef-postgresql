@@ -2,14 +2,15 @@ require "spec_helper"
 
 describe "postgresql::data_directory" do
   let(:chef_run) do
-    ChefSpec::Runner.new{ |node|
+    ChefSpec::Runner.new do |node|
       node.set["postgresql"]["version"] = "9.3"
-    }.converge(described_recipe)
+    end.converge(described_recipe)
   end
 
   context "the data directory does not already exist" do
     before do
-      stub_command("test -f /var/lib/postgresql/9.3/main/PG_VERSION").and_return(false)
+      stub_command("test -f /var/lib/postgresql/9.3/main/PG_VERSION")
+        .and_return(false)
     end
 
     it "creates the data directory" do
@@ -28,7 +29,8 @@ describe "postgresql::data_directory" do
 
   context "the data directory already exists" do
     before do
-      stub_command("test -f /var/lib/postgresql/9.3/main/PG_VERSION").and_return(true)
+      stub_command("test -f /var/lib/postgresql/9.3/main/PG_VERSION")
+        .and_return(true)
     end
 
     it "creates the data directory" do
