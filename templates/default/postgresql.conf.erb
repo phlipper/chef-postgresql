@@ -294,8 +294,12 @@ hot_standby_feedback = <%= node["postgresql"]["hot_standby_feedback"] %>   # sen
 
 # - Planner Cost Constants -
 
-#seq_page_cost = <%= node["postgresql"]["seq_page_cost"] %>      # measured on an arbitrary scale
-#random_page_cost = <%= node["postgresql"]["random_page_cost"] %>     # same scale as above
+<%- if node["postgresql"]["seq_page_cost"] %>
+seq_page_cost = <%= node["postgresql"]["seq_page_cost"] %>      # measured on an arbitrary scale
+<%- end %>
+<%- if node["postgresql"]["random_page_cost"] %>
+random_page_cost = <%= node["postgresql"]["random_page_cost"] %>     # same scale as above
+<%- end %>
 #cpu_tuple_cost = <%= node["postgresql"]["cpu_tuple_cost"] %>      # same scale as above
 #cpu_index_tuple_cost = <%= node["postgresql"]["cpu_index_tuple_cost"] %>   # same scale as above
 #cpu_operator_cost = <%= node["postgresql"]["cpu_operator_cost"] %>   # same scale as above
