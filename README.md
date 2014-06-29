@@ -666,6 +666,7 @@ Many thanks go to the following who have contributed to making this cookbook eve
     * uncomment various configuration settings
     * uncomment more configuration settings
     * uncomment `commit_delay` and `temp_buffers` settings
+    * uncomment `random_page_cost` and `seq_page_cost` settings
 * **[@RichardWigley](https://github.com/RichardWigley)**
     * fix empty password causes exception
 * **[@phumpal](https://github.com/phumpal)**
