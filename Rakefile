@@ -1,3 +1,5 @@
+task default: :test
+
 desc "Run all tests except `kitchen`"
 task test: [:rubocop, :foodcritic, :chefspec]
 
