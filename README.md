@@ -99,7 +99,7 @@ Or add users via attributes:
 
 ```ruby
 # create a database
-pg_database "mydb" do
+postgresql_database "mydb" do
   owner "myuser"
   encoding "UTF-8"
   template "template0"
@@ -120,7 +120,7 @@ pg_database_extensions "mydb" do
 end
 
 # drop a database
-pg_database "mydb" do
+postgresql_database "mydb" do
   action :drop
 end
 ```

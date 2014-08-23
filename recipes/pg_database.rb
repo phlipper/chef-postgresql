@@ -11,7 +11,7 @@ include_recipe "postgresql::contrib" if extensions.any?
 
 # setup databases
 databases.each do |database|
-  pg_database database["name"] do
+  postgresql_database database["name"] do
     owner database["owner"]
     encoding database["encoding"]
     template database["template"]
