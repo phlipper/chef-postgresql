@@ -107,16 +107,18 @@ postgresql_database "mydb" do
 end
 
 # install extensions to database
-pg_database_extensions "mydb" do
-  languages "plpgsql"              # install `plpgsql` language - single value may be passed without array
-  extensions ["hstore", "dblink"]  # install `hstore` and `dblink` extensions - multiple values in array
-  postgis true                     # install `postgis` support
+postgresql_extension "hstore" do
+  database "mydb"
+end
+
+postgresql_language "plpgsql" do
+  database "mydb"
 end
 
 # drop dblink extension
-pg_database_extensions "mydb" do
+postgresql_extension "dblink" do
+  database "mydb"
   action :drop
-  extensions "dblink"
 end
 
 # drop a database
@@ -136,7 +138,8 @@ Or add the database via attributes:
       "template": "template0",
       "encoding": "UTF-8",
       "locale": "en_US.UTF-8",
-      "extensions": "hstore"
+      "extensions": ["hstore", "dblink"],
+      "postgis": true
     }
   ]
 }

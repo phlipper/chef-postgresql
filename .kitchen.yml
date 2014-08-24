@@ -45,3 +45,5 @@ suites:
               - hstore
               - dblink
               - uuid-ossp
+            languages:
+              - plpgsql
