@@ -10,6 +10,7 @@ RSpec.configure do |config|
   config.platform = "ubuntu"
   config.version = "12.04"
   config.log_level = :error
+  config.raise_errors_for_deprecations!
 end
 
 def add_apt_repository(resource_name)
