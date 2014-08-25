@@ -1,5 +1,4 @@
 begin
-  require "rspec/expectations"
   require "chefspec"
   require "chefspec/berkshelf"
 rescue LoadError

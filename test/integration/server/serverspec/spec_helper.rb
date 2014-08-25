@@ -19,7 +19,7 @@ def database_role_exists?(role)
 end
 
 def database_exists?(database)
-  expect(command %(sudo -u postgres psql -l | grep #{database})).to be_true
+  expect(command %(sudo -u postgres psql -l | grep #{database})).to be_truthy
 end
 
 def database_extension_exists?(database, extension)
