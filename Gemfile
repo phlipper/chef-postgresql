@@ -14,6 +14,7 @@ gem "serverspec", "~> 2.0.0.beta"
 group :integration do
   gem "busser-serverspec", "~> 0.2.6"
   gem "guard-rspec", "~> 4.3.1"
+  gem "guard-rubocop", "~> 1.1.0"
   gem "kitchen-digitalocean", "~> 0.7.0"
   gem "kitchen-ec2", "~> 0.8.0"
   gem "kitchen-vagrant", "~> 0.15.0"
