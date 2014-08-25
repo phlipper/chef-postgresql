@@ -21,7 +21,7 @@ action :create do
       createdb << " -O #{new_resource.owner}" if new_resource.owner
       createdb << " #{new_resource.name}"
 
-      execute %(create postgresql database '#{new_resource.name}') do
+      execute %(create postgresql database #{new_resource.name}) do
         user "postgres"
         command createdb
       end
@@ -40,7 +40,7 @@ action :drop do
       dropdb << " --port #{new_resource.port}" if new_resource.port
       dropdb << " #{new_resource.name}"
 
-      execute %(drop postgresql database '#{new_resource.name}') do
+      execute %(drop postgresql database #{new_resource.name}) do
         user "postgres"
         command dropdb
       end
