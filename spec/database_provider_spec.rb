@@ -7,7 +7,7 @@ describe "postgresql_database" do
         { name: "foo-db" },
         { name: "bar-db", action: "drop" }
       ]
-    end.converge("postgresql::pg_database")
+    end.converge("postgresql::setup_databases")
   end
 
   describe "create" do

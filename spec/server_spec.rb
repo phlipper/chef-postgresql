@@ -44,7 +44,8 @@ describe "postgresql::server" do
     expect(chef_run).to include_recipe("postgresql::data_directory")
     expect(chef_run).to include_recipe("postgresql::configuration")
     expect(chef_run).to include_recipe("postgresql::service")
+
     expect(chef_run).to include_recipe("postgresql::setup_users")
-    expect(chef_run).to include_recipe("postgresql::pg_database")
+    expect(chef_run).to include_recipe("postgresql::setup_databases")
   end
 end

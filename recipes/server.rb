@@ -28,4 +28,4 @@ include_recipe "postgresql::service"
 include_recipe "postgresql::setup_users"
 
 # setup databases
-include_recipe "postgresql::pg_database"
+include_recipe "postgresql::setup_databases"
