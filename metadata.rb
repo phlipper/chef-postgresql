@@ -22,6 +22,7 @@ recipe "postgresql::server_dev",       "Development files for PostgreSQL server-
 recipe "postgresql::service",          "Internal recipe to declare the system service"
 recipe "postgresql::setup_databases",  "Internal recipe to manage specified databases"
 recipe "postgresql::setup_extensions", "Internal recipe to manage specified database extensions"
+recipe "postgresql::setup_languages",  "Internal recipe to manage specified database languages"
 recipe "postgresql::setup_users",      "Internal recipe to manage specified users"
 
 supports "ubuntu"

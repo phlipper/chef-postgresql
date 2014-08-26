@@ -32,3 +32,6 @@ include_recipe "postgresql::setup_databases"
 
 # setup extensions
 include_recipe "postgresql::setup_extensions"
+
+# setup languages
+include_recipe "postgresql::setup_languages"
