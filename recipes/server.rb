@@ -25,7 +25,7 @@ include_recipe "postgresql::configuration"
 include_recipe "postgresql::service"
 
 # setup users
-include_recipe "postgresql::pg_user"
+include_recipe "postgresql::setup_users"
 
 # setup databases
 include_recipe "postgresql::pg_database"

@@ -8,7 +8,7 @@ describe "postgresql_user" do
         { username: "test2", password: "foo", action: %w[create update] },
         { username: "test3", action: :drop }
       ]
-    end.converge("postgresql::pg_user")
+    end.converge("postgresql::setup_users")
   end
 
   describe "create" do

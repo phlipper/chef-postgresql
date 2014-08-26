@@ -1,6 +1,6 @@
 require "spec_helper"
 
-describe "postgresql::pg_user" do
+describe "postgresql::setup_users" do
   let(:chef_run) do
     ChefSpec::Runner.new(step_into: ["postgresql_user"]) do |node|
       node.set["postgresql"]["users"] = [

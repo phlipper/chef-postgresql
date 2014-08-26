@@ -1,6 +1,6 @@
 #
 # Cookbook Name:: postgresql
-# Recipe:: pg_user
+# Recipe:: setup_users
 #
 
 # setup users

@@ -17,11 +17,11 @@ recipe "postgresql::debian_backports", "Internal recipe to manage debian backpor
 recipe "postgresql::doc",              "Documentation for the PostgreSQL database management system"
 recipe "postgresql::libpq",            "PostgreSQL C client library and header files for libpq5 (PostgreSQL library)"
 recipe "postgresql::pg_database",      "Internal recipe to manage specified databases"
-recipe "postgresql::pg_user",          "Internal recipe to manage specified users"
 recipe "postgresql::postgis",          "Geographic objects support for PostgreSQL 9.x"
 recipe "postgresql::server",           "Object-relational SQL database, version 9.x server"
 recipe "postgresql::server_dev",       "Development files for PostgreSQL server-side programming"
 recipe "postgresql::service",          "Internal recipe to declare the system service"
+recipe "postgresql::setup_users",      "Internal recipe to manage specified users"
 
 supports "ubuntu"
 supports "debian"
