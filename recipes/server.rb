@@ -29,3 +29,6 @@ include_recipe "postgresql::setup_users"
 
 # setup databases
 include_recipe "postgresql::setup_databases"
+
+# setup extensions
+include_recipe "postgresql::setup_extensions"

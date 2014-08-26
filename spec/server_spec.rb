@@ -47,5 +47,6 @@ describe "postgresql::server" do
 
     expect(chef_run).to include_recipe("postgresql::setup_users")
     expect(chef_run).to include_recipe("postgresql::setup_databases")
+    expect(chef_run).to include_recipe("postgresql::setup_extensions")
   end
 end

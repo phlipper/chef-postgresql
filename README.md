@@ -570,6 +570,7 @@ default["postgresql"]["restart_after_crash"]             = "on"
 
 default["postgresql"]["users"]                           = []
 default["postgresql"]["databases"]                       = []
+default["postgresql"]["extensions"]                      = []
 
 
 #------------------------------------------------------------------------------

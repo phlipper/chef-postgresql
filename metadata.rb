@@ -21,6 +21,7 @@ recipe "postgresql::server",           "Object-relational SQL database, version 
 recipe "postgresql::server_dev",       "Development files for PostgreSQL server-side programming"
 recipe "postgresql::service",          "Internal recipe to declare the system service"
 recipe "postgresql::setup_databases",  "Internal recipe to manage specified databases"
+recipe "postgresql::setup_extensions", "Internal recipe to manage specified database extensions"
 recipe "postgresql::setup_users",      "Internal recipe to manage specified users"
 
 supports "ubuntu"
