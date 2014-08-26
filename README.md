@@ -42,12 +42,14 @@ The following platforms are supported by this cookbook, meaning that the recipes
 * `postgresql::debian_backports` - Internal recipe to manage debian backports
 * `postgresql::doc` - Documentation for the PostgreSQL database management system
 * `postgresql::libpq` - PostgreSQL C client library and header files for libpq5 (PostgreSQL library)
-* `postgresql::pg_database` - Internal recipe to manage specified databases
-* `postgresql::pg_user` - Internal recipe to manage specified users
 * `postgresql::postgis` - Geographic objects support for PostgreSQL 9.x _(currently Ubuntu only)_
 * `postgresql::server` - Object-relational SQL database, version 9.x server
 * `postgresql::server_dev` - Development files for PostgreSQL server-side programming
 * `postgresql::service` - Internal recipe to declare the system service
+* `postgresql::setup_databases` - Internal recipe to manage specified databases
+* `postgresql::setup_extensions` - Internal recipe to manage specified database extensions
+* `postgresql::setup_languages` - Internal recipe to manage specified database languages
+* `postgresql::setup_users` - Internal recipe to manage specified users
 
 
 ## Usage
@@ -61,19 +63,25 @@ This cookbook provides three definitions to create, alter, and delete users as w
 
 ```ruby
 # create a user
-pg_user "myuser" do
-  privileges superuser: false, replication: false, createdb: false, login: true
+postgresql_user "myuser" do
+  superuser false
+  createdb false
+  login true
+  replication false
   password "mypassword"
 end
 
 # create a user with an MD5-encrypted password
-pg_user "myuser" do
-  privileges superuser: false, replication: false, createdb: false, login: true
+postgresql_user "myuser" do
+  superuser false
+  createdb false
+  login true
+  replication false
   encrypted_password "667ff118ef6d196c96313aeaee7da519"
 end
 
 # drop a user
-pg_user "myuser" do
+postgresql_user "myuser" do
   action :drop
 end
 ```
