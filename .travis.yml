@@ -3,7 +3,7 @@ bundler_args: --without integration
 rvm:
 - 1.9.3
 - 2.0.0
-- 2.1.2
+- 2.1.5
 script:
 - bundle exec rake license_finder
 - bundle exec rake rubocop
