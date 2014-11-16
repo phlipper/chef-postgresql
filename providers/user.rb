@@ -65,12 +65,12 @@ def user_exists?
   cmd.exitstatus.zero?
 end
 
-def role_sql # rubocop:disable MethodLength, AbcSize
+def role_sql  # rubocop:disable AbcSize, MethodLength
   sql = %(\\\"#{new_resource.name}\\\" )
 
-  sql << "#{"NO" unless new_resource.superuser}SUPERUSER "
-  sql << "#{"NO" unless new_resource.createdb}CREATEDB "
-  sql << "#{"NO" unless new_resource.login}LOGIN "
+  %w[superuser createdb createrole inherit replication login].each do |perm|
+    sql << "#{"NO" unless new_resource.send(perm)}#{perm.upcase} "
+  end
 
   sql << if new_resource.encrypted_password
            "ENCRYPTED PASSWORD '#{new_resource.encrypted_password}'"

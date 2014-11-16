@@ -101,6 +101,9 @@ Or add users via attributes:
       "superuser": true,
       "replication": false,
       "createdb": true,
+      "createrole": false,
+      "inherit": true,
+      "replication": false,
       "login": true
     }
   ]
