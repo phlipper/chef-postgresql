@@ -2,7 +2,7 @@ require "spec_helper"
 
 describe "postgresql::setup_languages" do
   let(:chef_run) do
-    ChefSpec::Runner.new do |node|
+    ChefSpec::SoloRunner.new do |node|
       node.set["postgresql"]["languages"] = [
         { name: "plpgsql", database: "foo-db" },
         { name: "plv8", database: "foo-db" },

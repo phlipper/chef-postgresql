@@ -2,7 +2,7 @@ require "spec_helper"
 
 describe "postgresql_user" do
   let(:chef_run) do
-    ChefSpec::Runner.new(step_into: ["postgresql_user"]) do |node|
+    ChefSpec::SoloRunner.new(step_into: ["postgresql_user"]) do |node|
       node.set["postgresql"]["users"] = [
         { username: "test1", password: nil, createdb: true },
         { username: "test2", password: "foo", action: %w[create update] },

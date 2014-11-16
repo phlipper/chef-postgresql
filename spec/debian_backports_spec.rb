@@ -2,7 +2,7 @@ require "spec_helper"
 
 describe "postgresql::debian_backports" do
   let(:chef_run) do
-    ChefSpec::Runner.new.converge(described_recipe)
+    ChefSpec::SoloRunner.new.converge(described_recipe)
   end
 
   it "sets up an apt repository for `debian-backports`" do

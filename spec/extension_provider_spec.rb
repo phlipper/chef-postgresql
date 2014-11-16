@@ -2,7 +2,7 @@ require "spec_helper"
 
 describe "postgresql_extension" do
   let(:chef_run) do
-    ChefSpec::Runner.new(step_into: ["postgresql_extension"]) do |node|
+    ChefSpec::SoloRunner.new(step_into: ["postgresql_extension"]) do |node|
       node.set["postgresql"]["extensions"] = [
         { name: "hstore", database: "foo-db" },
         { name: "uuid-ossp", database: "foo-db" },

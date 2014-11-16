@@ -2,7 +2,7 @@ require "spec_helper"
 
 describe "postgresql_database" do
   let(:chef_run) do
-    ChefSpec::Runner.new(step_into: ["postgresql_database"]) do |node|
+    ChefSpec::SoloRunner.new(step_into: ["postgresql_database"]) do |node|
       node.set["postgresql"]["databases"] = [
         { name: "foo-db" },
         { name: "bar-db", action: "drop" }
