@@ -21,9 +21,10 @@ action :create do
       createdb << " -O #{new_resource.owner}" if new_resource.owner
       createdb << " #{new_resource.name}"
 
-      execute %(create postgresql database #{new_resource.name}) do
+      execute %(create postgresql database #{new_resource.name}) do # ~FC009
         user "postgres"
         command createdb
+        sensitive true
       end
 
       new_resource.updated_by_last_action(true)
@@ -43,6 +44,7 @@ action :drop do
       execute %(drop postgresql database #{new_resource.name}) do
         user "postgres"
         command dropdb
+        sensitive true
       end
 
       new_resource.updated_by_last_action(true)
@@ -57,7 +59,7 @@ def load_current_resource
   @current_resource.exists = database_exists?
 end
 
-def database_exists?
+def database_exists? # rubocop:disable AbcSize
   sql = %(SELECT datname from pg_database WHERE datname='#{new_resource.name}')
 
   exists = %(psql -c "#{sql}" postgres)

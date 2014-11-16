@@ -12,8 +12,7 @@ script:
 - bundle exec rake kitchen:all
 env:
   matrix:
-  - CHEF_VERSION: "10.30"
-  - CHEF_VERSION: "11.10"
+  - CHEF_VERSION: "11.16"
   global:
   - CI_CLOUD: digitalocean
   - secure: KbG/DwrYxUhxZzmG3X6PD1DCe1PTM+Qrts53omZ1rrufQMFry1gSr/RlDA+bFs5exaBWC+wXc2TJBMHi5JgWXlNg+cj6c4Oq8barN2twzwUCe0OQNjeXO5JLCAeD93ZZIvpXezD0C2TJoobJqGokm/+s5Gzx/gFTjIaJGHsZxlA=

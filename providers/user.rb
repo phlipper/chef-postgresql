@@ -11,9 +11,10 @@ end
 action :create do
   unless @current_resource.exists
     converge_by "Create PostgreSQL User #{new_resource.name}" do
-      execute "create postgresql user #{new_resource.name}" do
+      execute "create postgresql user #{new_resource.name}" do # ~FC009
         user "postgres"
         command %(psql -c "CREATE ROLE #{role_sql}")
+        sensitive true
       end
 
       new_resource.updated_by_last_action(true)
@@ -27,6 +28,7 @@ action :update do
       execute "update postgresql user #{new_resource.name}" do
         user "postgres"
         command %(psql -c "ALTER ROLE #{role_sql}")
+        sensitive true
       end
 
       new_resource.updated_by_last_action(true)
@@ -40,6 +42,7 @@ action :drop do
       execute "drop postgresql user #{new_resource.name}" do
         user "postgres"
         command %(psql -c 'DROP ROLE IF EXISTS \\\"#{new_resource.name}\\\"')
+        sensitive true
       end
 
       new_resource.updated_by_last_action(true)
@@ -62,7 +65,7 @@ def user_exists?
   cmd.exitstatus.zero?
 end
 
-def role_sql # rubocop:disable MethodLength
+def role_sql # rubocop:disable MethodLength, AbcSize
   sql = %(\\\"#{new_resource.name}\\\" )
 
   sql << "#{"NO" unless new_resource.superuser}SUPERUSER "

@@ -24,6 +24,10 @@ The following platforms are supported by this cookbook, meaning that the recipes
 * Ubuntu 12.04+
 * Debian 6+
 
+### Chef
+
+This cookbook requires Chef >= 11.13 due to the use of the `sensitive` attribute for some resources.
+
 ### Cookbooks
 
 * [apt](http://community.opscode.com/cookbooks/apt)
