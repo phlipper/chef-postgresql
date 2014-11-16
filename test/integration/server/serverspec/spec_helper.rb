@@ -1,28 +1,17 @@
 require "serverspec"
-require "pathname"
 
-include Serverspec::Helper::Exec
-include Serverspec::Helper::DetectOS
+set :backend, :exec
 
-RSpec.configure do |c|
-  c.before :all do
-    c.os = backend(Serverspec::Commands::Base).check_os
-  end
+def cmd_role_exists(role)
+  "sudo -u postgres " <<
+    %(psql -c "SELECT rolname FROM pg_roles WHERE rolname='#{role}'") <<
+    " | grep #{role}"
 end
 
-def database_role_exists?(role)
-  cmd = "sudo -u postgres "
-  cmd << %(psql -c "SELECT rolname FROM pg_roles WHERE rolname='#{role}'")
-  cmd << " | grep #{role}"
-
-  expect(command cmd).to return_exit_status(0)
+def cmd_database_exists(database)
+  "sudo -u postgres psql -l | grep #{database}"
 end
 
-def database_exists?(database)
-  expect(command %(sudo -u postgres psql -l | grep #{database})).to be_truthy
-end
-
-def database_extension_exists?(database, extension)
-  cmd = %(sudo -u postgres psql -c "\\dx" #{database} | grep #{extension})
-  expect(command cmd).to return_exit_status(0)
+def cmd_extension_exists(database, extension)
+  %(sudo -u postgres psql -c "\\dx" #{database} | grep #{extension})
 end
