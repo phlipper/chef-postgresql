@@ -75,12 +75,12 @@ end
 
 describe "PostgreSQL users, databases, and extensions" do
   describe command(cmd_role_exists("testuser")) do
-    its(:stdout) { should contain "testuser" }
+    its(:stdout) { should match "testuser" }
     its(:exit_status) { should eq 0 }
   end
 
   describe command(cmd_role_exists("fakeuser")) do
-    its(:stdout) { should_not contain "fakeuser" }
+    its(:stdout) { should_not match "fakeuser" }
     its(:exit_status) { should eq 1 }
   end
 
