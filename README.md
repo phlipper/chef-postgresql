@@ -677,6 +677,8 @@ Many thanks go to the following who have contributed to making this cookbook eve
     * uncomment `log_filename` attribute
 * **[@rosenfeld](https://github.com/rosenfeld)**
     * ensure proper database is selected in `pg_database` definition
+* **[@j-martin](https://github.com/j-martin)**
+    * ensure proper quoting of role name in `pg_user` definition
 
 
 ## License
