@@ -4,7 +4,10 @@ rvm:
 - 1.9.3
 - 2.0.0
 - 2.1.5
+before_script:
+- "gem install bundler-audit --no-rdoc --no-ri && bundle-audit update"
 script:
+- bundle-audit
 - bundle exec rake license_finder
 - bundle exec rake rubocop
 - bundle exec rake foodcritic
