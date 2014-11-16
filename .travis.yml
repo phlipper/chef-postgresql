@@ -5,6 +5,7 @@ rvm:
 - 2.0.0
 - 2.1.2
 script:
+- bundle exec rake license_finder
 - bundle exec rake rubocop
 - bundle exec rake foodcritic
 - bundle exec rake chefspec
