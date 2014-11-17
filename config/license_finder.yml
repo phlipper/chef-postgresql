@@ -1,0 +1,11 @@
+---
+whitelist:
+- Apache 2.0
+- Apache v2
+- BSD
+- BSD-3
+- ISC
+- MIT
+- Ruby
+dependencies_file_dir: doc/license_finder
+project_name: chef-postgresql

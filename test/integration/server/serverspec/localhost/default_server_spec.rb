@@ -49,7 +49,11 @@ describe "PostgreSQL server installation" do
   it "managed the `postgresql` service" do
     expect(service "postgresql").to be_enabled
     expect(service "postgresql").to be_running
-    expect(command "pgrep postgres").to return_stdout(/\d+/)
+  end
+
+  describe command("pgrep postgres") do
+    its(:stdout) { should match(/\d+/) }
+    its(:exit_status) { should eq 0 }
   end
 
   it "listened on the default port" do
@@ -70,17 +74,31 @@ describe "PostgreSQL server installation" do
 end
 
 describe "PostgreSQL users, databases, and extensions" do
-  it "created the `testuser` user" do
-    database_role_exists? "testuser"
+  describe command(cmd_role_exists("testuser")) do
+    its(:stdout) { should match "testuser" }
+    its(:exit_status) { should eq 0 }
   end
 
-  it "created the `testdb` database" do
-    database_exists? "testdb"
+  describe command(cmd_role_exists("fakeuser")) do
+    its(:stdout) { should_not match "fakeuser" }
+    its(:exit_status) { should eq 1 }
+  end
+
+  describe command(cmd_database_exists("testdb")) do
+    its(:exit_status) { should eq 0 }
+  end
+
+  describe command(cmd_database_exists("fakedb")) do
+    its(:exit_status) { should eq 1 }
   end
 
   %w[dblink hstore uuid-ossp].each do |extension|
-    it "created the `#{extension}` database extension" do
-      database_extension_exists? "testdb", extension
+    describe command(cmd_extension_exists("testdb", extension)) do
+      its(:exit_status) { should eq 0 }
     end
+  end
+
+  describe command(cmd_extension_exists("testdb", "fake_extension")) do
+    its(:exit_status) { should eq 1 }
   end
 end

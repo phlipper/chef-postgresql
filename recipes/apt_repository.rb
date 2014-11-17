@@ -10,7 +10,6 @@ apt_repository node["postgresql"]["apt_repository"] do
   components   node["postgresql"]["apt_components"]
   key          node["postgresql"]["apt_key"]
   keyserver    node["postgresql"]["apt_keyserver"]
-  action       :add
 end
 
 # automatically get repository key updates

@@ -4,7 +4,7 @@
 #
 
 pg_version = node["postgresql"]["version"]
-restart_action = node["postgresql"]["cfg_update_action"]
+restart_action = node["postgresql"]["cfg_update_action"].to_sym
 
 directory "/etc/postgresql/#{pg_version}/main/" do
   owner  "postgres"
@@ -37,6 +37,7 @@ template node["postgresql"]["hba_file"] do
   group  "postgres"
   mode   "0640"
   notifies :reload, "service[postgresql]"
+  sensitive true
 end
 
 # pg_ident
@@ -46,6 +47,7 @@ template node["postgresql"]["ident_file"] do
   group  "postgres"
   mode   "0640"
   notifies :reload, "service[postgresql]"
+  sensitive true
 end
 
 # postgresql

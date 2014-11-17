@@ -24,6 +24,10 @@ The following platforms are supported by this cookbook, meaning that the recipes
 * Ubuntu 12.04+
 * Debian 6+
 
+### Chef
+
+This cookbook requires Chef >= 11.13 due to the use of the `sensitive` attribute for some resources.
+
 ### Cookbooks
 
 * [apt](http://community.opscode.com/cookbooks/apt)
@@ -42,12 +46,14 @@ The following platforms are supported by this cookbook, meaning that the recipes
 * `postgresql::debian_backports` - Internal recipe to manage debian backports
 * `postgresql::doc` - Documentation for the PostgreSQL database management system
 * `postgresql::libpq` - PostgreSQL C client library and header files for libpq5 (PostgreSQL library)
-* `postgresql::pg_database` - Internal recipe to manage specified databases
-* `postgresql::pg_user` - Internal recipe to manage specified users
 * `postgresql::postgis` - Geographic objects support for PostgreSQL 9.x _(currently Ubuntu only)_
 * `postgresql::server` - Object-relational SQL database, version 9.x server
 * `postgresql::server_dev` - Development files for PostgreSQL server-side programming
 * `postgresql::service` - Internal recipe to declare the system service
+* `postgresql::setup_databases` - Internal recipe to manage specified databases
+* `postgresql::setup_extensions` - Internal recipe to manage specified database extensions
+* `postgresql::setup_languages` - Internal recipe to manage specified database languages
+* `postgresql::setup_users` - Internal recipe to manage specified users
 
 
 ## Usage
@@ -61,19 +67,25 @@ This cookbook provides three definitions to create, alter, and delete users as w
 
 ```ruby
 # create a user
-pg_user "myuser" do
-  privileges superuser: false, replication: false, createdb: false, login: true
+postgresql_user "myuser" do
+  superuser false
+  createdb false
+  login true
+  replication false
   password "mypassword"
 end
 
 # create a user with an MD5-encrypted password
-pg_user "myuser" do
-  privileges superuser: false, replication: false, createdb: false, login: true
+postgresql_user "myuser" do
+  superuser false
+  createdb false
+  login true
+  replication false
   encrypted_password "667ff118ef6d196c96313aeaee7da519"
 end
 
 # drop a user
-pg_user "myuser" do
+postgresql_user "myuser" do
   action :drop
 end
 ```
@@ -89,6 +101,9 @@ Or add users via attributes:
       "superuser": true,
       "replication": false,
       "createdb": true,
+      "createrole": false,
+      "inherit": true,
+      "replication": false,
       "login": true
     }
   ]
@@ -99,7 +114,7 @@ Or add users via attributes:
 
 ```ruby
 # create a database
-pg_database "mydb" do
+postgresql_database "mydb" do
   owner "myuser"
   encoding "UTF-8"
   template "template0"
@@ -107,20 +122,22 @@ pg_database "mydb" do
 end
 
 # install extensions to database
-pg_database_extensions "mydb" do
-  languages "plpgsql"              # install `plpgsql` language - single value may be passed without array
-  extensions ["hstore", "dblink"]  # install `hstore` and `dblink` extensions - multiple values in array
-  postgis true                     # install `postgis` support
+postgresql_extension "hstore" do
+  database "mydb"
+end
+
+postgresql_language "plpgsql" do
+  database "mydb"
 end
 
 # drop dblink extension
-pg_database_extensions "mydb" do
+postgresql_extension "dblink" do
+  database "mydb"
   action :drop
-  extensions "dblink"
 end
 
 # drop a database
-pg_database "mydb" do
+postgresql_database "mydb" do
   action :drop
 end
 ```
@@ -136,7 +153,8 @@ Or add the database via attributes:
       "template": "template0",
       "encoding": "UTF-8",
       "locale": "en_US.UTF-8",
-      "extensions": "hstore"
+      "extensions": ["hstore", "dblink"],
+      "postgis": true
     }
   ]
 }
@@ -567,6 +585,9 @@ default["postgresql"]["restart_after_crash"]             = "on"
 
 default["postgresql"]["users"]                           = []
 default["postgresql"]["databases"]                       = []
+default["postgresql"]["extensions"]                      = []
+default["postgresql"]["languages"]                       = []
+
 
 
 #------------------------------------------------------------------------------

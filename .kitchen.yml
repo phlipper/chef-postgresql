@@ -1,5 +1,6 @@
 driver:
   require_chef_omnibus: <%= ENV.fetch("CHEF_VERSION", "latest") %>
+  provider: <%= ENV.fetch("CHEF_PROVIDER", "virtualbox") %>
   ssh_key: <%= File.expand_path("./test/support/keys/vagrant") %>
   name: vagrant
 
@@ -45,3 +46,5 @@ suites:
               - hstore
               - dblink
               - uuid-ossp
+            languages:
+              - plpgsql

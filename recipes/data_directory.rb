@@ -9,7 +9,7 @@ directory node["postgresql"]["data_directory"] do
   group  "postgres"
   mode   "0700"
   recursive true
-  not_if "test -f #{node["postgresql"]["data_directory"]}/PG_VERSION"
+  not_if { ::File.exist?("#{node["postgresql"]["data_directory"]}/PG_VERSION") }
 end
 
 # initialize the data directory if necessary
@@ -21,5 +21,5 @@ bash "postgresql initdb" do
     -U postgres \
     -D #{node["postgresql"]["data_directory"]}
   EOC
-  not_if "test -f #{node["postgresql"]["data_directory"]}/PG_VERSION"
+  not_if { ::File.exist?("#{node["postgresql"]["data_directory"]}/PG_VERSION") }
 end
