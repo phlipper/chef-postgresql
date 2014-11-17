@@ -10,7 +10,7 @@ define :pg_user, action: :create do
     }
     privileges.merge! params[:privileges] if params[:privileges]
 
-    role_sql = "#{role_name} "
+    role_sql = "\\\"#{role_name}\\\" "
 
     role_sql << Array(privileges).map! { |priv, bool| (bool ? "" : "NO") + priv.to_s.upcase }.join(" ") # rubocop:disable LineLength
 
@@ -22,7 +22,7 @@ define :pg_user, action: :create do
                   ""
                 end
 
-    role_exists = %(psql -c "SELECT rolname FROM pg_roles WHERE rolname='#{role_name}'" | grep #{role_name}) # rubocop:disable LineLength
+    role_exists = %(psql -c "SELECT rolname FROM pg_roles WHERE rolname='#{role_name}'" | grep '#{role_name}') # rubocop:disable LineLength
 
     execute "alter pg user #{role_name}" do
       user "postgres"
@@ -39,7 +39,7 @@ define :pg_user, action: :create do
   when :drop
     execute "drop pg user #{role_name}" do
       user "postgres"
-      command %(psql -c "DROP ROLE IF EXISTS #{role_name}")
+      command %(psql -c "DROP ROLE IF EXISTS \\\"#{role_name}\\\"")
     end
   end
 end
