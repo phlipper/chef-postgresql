@@ -5,6 +5,7 @@ define :pg_user, action: :create do
   when :create
     privileges = {
       superuser: false,
+      replication: false,
       createdb: false,
       login: true
     }
