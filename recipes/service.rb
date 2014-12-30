@@ -9,6 +9,6 @@ end
 
 # define the service
 service "postgresql" do
-  supports restart: true
+  supports reload: true, restart: true, status: true
   action [:enable, :start]
 end
