@@ -113,6 +113,7 @@ describe "postgresql::configuration" do
       context "using the `conf_custom` attribute" do
         let(:chef_run) do
           ChefSpec::SoloRunner.new do |node|
+            node.set["postgresql"]["version"] = "9.3"
             node.set["postgresql"]["conf"] = { "foo" => "bar" }
             node.set["postgresql"]["conf_custom"] = true
           end.converge("recipe[postgresql::service]", described_recipe)

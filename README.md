@@ -12,8 +12,9 @@ Currently supported versions:
 * `9.1`
 * `9.2`
 * `9.3`
+* `9.4`
 
-The default version is `9.3`.
+The default version is `9.4`.
 
 ## Requirements
 
@@ -213,7 +214,7 @@ distribution:
 # WARNING: If this version number is changed in your own recipes, the
 # FILE LOCATIONS (see below) attributes *must* also be overridden in
 # order to re-compute the paths with the correct version number.
-default["postgresql"]["version"]                         = "9.3"
+default["postgresql"]["version"]                         = "9.4"
 
 # control how the postgres service is signaled when configuration files are
 # updated. by default the service is told to `:restart` (stop, start). if you

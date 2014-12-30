@@ -2,14 +2,15 @@ require_relative "test_helper"
 
 describe_recipe "postgresql::configuration" do
   let(:version) { node["postgresql"]["version"] }
+
   let(:template_paths) do
     {
-      "environment" => "/etc/postgresql/9.3/main/environment",
-      "pg_ctl.conf" => "/etc/postgresql/9.3/main/pg_ctl.conf",
-      "pg_hba.conf" => "/etc/postgresql/9.3/main/pg_hba.conf",
-      "pg_ident.conf" => "/etc/postgresql/9.3/main/pg_ident.conf",
-      "postgresql.conf" => "/etc/postgresql/9.3/main/postgresql.conf",
-      "start.conf" => "/etc/postgresql/9.3/main/start.conf"
+      "environment" => "/etc/postgresql/#{version}/main/environment",
+      "pg_ctl.conf" => "/etc/postgresql/#{version}/main/pg_ctl.conf",
+      "pg_hba.conf" => "/etc/postgresql/#{version}/main/pg_hba.conf",
+      "pg_ident.conf" => "/etc/postgresql/#{version}/main/pg_ident.conf",
+      "postgresql.conf" => "/etc/postgresql/#{version}/main/postgresql.conf",
+      "start.conf" => "/etc/postgresql/#{version}/main/start.conf"
     }
   end
 
