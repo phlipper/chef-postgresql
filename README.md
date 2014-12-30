@@ -2,7 +2,7 @@
 
 ## Flair
 
-![Cookbook Version](https://img.shields.io/badge/cookbook-0.15.1-blue.svg)
+![Cookbook Version](https://img.shields.io/badge/cookbook-0.16.0-blue.svg)
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](http://phlipper.mit-license.org/2012-2014/license.html)
 [![Build Status](http://img.shields.io/travis-ci/phlipper/chef-postgresql.png)](https://travis-ci.org/phlipper/chef-postgresql)
 [![Gitter](https://img.shields.io/badge/Gitter%2Eim-Join_Chat_→-yellow.svg)](https://gitter.im/phlipper/chef-postgresql)
