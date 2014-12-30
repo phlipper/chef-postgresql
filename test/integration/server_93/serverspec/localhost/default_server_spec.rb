@@ -1,24 +1,16 @@
 require "spec_helper"
 
 describe "PostgreSQL `apt` setup" do
-  let(:apt_src) do
-    "/etc/apt/sources.list.d/apt.postgresql.org.list"
+  describe file("/etc/apt/preferences.d/pgdg.pref") do
+    it { should be_a_file }
+    its(:content) { should match("Package: *") }
+    its(:content) { should match("Pin: release o=apt.postgresql.org") }
   end
 
-  let(:apt_pref) do
-    "/etc/apt/preferences.d/pgdg.pref"
-  end
-
-  it "set up default apt preferences" do
-    expect(file apt_pref).to be_file
-    expect(file apt_pref).to contain("Package: *")
-    expect(file apt_pref).to contain("Pin: release o=apt.postgresql.org")
-  end
-
-  it "set up the primay apt repository" do
-    expect(file apt_src).to be_file
-    expect(file apt_src).to contain("apt.postgresql.org")
-    expect(file apt_src).to contain("pgdg main")
+  describe file("/etc/apt/sources.list.d/apt.postgresql.org.list") do
+    it { should be_a_file }
+    its(:content) { should match("apt.postgresql.org") }
+    its(:content) { should match("pgdg main") }
   end
 end
 
@@ -31,24 +23,16 @@ describe "Package installation" do
   ].map { |pkg| pkg % version }
 
   packages.each do |pkg|
-    it "installed the `#{pkg}` package" do
-      expect(package pkg).to be_installed
+    describe package(pkg) do
+      it { should be_installed }
     end
   end
 end
 
 describe "PostgreSQL server installation" do
-  let(:config_path) do
-    "/etc/postgresql/9.3/main"
-  end
-
-  let(:hba_contents) do
-    "local   all             postgres                                peer"
-  end
-
-  it "managed the `postgresql` service" do
-    expect(service "postgresql").to be_enabled
-    expect(service "postgresql").to be_running
+  describe service("postgresql") do
+    it { should be_enabled }
+    it { should be_running }
   end
 
   describe command("pgrep postgres") do
@@ -56,20 +40,20 @@ describe "PostgreSQL server installation" do
     its(:exit_status) { should eq 0 }
   end
 
-  it "listened on the default port" do
-    expect(port 5432).to be_listening
+  describe port(5432) do
+    it { should be_listening }
   end
 
-  it "configured a default `postgresql.conf`" do
-    expect(file "#{config_path}/postgresql.conf").to be_a_file
-    expect(file "#{config_path}/postgresql.conf").to contain(
-      %(hba_file = '/etc/postgresql/9.3/main/pg_hba.conf')
-    )
+  describe file("/etc/postgresql/9.3/main/postgresql.conf") do
+    it { should be_a_file }
+    its(:content) do
+      should match %(hba_file = '/etc/postgresql/9.3/main/pg_hba.conf')
+    end
   end
 
-  it "configured a default `pg_hba.conf`" do
-    expect(file "#{config_path}/pg_hba.conf").to be_a_file
-    expect(file "#{config_path}/pg_hba.conf").to contain(hba_contents)
+  describe file("/etc/postgresql/9.3/main/pg_hba.conf") do
+    it { should be_a_file }
+    its(:content) { should match(/local\s+all\s+postgres\s+peer/) }
   end
 end
 

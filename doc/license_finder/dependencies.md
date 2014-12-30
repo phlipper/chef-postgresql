@@ -1,31 +1,24 @@
 # chef-postgresql
 
-As of November 16, 2014 11:26am. 133 total
+As of December 29, 2014  8:51pm. 109 total
 
 ## Summary
-* 90 MIT
-* 31 Apache 2.0
+* 67 MIT
+* 29 Apache 2.0
 * 5 ruby
 * 1 Apache 2.0, MIT
 * 1 BSD
+* 1 Apache v2
 * 1 ISC
 * 1 Artistic 2.0, GPL-2, MIT
-* 1 Apache v2
 * 1 GNU GPL v2, MIT, Perl Artistic v2
 * 1 New BSD
+* 1 other
 
 
 
 ## Items
 
-
-<a name="activesupport"></a>
-### <a href="http://www.rubyonrails.org">activesupport</a> v4.1.7
-#### A toolkit of support libraries and Ruby core extensions extracted from the Rails framework.
-
-<a href="http://opensource.org/licenses/mit-license">MIT</a> whitelisted
-
-A toolkit of support libraries and Ruby core extensions extracted from the Rails framework. Rich support for multibyte strings, internationalization, time zones, and testing.
 
 <a name="addressable"></a>
 ### <a href="http://addressable.rubyforge.org/">addressable</a> v2.3.6
@@ -54,16 +47,8 @@ A library for working with Abstract Syntax Trees.
 
 An object-oriented AST extension for Parser
 
-<a name="axiom-types"></a>
-### <a href="https://github.com/dkubb/axiom-types">axiom-types</a> v0.1.1
-#### Abstract types for logic programming
-
-<a href="http://opensource.org/licenses/mit-license">MIT</a> whitelisted
-
-Define types with optional constraints for use within axiom and other libraries.
-
 <a name="berkshelf"></a>
-### <a href="http://berkshelf.com">berkshelf</a> v3.2.1 (default)
+### <a href="http://berkshelf.com">berkshelf</a> v3.2.2 (default)
 #### Manages a Cookbook's, or an Application's, Cookbook dependencies
 
 <a href="http://www.apache.org/licenses/LICENSE-2.0.txt">Apache 2.0</a> whitelisted
@@ -118,19 +103,6 @@ A mixin for querying the platform running Ruby
 
 A mixin for issuing shell commands and collecting the output
 
-<a name="builder"></a>
-### <a href="http://onestepback.org">builder</a> v3.2.2
-#### Builders for MarkUp.
-
-<a href="http://opensource.org/licenses/mit-license">MIT</a> whitelisted
-
-Builder provides a number of builder objects that make creating structured data
-simple to do.  Currently the following builder objects are supported:
-
-* XML Markup
-* XML Events
-
-
 <a name="bundler"></a>
 ### bundler v1.7.6
 #### 
@@ -171,7 +143,7 @@ Celluloid enables people to build concurrent programs out of concurrent objects 
 Evented IO for Celluloid actors
 
 <a name="chef"></a>
-### <a href="http://wiki.opscode.com/display/chef">chef</a> v11.16.4 (default)
+### <a href="http://www.getchef.com">chef</a> v12.0.3 (default)
 #### A systems integration framework, built to bring the benefits of configuration management to your entire infrastructure.
 
 <a href="http://www.apache.org/licenses/LICENSE-2.0.txt">Apache 2.0</a> whitelisted
@@ -179,7 +151,7 @@ Evented IO for Celluloid actors
 A systems integration framework, built to bring the benefits of configuration management to your entire infrastructure.
 
 <a name="chef-zero"></a>
-### <a href="http://www.opscode.com">chef-zero</a> v2.2.1
+### <a href="http://www.opscode.com">chef-zero</a> v3.2.1
 #### Self-contained, easy-setup, fast-start in-memory Chef server for testing and solo setup purposes
 
 <a href="http://www.apache.org/licenses/LICENSE-2.0.txt">Apache 2.0</a> whitelisted
@@ -187,7 +159,7 @@ A systems integration framework, built to bring the benefits of configuration ma
 Self-contained, easy-setup, fast-start in-memory Chef server for testing and solo setup purposes
 
 <a name="chefspec"></a>
-### <a href="http://code.sethvargo.com/chefspec">chefspec</a> v4.1.1 (default)
+### <a href="http://code.sethvargo.com/chefspec">chefspec</a> v4.2.0 (default)
 #### Write RSpec examples and generate coverage reports for Chef recipes!
 
 <a href="http://opensource.org/licenses/mit-license">MIT</a> whitelisted
@@ -210,14 +182,6 @@ Ruby is an excellent programming language for creating and managing custom DSLs,
 
 Fast and easy syntax highlighting for selected languages, written in Ruby. Comes with RedCloth integration and LOC counter.
 
-<a name="coercible"></a>
-### <a href="https://github.com/solnic/coercible">coercible</a> v1.0.0
-#### Powerful, flexible and configurable coercion library. And nothing more.
-
-<a href="http://opensource.org/licenses/mit-license">MIT</a> whitelisted
-
-Powerful, flexible and configurable coercion library. And nothing more.
-
 <a name="dep-selector-libgecode"></a>
 ### dep-selector-libgecode v1.0.2
 #### Installs a vendored copy of Gecode suitable for use with dep-selector
@@ -233,14 +197,6 @@ Installs a vendored copy of Gecode suitable for use with dep-selector
 Apache v2 whitelisted
 
 Given packages, versions, and a dependency graph, find a valid assignment of package versions
-
-<a name="descendants_tracker"></a>
-### <a href="https://github.com/dkubb/descendants_tracker">descendants_tracker</a> v0.0.4
-#### Module that adds descendant tracking to a class
-
-<a href="http://opensource.org/licenses/mit-license">MIT</a> whitelisted
-
-Module that adds descendant tracking to a class
 
 <a name="diff-lcs"></a>
 ### <a href="http://diff-lcs.rubyforge.org/">diff-lcs</a> v1.2.5
@@ -261,22 +217,6 @@ Rubinius in 1.9 mode
 ({rubinius/rubinius#2268}[https://github.com/rubinius/rubinius/issues/2268]).
 We are happy to report that this issue has been resolved.
 
-<a name="droplet_kit"></a>
-### droplet_kit v1.1.2
-#### Droplet Kit is the official Ruby library for Digital Ocean's API
-
-<a href="http://opensource.org/licenses/mit-license">MIT</a> whitelisted
-
-Droplet Kit is the official Ruby library for Digital Ocean's API
-
-<a name="equalizer"></a>
-### <a href="https://github.com/dkubb/equalizer">equalizer</a> v0.0.9
-#### Module to define equality, equivalence and inspection methods
-
-<a href="http://opensource.org/licenses/mit-license">MIT</a> whitelisted
-
-Module to define equality, equivalence and inspection methods
-
 <a name="erubis"></a>
 ### <a href="http://www.kuwata-lab.com/erubis/">erubis</a> v2.7.0
 #### a fast and extensible eRuby implementation which supports multi-language
@@ -296,14 +236,6 @@ Module to define equality, equivalence and inspection methods
   * Easy to extend and customize in subclass
   * Ruby on Rails support
 
-
-<a name="excon"></a>
-### <a href="https://github.com/excon/excon">excon</a> v0.41.0
-#### speed, persistence, http(s)
-
-<a href="http://opensource.org/licenses/mit-license">MIT</a> whitelisted
-
-EXtended http(s) CONnections
 
 <a name="faraday"></a>
 ### <a href="https://github.com/lostisland/faraday">faraday</a> v0.9.0
@@ -329,78 +261,12 @@ Easily mock out ohai data
 Ruby FFI library
 
 <a name="ffi-yajl"></a>
-### <a href="http://github.com/opscode/ffi-yajl">ffi-yajl</a> v1.2.0
+### <a href="http://github.com/opscode/ffi-yajl">ffi-yajl</a> v1.3.1
 #### Ruby FFI wrapper around YAJL 2.x
 
 <a href="http://www.apache.org/licenses/LICENSE-2.0.txt">Apache 2.0</a> whitelisted
 
 Ruby FFI wrapper around YAJL 2.x
-
-<a name="fog"></a>
-### <a href="http://github.com/fog/fog">fog</a> v1.24.0
-#### brings clouds to you
-
-<a href="http://opensource.org/licenses/mit-license">MIT</a> whitelisted
-
-The Ruby cloud services library. Supports all major cloud providers including AWS, Rackspace, Linode, Blue Box, StormOnDemand, and many others. Full support for most AWS services including EC2, S3, CloudWatch, SimpleDB, ELB, and RDS.
-
-<a name="fog-brightbox"></a>
-### fog-brightbox v0.6.1
-#### This library can be used as a module for `fog` or as standalone provider to use the Brightbox Cloud in applications
-
-<a href="http://opensource.org/licenses/mit-license">MIT</a> whitelisted
-
-Module for the 'fog' gem to support Brightbox Cloud
-
-<a name="fog-core"></a>
-### <a href="https://github.com/fog/fog-core">fog-core</a> v1.24.0
-#### Shared classes and tests for fog providers and services.
-
-<a href="http://opensource.org/licenses/mit-license">MIT</a> whitelisted
-
-Shared classes and tests for fog providers and services.
-
-<a name="fog-json"></a>
-### <a href="http://github.com/fog/fog-json">fog-json</a> v1.0.0
-#### JSON parsing for fog providers
-
-<a href="http://opensource.org/licenses/mit-license">MIT</a> whitelisted
-
-Extraction of the JSON parsing tools shared between a
-                          number of providers in the 'fog' gem.
-
-<a name="fog-radosgw"></a>
-### <a href="https://github.com/fog/fog-radosgw">fog-radosgw</a> v0.0.3
-#### Fog backend for provisioning Ceph Radosgw.
-
-<a href="http://opensource.org/licenses/mit-license">MIT</a> whitelisted
-
-Fog backend for provisioning users on Ceph Radosgw - the Swift and S3 compatible REST API for Ceph.
-
-<a name="fog-sakuracloud"></a>
-### fog-sakuracloud v0.1.1
-#### Module for the 'fog' gem to support Sakura no Cloud
-
-<a href="http://opensource.org/licenses/mit-license">MIT</a> whitelisted
-
-Module for the 'fog' gem to support Sakura no Cloud
-
-<a name="fog-softlayer"></a>
-### <a href="https://github.com/fog/fog-softlayer">fog-softlayer</a> v0.3.24
-#### This library can be used as a module for `fog` or as standalone provider to use the SoftLayer Cloud in applications
-
-<a href="http://opensource.org/licenses/mit-license">MIT</a> whitelisted
-
-Module for the 'fog' gem to support SoftLayer Cloud
-
-<a name="fog-xml"></a>
-### <a href="https://github.com/fog/fog-xml">fog-xml</a> v0.1.1
-#### XML parsing for fog providers
-
-<a href="http://opensource.org/licenses/mit-license">MIT</a> whitelisted
-
-Extraction of the XML parsing tools shared between a
-                          number of providers in the 'fog' gem
 
 <a name="foodcritic"></a>
 ### <a href="http://foodcritic.io">foodcritic</a> v4.0.0 (default)
@@ -427,15 +293,23 @@ STDOUT text formatting
 A fast Gherkin lexer/parser based on the Ragel State Machine Compiler.
 
 <a name="guard"></a>
-### <a href="http://guardgem.org">guard</a> v2.8.2
+### <a href="http://guardgem.org">guard</a> v2.10.5
 #### Guard keeps an eye on your file modifications
 
 <a href="http://opensource.org/licenses/mit-license">MIT</a> whitelisted
 
 Guard is a command line tool to easily handle events on file system modifications.
 
+<a name="guard-compat"></a>
+### guard-compat v1.2.0
+#### Tools for developing Guard compatible plugins
+
+<a href="http://opensource.org/licenses/mit-license">MIT</a> whitelisted
+
+Helps creating valid Guard plugins and testing them
+
 <a name="guard-rspec"></a>
-### <a href="https://rubygems.org/gems/guard-rspec">guard-rspec</a> v4.3.1 (integration)
+### <a href="https://rubygems.org/gems/guard-rspec">guard-rspec</a> v4.5.0 (integration)
 #### Guard gem for RSpec
 
 <a href="http://opensource.org/licenses/mit-license">MIT</a> whitelisted
@@ -486,30 +360,6 @@ Hitimes is a fast, high resolution timer library for recording performance metri
 
 Makes http fun! Also, makes consuming restful web services dead easy.
 
-<a name="i18n"></a>
-### <a href="http://github.com/svenfuchs/i18n">i18n</a> v0.6.11
-#### New wave Internationalization support for Ruby
-
-<a href="http://opensource.org/licenses/mit-license">MIT</a> whitelisted
-
-New wave Internationalization support for Ruby.
-
-<a name="ice_nine"></a>
-### <a href="https://github.com/dkubb/ice_nine">ice_nine</a> v0.11.0
-#### Deep Freeze Ruby Objects
-
-<a href="http://opensource.org/licenses/mit-license">MIT</a> whitelisted
-
-Deep Freeze Ruby Objects
-
-<a name="inflecto"></a>
-### <a href="https://github.com/mbj/inflecto">inflecto</a> v0.0.2
-#### Inflector for strings
-
-<a href="http://opensource.org/licenses/mit-license">MIT</a> whitelisted
-
-Inflector for strings
-
 <a name="ipaddress"></a>
 ### <a href="http://github.com/bluemonk/ipaddress">ipaddress</a> v0.8.0
 #### IPv4/IPv6 addresses manipulation library
@@ -529,30 +379,6 @@ Inflector for strings
 <a href="http://www.ruby-lang.org/en/LICENSE.txt">ruby</a> whitelisted
 
 
-<a name="kartograph"></a>
-### <a href="https://github.com/digitaloceancloud/kartograph">kartograph</a> v0.2.0
-#### Kartograph makes it easy to generate and convert JSON. It's intention is to be used for API clients.
-
-<a href="http://opensource.org/licenses/mit-license">MIT</a> whitelisted
-
-Kartograph makes it easy to generate and convert JSON. It's intention is to be used for API clients.
-
-<a name="kitchen-digitalocean"></a>
-### <a href="https://github.com/test-kitchen/kitchen-digitalocean">kitchen-digitalocean</a> v0.8.2 (integration)
-#### A Test Kitchen Driver for Digital Ocean
-
-<a href="http://www.apache.org/licenses/LICENSE-2.0.txt">Apache 2.0</a> whitelisted
-
-A Test Kitchen Driver for Digital Ocean
-
-<a name="kitchen-ec2"></a>
-### <a href="http://kitchen.ci/">kitchen-ec2</a> v0.8.0 (integration)
-#### A Test Kitchen Driver for Amazon EC2
-
-<a href="http://www.apache.org/licenses/LICENSE-2.0.txt">Apache 2.0</a> whitelisted
-
-A Test Kitchen Driver for Amazon EC2
-
 <a name="kitchen-vagrant"></a>
 ### <a href="https://github.com/test-kitchen/kitchen-vagrant/">kitchen-vagrant</a> v0.15.0 (integration)
 #### Kitchen::Driver::Vagrant - A Vagrant Driver for Test Kitchen.
@@ -562,7 +388,7 @@ A Test Kitchen Driver for Amazon EC2
 Kitchen::Driver::Vagrant - A Vagrant Driver for Test Kitchen.
 
 <a name="libyajl2"></a>
-### <a href="https://github.com/opscode/libyajl2-gem">libyajl2</a> v1.1.0
+### <a href="https://github.com/opscode/libyajl2-gem">libyajl2</a> v1.2.0
 #### Installs a vendored copy of libyajl2 for distributions which lack it
 
 <a href="http://www.apache.org/licenses/LICENSE-2.0.txt">Apache 2.0</a> whitelisted
@@ -582,7 +408,7 @@ Installs a vendored copy of libyajl2 for distributions which lack it
 
 
 <a name="listen"></a>
-### <a href="https://github.com/guard/listen">listen</a> v2.8.0
+### <a href="https://github.com/guard/listen">listen</a> v2.8.4
 #### Listen to file modifications
 
 <a href="http://opensource.org/licenses/mit-license">MIT</a> whitelisted
@@ -676,66 +502,6 @@ Simplistic port-like solution for developers. It provides a standard and simplif
 
 Archive::Tar::Minitar is a pure-Ruby library and command-line utility that provides the ability to deal with POSIX tar(1) archive files. The implementation is based heavily on Mauricio Ferna'ndez's implementation in rpa-base, but has been reorganised to promote reuse in other projects. Antoine Toulme forked the original project on rubyforge to place it on github, under http://www.github.com/atoulme/minitar
 
-<a name="minitest"></a>
-### <a href="https://github.com/seattlerb/minitest">minitest</a> v5.4.3
-#### minitest provides a complete suite of testing facilities supporting TDD, BDD, mocking, and benchmarking
-
-<a href="http://opensource.org/licenses/mit-license">MIT</a> whitelisted
-
-minitest provides a complete suite of testing facilities supporting
-TDD, BDD, mocking, and benchmarking.
-
-    "I had a class with Jim Weirich on testing last week and we were
-     allowed to choose our testing frameworks. Kirk Haines and I were
-     paired up and we cracked open the code for a few test
-     frameworks...
-
-     I MUST say that minitest is *very* readable / understandable
-     compared to the 'other two' options we looked at. Nicely done and
-     thank you for helping us keep our mental sanity."
-
-    -- Wayne E. Seguin
-
-minitest/unit is a small and incredibly fast unit testing framework.
-It provides a rich set of assertions to make your tests clean and
-readable.
-
-minitest/spec is a functionally complete spec engine. It hooks onto
-minitest/unit and seamlessly bridges test assertions over to spec
-expectations.
-
-minitest/benchmark is an awesome way to assert the performance of your
-algorithms in a repeatable manner. Now you can assert that your newb
-co-worker doesn't replace your linear algorithm with an exponential
-one!
-
-minitest/mock by Steven Baker, is a beautifully tiny mock (and stub)
-object framework.
-
-minitest/pride shows pride in testing and adds coloring to your test
-output. I guess it is an example of how to write IO pipes too. :P
-
-minitest/unit is meant to have a clean implementation for language
-implementors that need a minimal set of methods to bootstrap a working
-test suite. For example, there is no magic involved for test-case
-discovery.
-
-    "Again, I can't praise enough the idea of a testing/specing
-     framework that I can actually read in full in one sitting!"
-
-    -- Piotr Szotkowski
-
-Comparing to rspec:
-
-    rspec is a testing DSL. minitest is ruby.
-
-    -- Adam Hawkins, "Bow Before MiniTest"
-
-minitest doesn't reinvent anything that ruby already provides, like:
-classes, modules, inheritance, methods. This means you only have to
-learn ruby to use minitest and all of your regular OO practices like
-extract-method refactorings still apply.
-
 <a name="mixlib-authentication"></a>
 ### <a href="http://www.opscode.com">mixlib-authentication</a> v1.3.0
 #### Mixes in simple per-request authentication
@@ -768,7 +534,7 @@ A class based configuration library
 
 
 <a name="mixlib-shellout"></a>
-### <a href="http://wiki.opscode.com/">mixlib-shellout</a> v1.6.0
+### <a href="http://wiki.opscode.com/">mixlib-shellout</a> v2.0.1
 #### Run external commands on Unix or Windows
 
 <a href="http://www.apache.org/licenses/LICENSE-2.0.txt">Apache 2.0</a> whitelisted
@@ -798,6 +564,26 @@ Provides swappable XML backends utilizing LibXML, Nokogiri, Ox, or REXML.
 <a href="http://opensource.org/licenses/mit-license">MIT</a> whitelisted
 
 Use with Net::HTTP to do multipart form posts.  IO values that have #content_type, #original_filename, and #local_path will be posted as a binary file.
+
+<a name="nenv"></a>
+### <a href="https://github.com/e2/nenv">nenv</a> v0.1.1
+#### Convenience wrapper for Ruby's ENV
+
+<a href="http://opensource.org/licenses/mit-license">MIT</a> whitelisted
+
+Using ENV is like using raw SQL statements in your code. We all know how that ends...
+
+<a name="net-dhcp"></a>
+### <a href="http://github.com/mjtko/net-dhcp-ruby">net-dhcp</a> v1.3.2
+#### set of classes to low level handle the DHCP protocol
+
+other manually approved
+
+>
+
+><cite>  2014-12-30</cite>
+
+The aim of Net::DHCP is to provide a set of classes to low level handle the DHCP protocol (rfc2131, rfc2132, etc.). With Net::DHCP you will be able to craft custom DHCP packages and have access to all the fields defined for the protocol.
 
 <a name="net-http-persistent"></a>
 ### <a href="http://docs.seattlerb.org/net-http-persistent">net-http-persistent</a> v2.9.4
@@ -857,7 +643,7 @@ Control multiple Net::SSH connections via a single interface.
 New IO for Ruby
 
 <a name="nokogiri"></a>
-### <a href="http://nokogiri.org">nokogiri</a> v1.6.4.1
+### <a href="http://nokogiri.org">nokogiri</a> v1.6.5
 #### Nokogiri (鋸) is an HTML, XML, SAX, and Reader parser
 
 <a href="http://opensource.org/licenses/mit-license">MIT</a> whitelisted
@@ -869,7 +655,7 @@ XML is like violence - if it doesn’t solve your problems, you are not using
 enough of it.
 
 <a name="octokit"></a>
-### <a href="https://github.com/octokit/octokit.rb">octokit</a> v3.5.2
+### <a href="https://github.com/octokit/octokit.rb">octokit</a> v3.7.0
 #### Ruby toolkit for working with the GitHub API
 
 <a href="http://opensource.org/licenses/mit-license">MIT</a> whitelisted
@@ -877,7 +663,7 @@ enough of it.
 Simple wrapper for the GitHub API
 
 <a name="ohai"></a>
-### <a href="http://wiki.opscode.com/display/chef/Ohai">ohai</a> v7.4.0
+### <a href="https://docs.getchef.com/ohai.html">ohai</a> v8.0.1
 #### Ohai profiles your system and emits JSON
 
 <a href="http://www.apache.org/licenses/LICENSE-2.0.txt">Apache 2.0</a> whitelisted
@@ -885,7 +671,7 @@ Simple wrapper for the GitHub API
 Ohai profiles your system and emits JSON
 
 <a name="parser"></a>
-### <a href="http://github.com/whitequark/parser">parser</a> v2.2.0.pre.7
+### <a href="http://github.com/whitequark/parser">parser</a> v2.2.0.1
 #### A Ruby parser written in pure Ruby.
 
 <a href="http://opensource.org/licenses/mit-license">MIT</a> whitelisted
@@ -929,7 +715,7 @@ A few useful extensions to core Ruby classes.
 An IRB alternative and runtime developer console
 
 <a name="rack"></a>
-### <a href="http://rack.github.com/">rack</a> v1.5.2
+### <a href="http://rack.github.io/">rack</a> v1.6.0
 #### a modular Ruby webserver interface
 
 <a href="http://opensource.org/licenses/mit-license">MIT</a> whitelisted
@@ -940,7 +726,7 @@ the simplest way possible, it unifies and distills the API for web
 servers, web frameworks, and software in between (the so-called
 middleware) into a single method call.
 
-Also see http://rack.github.com/.
+Also see http://rack.github.io/.
 
 
 <a name="rainbow"></a>
@@ -952,7 +738,7 @@ Also see http://rack.github.com/.
 Colorize printed text on ANSI terminals
 
 <a name="rake"></a>
-### <a href="https://github.com/jimweirich/rake">rake</a> v10.3.2 (default)
+### <a href="https://github.com/ruby/rake">rake</a> v10.4.2 (default)
 #### Rake is a Make-like program implemented in Ruby
 
 <a href="http://opensource.org/licenses/mit-license">MIT</a> whitelisted
@@ -996,22 +782,6 @@ FSEvents API with Signals catching (without RubyCocoa)
 
 A Ruby wrapper for Linux's inotify, using FFI
 
-<a name="resource_kit"></a>
-### <a href="https://github.com/digitaloceancloud/resource_kit">resource_kit</a> v0.1.1
-#### Resource Kit provides tools to aid in making API Clients. Such as URL resolving, Request / Response layer, and more.
-
-<a href="http://opensource.org/licenses/mit-license">MIT</a> whitelisted
-
-
-
-<a name="rest-client"></a>
-### <a href="http://github.com/archiloque/rest-client">rest-client</a> v1.6.7
-#### Simple HTTP and REST client for Ruby, inspired by microframework syntax for specifying actions.
-
-<a href="http://opensource.org/licenses/mit-license">MIT</a> whitelisted
-
-A simple HTTP and REST client for Ruby, inspired by the Sinatra microframework style of specifying actions: get, put, post, delete.
-
 <a name="retryable"></a>
 ### <a href="http://github.com/nfedyashev/retryable">retryable</a> v1.3.6
 #### Kernel#retryable, allow for retrying of code blocks.
@@ -1021,7 +791,7 @@ A simple HTTP and REST client for Ruby, inspired by the Sinatra microframework s
 Kernel#retryable, allow for retrying of code blocks.
 
 <a name="ridley"></a>
-### <a href="https://github.com/RiotGames/ridley">ridley</a> v4.1.0
+### <a href="https://github.com/RiotGames/ridley">ridley</a> v4.1.1
 #### A reliable Chef API client with a clean syntax
 
 <a href="http://www.apache.org/licenses/LICENSE-2.0.txt">Apache 2.0</a> whitelisted
@@ -1077,7 +847,7 @@ RSpec's 'test double' framework, with support for stubbing and mocking
 Support utilities for RSpec gems
 
 <a name="rubocop"></a>
-### <a href="http://github.com/bbatsov/rubocop">rubocop</a> v0.27.1 (default)
+### <a href="http://github.com/bbatsov/rubocop">rubocop</a> v0.28.0 (default)
 #### Automatic Ruby code style checking tool.
 
 <a href="http://opensource.org/licenses/mit-license">MIT</a> whitelisted
@@ -1087,7 +857,7 @@ Support utilities for RSpec gems
 
 
 <a name="ruby-progressbar"></a>
-### <a href="https://github.com/jfelchner/ruby-progressbar">ruby-progressbar</a> v1.7.0
+### <a href="https://github.com/jfelchner/ruby-progressbar">ruby-progressbar</a> v1.7.1
 #### Ruby/ProgressBar is a flexible text progress bar library for Ruby.
 
 <a href="http://opensource.org/licenses/mit-license">MIT</a> whitelisted
@@ -1114,7 +884,7 @@ LruHash class, a Hash with a max size, controlled by a LRU mechanism
 Parse YAML safely
 
 <a name="sawyer"></a>
-### <a href="https://github.com/lostisland/sawyer">sawyer</a> v0.5.5
+### <a href="https://github.com/lostisland/sawyer">sawyer</a> v0.6.0
 #### Secret User Agent of HTTP
 
 <a href="http://opensource.org/licenses/mit-license">MIT</a> whitelisted
@@ -1129,7 +899,7 @@ Parse YAML safely
 An elegant library for representing and comparing SemVer versions and constraints
 
 <a name="sequel"></a>
-### <a href="http://sequel.jeremyevans.net">sequel</a> v4.16.0
+### <a href="http://sequel.jeremyevans.net">sequel</a> v4.17.0
 #### The Database Toolkit for Ruby
 
 <a href="http://opensource.org/licenses/mit-license">MIT</a> whitelisted
@@ -1137,7 +907,7 @@ An elegant library for representing and comparing SemVer versions and constraint
 The Database Toolkit for Ruby
 
 <a name="serverspec"></a>
-### <a href="http://serverspec.org/">serverspec</a> v2.3.1 (default)
+### <a href="http://serverspec.org/">serverspec</a> v2.7.1 (default)
 #### RSpec tests for your servers configured by Puppet, Chef or anything else
 
 <a href="http://opensource.org/licenses/mit-license">MIT</a> whitelisted
@@ -1161,7 +931,7 @@ A simple DSL for gathering options and parsing the command line
 A Ruby version constraint solver
 
 <a name="specinfra"></a>
-### specinfra v2.4.3
+### specinfra v2.11.2
 #### Common layer for serverspec and itamae
 
 <a href="http://opensource.org/licenses/mit-license">MIT</a> whitelisted
@@ -1189,7 +959,7 @@ Note that this module is only compatible with SQLite 3.6.16 or newer.
 universal capture of stdout and stderr and handling of child process pid for windows, *nix, etc.
 
 <a name="test-kitchen"></a>
-### <a href="http://kitchen.ci">test-kitchen</a> v1.2.1 (integration)
+### <a href="http://kitchen.ci">test-kitchen</a> v1.2.2.dev (integration)
 #### Test Kitchen is an integration tool for developing and testing infrastructure code and software on isolated target platforms.
 
 <a href="http://www.apache.org/licenses/LICENSE-2.0.txt">Apache 2.0</a> whitelisted
@@ -1203,14 +973,6 @@ Test Kitchen is an integration tool for developing and testing infrastructure co
 <a href="http://opensource.org/licenses/mit-license">MIT</a> whitelisted
 
 Thor is a toolkit for building powerful command-line interfaces.
-
-<a name="thread_safe"></a>
-### <a href="https://github.com/headius/thread_safe">thread_safe</a> v0.3.4
-#### A collection of data structures and utilities to make thread-safe programming in Ruby easier
-
-<a href="http://www.apache.org/licenses/LICENSE-2.0.txt">Apache 2.0</a> whitelisted
-
-Thread-safe collections and utilities for Ruby
 
 <a name="timers"></a>
 ### <a href="https://github.com/celluloid/timers">timers</a> v4.0.1
@@ -1227,13 +989,14 @@ Pure Ruby one-shot and periodic timers
 <a href="http://opensource.org/licenses/mit-license">MIT</a> whitelisted
 
 
-<a name="tzinfo"></a>
-### <a href="http://tzinfo.github.io">tzinfo</a> v1.2.2
-#### Daylight savings aware timezone library
+<a name="uuidtools"></a>
+### <a href="https://github.com/sporkmonger/uuidtools">uuidtools</a> v2.1.5
+#### UUID generator
 
-<a href="http://opensource.org/licenses/mit-license">MIT</a> whitelisted
+<a href="http://www.apache.org/licenses/LICENSE-2.0.txt">Apache 2.0</a> whitelisted
 
-TZInfo provides daylight savings aware transformations between times in different time zones.
+A simple universally unique ID generation library.
+
 
 <a name="varia_model"></a>
 ### <a href="https://github.com/RiotGames/varia_model">varia_model</a> v0.4.0
@@ -1242,14 +1005,6 @@ TZInfo provides daylight savings aware transformations between times in differen
 <a href="http://www.apache.org/licenses/LICENSE-2.0.txt">Apache 2.0</a> whitelisted
 
 A mixin to provide objects with magic attribute reading and writing
-
-<a name="virtus"></a>
-### <a href="https://github.com/solnic/virtus">virtus</a> v1.0.3
-#### Attributes on Steroids for Plain Old Ruby Objects
-
-<a href="http://opensource.org/licenses/mit-license">MIT</a> whitelisted
-
-Attributes on Steroids for Plain Old Ruby Objects
 
 <a name="wmi-lite"></a>
 ### <a href="https://github.com/opscode/wmi-lite">wmi-lite</a> v1.0.0
