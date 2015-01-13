@@ -92,6 +92,12 @@ ssl = <%= node["postgresql"]["ssl"] %>        # (change requires restart)
 <% if node["postgresql"]["version"].to_f > 9.1 %>
 ssl_cert_file = '<%= node["postgresql"]["ssl_cert_file"] %>' # (change requires restart)
 ssl_key_file = '<%= node["postgresql"]["ssl_key_file"] %>'   # (change requires restart)
+<% unless node["postgresql"]["ssl_ca_file"].empty? %>
+ssl_ca_file = '<%= node["postgresql"]["ssl_ca_file"] %>'   # (change requires restart)
+<% end -%>
+<% unless node["postgresql"]["ssl_crl_file"].empty? %>
+ssl_crl_file = '<%= node["postgresql"]["ssl_crl_file"] %>'   # (change requires restart)
+<% end -%>
 <% end %>
 #password_encryption = <%= node["postgresql"]["password_encryption"] %>
 #db_user_namespace = <%= node["postgresql"]["db_user_namespace"] %>
