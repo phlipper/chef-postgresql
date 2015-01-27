@@ -226,6 +226,11 @@ distribution:
 # order to re-compute the paths with the correct version number.
 default["postgresql"]["version"]                         = "9.4"
 
+#----------------------------------------------------------------------------
+# DAEMON CONTROL
+#----------------------------------------------------------------------------
+default["postgresql"]["service_actions"]                 = %w[enable start]
+
 # control how the postgres service is signaled when configuration files are
 # updated. by default the service is told to `:restart` (stop, start). if you
 # run high availability installation and do not want the service to restart via
@@ -235,7 +240,7 @@ default["postgresql"]["version"]                         = "9.4"
 default["postgresql"]["cfg_update_action"]               = :restart
 
 #----------------------------------------------------------------------------
-# APT Repository
+# APT REPOSITORY
 #----------------------------------------------------------------------------
 default["postgresql"]["apt_distribution"]                = node["lsb"]["codename"]
 default["postgresql"]["apt_repository"]                  = "apt.postgresql.org"
@@ -715,6 +720,8 @@ Many thanks go to the following who have contributed to making this cookbook eve
     * add replication mode to `pg_user` definition
 * **[@vesln](https://github.com/vesln)**
     * add missing `ssl_ca_file` and `ssl_crl_file` attributes to the configuration template
+* **[@vivid-inc](https://github.com/vivid-inc)**
+    * add `service_actions` attribute
 
 
 ## License
