@@ -1,8 +1,9 @@
 language: ruby
-bundler_args: --jobs 4 --without integration
+bundler_args: --jobs 4 --retry 3 --without integration
 rvm:
 - 2.0.0
 - 2.1
+- 2.2
 cache: bundler
 sudo: false
 before_script:
@@ -16,7 +17,7 @@ script:
 - bundle exec rake kitchen:all
 env:
   matrix:
-  - CHEF_VERSION: "11.16"
+  - CHEF_VERSION: "11.18"
   - CHEF_VERSION: "12.0"
 notifications:
   webhooks:
