@@ -5,10 +5,6 @@
 
 databases = node["postgresql"]["databases"]
 
-if databases.any? { |db| Array(db["extensions"]).any? }
-  include_recipe "postgresql::contrib"
-end
-
 # setup databases
 databases.each do |db|
   db_action = (db["action"] || "create").to_sym

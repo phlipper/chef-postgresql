@@ -11,6 +11,8 @@ end
 action :create do
   unless @current_resource.exists
     converge_by "Create PostgreSQL Extension #{extension_name}" do
+      package "postgresql-contrib-#{new_resource.db_version}"
+
       sql = "CREATE EXTENSION IF NOT EXISTS #{extension_name}"
 
       execute "create #{extension_name} extension" do
