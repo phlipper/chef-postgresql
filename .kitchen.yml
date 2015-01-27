@@ -25,7 +25,6 @@ suites:
       - recipe[apt]
       - recipe[postgresql::server]
       - recipe[postgresql::client]
-      - recipe[postgresql::contrib]
       - recipe[postgresql::dbg]
       - recipe[postgresql::doc]
       - recipe[postgresql::libpq]
@@ -47,8 +46,20 @@ suites:
             # postgis: true
             extensions:
               - hstore
-              - dblink
-              - uuid-ossp
+              - pgcrypto
             languages:
               - plpgsql
+              - plperl
+              - plpython3
+              - pltcl
+        extensions:
+          - name: dblink
+            database: testdb
+          - name: uuid-ossp
+            database: testdb
+        languages:
+          - name: plpython
+            database: testdb
+          - name: plv8
+            database: testdb
   <% end %>

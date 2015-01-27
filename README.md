@@ -627,7 +627,6 @@ postgresql-{version}-pgq3
 postgresql-{version}-plsh
 postgresql-{version}-pgmp
 postgresql-{version}-plproxy
-postgresql-{version}-plv8
 postgresql-{version}-repmgr
 postgresql-{version}-debversion
 postgresql-{version}-pgpool2
