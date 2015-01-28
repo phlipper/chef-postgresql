@@ -713,6 +713,8 @@ Many thanks go to the following who have contributed to making this cookbook eve
     * ensure proper quoting of role name in `pg_user` definition
 * **[@helgi](https://github.com/helgi)**
     * add replication mode to `pg_user` definition
+* **[@vesln](https://github.com/vesln)**
+    * add missing `ssl_ca_file` and `ssl_crl_file` attributes to the configuration template
 
 
 ## License
