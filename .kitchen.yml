@@ -8,15 +8,9 @@ provisioner:
   name: chef_zero
 
 platforms:
-  - name: debian-6.0.8
-  - name: debian-7.2.0
+  - name: debian-7.8
   - name: ubuntu-12.04
-  - name: ubuntu-13.10
-    attributes:
-      postgresql:
-        apt_distribution: precise
   - name: ubuntu-14.04
-
 
 suites:
   <% %w[9.3 9.4].each do |version| %>

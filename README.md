@@ -32,8 +32,9 @@ The default version is `9.4`.
 
 The following platforms are supported by this cookbook, meaning that the recipes run on these platforms without error:
 
-* Ubuntu 12.04+
-* Debian 6+
+* Debian 7.8
+* Ubuntu 12.04
+* Ubuntu 14.04
 
 ### Chef
 
