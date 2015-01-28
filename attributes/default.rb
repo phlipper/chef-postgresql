@@ -8,10 +8,16 @@
 #
 
 default["postgresql"]["version"]                         = "9.4"
+
+#----------------------------------------------------------------------------
+# DAEMON CONTROL
+#----------------------------------------------------------------------------
+
+default["postgresql"]["service_actions"]                 = %w[enable start]
 default["postgresql"]["cfg_update_action"]               = :restart
 
 #------------------------------------------------------------------------------
-# APT Repository
+# APT REPOSITORY
 #------------------------------------------------------------------------------
 
 default["postgresql"]["apt_distribution"] = node["lsb"]["codename"]

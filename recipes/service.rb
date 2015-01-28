@@ -10,5 +10,5 @@ end
 # define the service
 service "postgresql" do
   supports reload: true, restart: true, status: true
-  action [:enable, :start]
+  action Array(node["postgresql"]["service_actions"]).map(&:to_sym)
 end
