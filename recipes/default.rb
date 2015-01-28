@@ -4,7 +4,7 @@
 #
 
 # pin default package preferences
-apt_preference "pgdg" do
+apt_preference "pgdg.pref" do
   glob "*"
   pin "release o=apt.postgresql.org"
   pin_priority "750"
