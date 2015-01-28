@@ -15,3 +15,7 @@ end
 def cmd_extension_exists(database, extension)
   %(sudo -u postgres psql -c "\\dx" #{database} | grep #{extension})
 end
+
+def cmd_language_exists(database, language)
+  %(sudo -u postgres psql -c 'SELECT lanname FROM pg_catalog.pg_language' #{database} | grep '^ #{language}$') # rubocop:disable LineLength
+end

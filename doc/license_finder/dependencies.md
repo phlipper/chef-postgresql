@@ -1,9 +1,9 @@
 # chef-postgresql
 
-As of December 29, 2014  8:51pm. 109 total
+As of January 27, 2015  4:12pm. 111 total
 
 ## Summary
-* 67 MIT
+* 69 MIT
 * 29 Apache 2.0
 * 5 ruby
 * 1 Apache 2.0, MIT
@@ -48,7 +48,7 @@ A library for working with Abstract Syntax Trees.
 An object-oriented AST extension for Parser
 
 <a name="berkshelf"></a>
-### <a href="http://berkshelf.com">berkshelf</a> v3.2.2 (default)
+### <a href="http://berkshelf.com">berkshelf</a> v3.2.3 (default)
 #### Manages a Cookbook's, or an Application's, Cookbook dependencies
 
 <a href="http://www.apache.org/licenses/LICENSE-2.0.txt">Apache 2.0</a> whitelisted
@@ -56,7 +56,7 @@ An object-oriented AST extension for Parser
 Manages a Cookbook's, or an Application's, Cookbook dependencies
 
 <a name="berkshelf-api-client"></a>
-### <a href="http://berkshelf.com">berkshelf-api-client</a> v1.2.0
+### <a href="http://berkshelf.com">berkshelf-api-client</a> v1.2.1
 #### API Client for communicating with a Berkshelf API server
 
 <a href="http://www.apache.org/licenses/LICENSE-2.0.txt">Apache 2.0</a> whitelisted
@@ -238,7 +238,7 @@ We are happy to report that this issue has been resolved.
 
 
 <a name="faraday"></a>
-### <a href="https://github.com/lostisland/faraday">faraday</a> v0.9.0
+### <a href="https://github.com/lostisland/faraday">faraday</a> v0.9.1
 #### HTTP/REST API client library.
 
 <a href="http://opensource.org/licenses/mit-license">MIT</a> whitelisted
@@ -293,7 +293,7 @@ STDOUT text formatting
 A fast Gherkin lexer/parser based on the Ragel State Machine Compiler.
 
 <a name="guard"></a>
-### <a href="http://guardgem.org">guard</a> v2.10.5
+### <a href="http://guardgem.org">guard</a> v2.11.1
 #### Guard keeps an eye on your file modifications
 
 <a href="http://opensource.org/licenses/mit-license">MIT</a> whitelisted
@@ -301,7 +301,7 @@ A fast Gherkin lexer/parser based on the Ragel State Machine Compiler.
 Guard is a command line tool to easily handle events on file system modifications.
 
 <a name="guard-compat"></a>
-### guard-compat v1.2.0
+### guard-compat v1.2.1
 #### Tools for developing Guard compatible plugins
 
 <a href="http://opensource.org/licenses/mit-license">MIT</a> whitelisted
@@ -373,11 +373,12 @@ Makes http fun! Also, makes consuming restful web services dead easy.
 
 
 <a name="json"></a>
-### json v1.8.1
-#### This json is bundled with Ruby
+### <a href="http://flori.github.com/json">json</a> v1.8.2
+#### JSON Implementation for Ruby
 
 <a href="http://www.ruby-lang.org/en/LICENSE.txt">ruby</a> whitelisted
 
+This is a JSON implementation as a Ruby extension in C.
 
 <a name="kitchen-vagrant"></a>
 ### <a href="https://github.com/test-kitchen/kitchen-vagrant/">kitchen-vagrant</a> v0.15.0 (integration)
@@ -408,7 +409,7 @@ Installs a vendored copy of libyajl2 for distributions which lack it
 
 
 <a name="listen"></a>
-### <a href="https://github.com/guard/listen">listen</a> v2.8.4
+### <a href="https://github.com/guard/listen">listen</a> v2.8.5
 #### Listen to file modifications
 
 <a href="http://opensource.org/licenses/mit-license">MIT</a> whitelisted
@@ -487,7 +488,7 @@ added from the {LTSW collection}[http://www.ltsw.se/knbase/internet/mime.htp]
 and added by the users of MIME::Types.
 
 <a name="mini_portile"></a>
-### <a href="http://github.com/luislavena/mini_portile">mini_portile</a> v0.6.1
+### <a href="http://github.com/flavorjones/mini_portile">mini_portile</a> v0.6.2
 #### Simplistic port-like solution for developers
 
 <a href="http://opensource.org/licenses/mit-license">MIT</a> whitelisted
@@ -566,7 +567,7 @@ Provides swappable XML backends utilizing LibXML, Nokogiri, Ox, or REXML.
 Use with Net::HTTP to do multipart form posts.  IO values that have #content_type, #original_filename, and #local_path will be posted as a binary file.
 
 <a name="nenv"></a>
-### <a href="https://github.com/e2/nenv">nenv</a> v0.1.1
+### <a href="https://github.com/e2/nenv">nenv</a> v0.2.0
 #### Convenience wrapper for Ruby's ENV
 
 <a href="http://opensource.org/licenses/mit-license">MIT</a> whitelisted
@@ -611,7 +612,7 @@ and retry according to RFC 2616.
 A pure Ruby implementation of the SCP client protocol
 
 <a name="net-ssh"></a>
-### <a href="https://github.com/net-ssh/net-ssh">net-ssh</a> v2.9.1
+### <a href="https://github.com/net-ssh/net-ssh">net-ssh</a> v2.9.2
 #### Net::SSH: a pure-Ruby implementation of the SSH2 client protocol.
 
 <a href="http://opensource.org/licenses/mit-license">MIT</a> whitelisted
@@ -635,7 +636,7 @@ A simple library to assist in establishing tunneled Net::SSH connections
 Control multiple Net::SSH connections via a single interface.
 
 <a name="nio4r"></a>
-### <a href="https://github.com/celluloid/nio4r">nio4r</a> v1.0.1
+### <a href="https://github.com/celluloid/nio4r">nio4r</a> v1.1.0
 #### NIO provides a high performance selector API for monitoring IO objects
 
 <a href="http://opensource.org/licenses/mit-license">MIT</a> whitelisted
@@ -643,7 +644,7 @@ Control multiple Net::SSH connections via a single interface.
 New IO for Ruby
 
 <a name="nokogiri"></a>
-### <a href="http://nokogiri.org">nokogiri</a> v1.6.5
+### <a href="http://nokogiri.org">nokogiri</a> v1.6.6.2
 #### Nokogiri (鋸) is an HTML, XML, SAX, and Reader parser
 
 <a href="http://opensource.org/licenses/mit-license">MIT</a> whitelisted
@@ -653,6 +654,14 @@ many features is the ability to search documents via XPath or CSS3 selectors.
 
 XML is like violence - if it doesn’t solve your problems, you are not using
 enough of it.
+
+<a name="notiffany"></a>
+### notiffany v0.0.3
+#### Notifier library (extracted from Guard project)
+
+<a href="http://opensource.org/licenses/mit-license">MIT</a> whitelisted
+
+Single wrapper for most popular notification libraries
 
 <a name="octokit"></a>
 ### <a href="https://github.com/octokit/octokit.rb">octokit</a> v3.7.0
@@ -671,7 +680,7 @@ Simple wrapper for the GitHub API
 Ohai profiles your system and emits JSON
 
 <a name="parser"></a>
-### <a href="http://github.com/whitequark/parser">parser</a> v2.2.0.1
+### <a href="https://github.com/whitequark/parser">parser</a> v2.2.0.2
 #### A Ruby parser written in pure Ruby.
 
 <a href="http://opensource.org/licenses/mit-license">MIT</a> whitelisted
@@ -741,7 +750,11 @@ Colorize printed text on ANSI terminals
 ### <a href="https://github.com/ruby/rake">rake</a> v10.4.2 (default)
 #### Rake is a Make-like program implemented in Ruby
 
-<a href="http://opensource.org/licenses/mit-license">MIT</a> whitelisted
+<a href="http://opensource.org/licenses/mit-license">MIT</a> manually approved
+
+>
+
+><cite>  2015-01-28</cite>
 
 Rake is a Make-like program implemented in Ruby. Tasks and dependencies are
 specified in standard Ruby syntax.
@@ -783,7 +796,7 @@ FSEvents API with Signals catching (without RubyCocoa)
 A Ruby wrapper for Linux's inotify, using FFI
 
 <a name="retryable"></a>
-### <a href="http://github.com/nfedyashev/retryable">retryable</a> v1.3.6
+### <a href="http://github.com/nfedyashev/retryable">retryable</a> v2.0.0
 #### Kernel#retryable, allow for retrying of code blocks.
 
 <a href="http://opensource.org/licenses/mit-license">MIT</a> whitelisted
@@ -791,7 +804,7 @@ A Ruby wrapper for Linux's inotify, using FFI
 Kernel#retryable, allow for retrying of code blocks.
 
 <a name="ridley"></a>
-### <a href="https://github.com/RiotGames/ridley">ridley</a> v4.1.1
+### <a href="https://github.com/RiotGames/ridley">ridley</a> v4.1.2
 #### A reliable Chef API client with a clean syntax
 
 <a href="http://www.apache.org/licenses/LICENSE-2.0.txt">Apache 2.0</a> whitelisted
@@ -899,7 +912,7 @@ Parse YAML safely
 An elegant library for representing and comparing SemVer versions and constraints
 
 <a name="sequel"></a>
-### <a href="http://sequel.jeremyevans.net">sequel</a> v4.17.0
+### <a href="http://sequel.jeremyevans.net">sequel</a> v4.18.0
 #### The Database Toolkit for Ruby
 
 <a href="http://opensource.org/licenses/mit-license">MIT</a> whitelisted
@@ -907,12 +920,20 @@ An elegant library for representing and comparing SemVer versions and constraint
 The Database Toolkit for Ruby
 
 <a name="serverspec"></a>
-### <a href="http://serverspec.org/">serverspec</a> v2.7.1 (default)
+### <a href="http://serverspec.org/">serverspec</a> v2.8.0 (default)
 #### RSpec tests for your servers configured by Puppet, Chef or anything else
 
 <a href="http://opensource.org/licenses/mit-license">MIT</a> whitelisted
 
 RSpec tests for your servers configured by Puppet, Chef or anything else
+
+<a name="shellany"></a>
+### shellany v0.0.1
+#### Simple, somewhat portable command capturing
+
+<a href="http://opensource.org/licenses/mit-license">MIT</a> whitelisted
+
+MRI+JRuby compatible command output capturing
 
 <a name="slop"></a>
 ### <a href="http://github.com/leejarvis/slop">slop</a> v3.6.0
@@ -931,7 +952,7 @@ A simple DSL for gathering options and parsing the command line
 A Ruby version constraint solver
 
 <a name="specinfra"></a>
-### specinfra v2.11.2
+### specinfra v2.12.0
 #### Common layer for serverspec and itamae
 
 <a href="http://opensource.org/licenses/mit-license">MIT</a> whitelisted
@@ -959,7 +980,7 @@ Note that this module is only compatible with SQLite 3.6.16 or newer.
 universal capture of stdout and stderr and handling of child process pid for windows, *nix, etc.
 
 <a name="test-kitchen"></a>
-### <a href="http://kitchen.ci">test-kitchen</a> v1.2.2.dev (integration)
+### <a href="http://kitchen.ci">test-kitchen</a> v1.3.1 (integration)
 #### Test Kitchen is an integration tool for developing and testing infrastructure code and software on isolated target platforms.
 
 <a href="http://www.apache.org/licenses/LICENSE-2.0.txt">Apache 2.0</a> whitelisted

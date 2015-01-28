@@ -11,7 +11,12 @@ end
 action :create do
   unless @current_resource.exists
     converge_by "Create PostgreSQL Language #{new_resource.name}" do
-      execute "createlang #{new_resource.name} #{new_resource.database}" do
+      if language_package_needed?
+        package "postgresql-contrib-#{pg_version}"
+        package language_package_map[new_resource.name]
+      end
+
+      execute "createlang #{language_name} #{new_resource.database}" do
         user "postgres"
       end
 
@@ -23,8 +28,14 @@ end
 action :drop do
   if @current_resource.exists
     converge_by "Drop PostgreSQL Language #{new_resource.name}" do
-      execute "droplang #{new_resource.name} #{new_resource.database}" do
+      execute "droplang #{language_name} #{new_resource.database}" do
         user "postgres"
+      end
+
+      if language_package_needed?  # ~FC023 - scope
+        package language_package_map[new_resource.name] do
+          action :purge
+        end
       end
 
       new_resource.updated_by_last_action(true)
@@ -40,9 +51,41 @@ def load_current_resource
 end
 
 def language_exists?
-  exists = %(psql -c 'SELECT lanname FROM pg_catalog.pg_language' #{new_resource.database} | grep '^ #{new_resource.name}$') # rubocop:disable LineLength
+  exists = %(psql -c 'SELECT lanname FROM pg_catalog.pg_language' #{new_resource.database} | grep '^ #{language_name}$') # rubocop:disable LineLength
 
   cmd = Mixlib::ShellOut.new(exists, user: "postgres")
   cmd.run_command
   cmd.exitstatus.zero?
+end
+
+def language_name
+  control_file_name_for_language(new_resource.name)
+end
+
+def language_package_needed?
+  language_package_map.keys.include?(new_resource.name)
+end
+
+def control_file_name_for_language(language)
+  control_file_map = {
+    "plpython" => "plpythonu",
+    "plpython3" => "plpython3u"
+  }
+
+  # fetch the name or passthrough the key
+  control_file_map.fetch(language) { |key| key }
+end
+
+def language_package_map
+  {
+    "plperl" => "postgresql-plperl-#{pg_version}",
+    "plpython" => "postgresql-plpython-#{pg_version}",
+    "plpython3" => "postgresql-plpython3-#{pg_version}",
+    "pltcl" => "postgresql-pltcl-#{pg_version}",
+    "plv8" => "postgresql-#{pg_version}-plv8"
+  }
+end
+
+def pg_version
+  new_resource.db_version
 end

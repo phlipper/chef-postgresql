@@ -6,7 +6,7 @@ describe "postgresql::default" do
   end
 
   it "adds an apt preference" do
-    expect(chef_run).to add_apt_preference("pgdg.pref")
+    expect(chef_run).to add_apt_preference("pgdg")
   end
 
   it "sets up an apt repository" do

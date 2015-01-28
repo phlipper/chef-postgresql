@@ -76,13 +76,23 @@ describe "PostgreSQL users, databases, and extensions" do
     its(:exit_status) { should eq 1 }
   end
 
-  %w[dblink hstore uuid-ossp].each do |extension|
+  %w[dblink hstore pgcrypto uuid-ossp].each do |extension|
     describe command(cmd_extension_exists("testdb", extension)) do
       its(:exit_status) { should eq 0 }
     end
   end
 
   describe command(cmd_extension_exists("testdb", "fake_extension")) do
+    its(:exit_status) { should eq 1 }
+  end
+
+  %w[plpgsql plperl plpythonu plpython3u pltcl plv8].each do |language|
+    describe command(cmd_language_exists("testdb", language)) do
+      its(:exit_status) { should eq 0 }
+    end
+  end
+
+  describe command(cmd_language_exists("testdb", "fake_language")) do
     its(:exit_status) { should eq 1 }
   end
 end

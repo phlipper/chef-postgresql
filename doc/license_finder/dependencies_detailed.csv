@@ -3,8 +3,8 @@ Ruby's standard library. It more closely conforms to the relevant RFCs and
 adds support for IRIs and URI templates."
 ast,2.0.0,MIT,A library for working with Abstract Syntax Trees.,A library for working with Abstract Syntax Trees.
 astrolabe,1.3.0,MIT,An object-oriented AST extension for Parser,An object-oriented AST extension for Parser
-berkshelf,3.2.2,Apache 2.0,"Manages a Cookbook's, or an Application's, Cookbook dependencies","Manages a Cookbook's, or an Application's, Cookbook dependencies"
-berkshelf-api-client,1.2.0,Apache 2.0,API Client for communicating with a Berkshelf API server,API Client for communicating with a Berkshelf API server
+berkshelf,3.2.3,Apache 2.0,"Manages a Cookbook's, or an Application's, Cookbook dependencies","Manages a Cookbook's, or an Application's, Cookbook dependencies"
+berkshelf-api-client,1.2.1,Apache 2.0,API Client for communicating with a Berkshelf API server,API Client for communicating with a Berkshelf API server
 buff-config,1.0.1,Apache 2.0,A simple configuration class,A simple configuration class
 buff-extensions,1.0.0,Apache 2.0,Extensions to Core Ruby classes,Extensions to Core Ruby classes
 buff-ignore,1.1.1,Apache 2.0,A Ruby library for parsing lists of files and applying pattern matching exclusion (such as .gitignore),Parse ignore files with Ruby
@@ -46,15 +46,15 @@ erubis,2.7.0,MIT,a fast and extensible eRuby implementation which supports multi
   * Print statement available
   * Easy to extend and customize in subclass
   * Ruby on Rails support"
-faraday,0.9.0,MIT,HTTP/REST API client library.,""
+faraday,0.9.1,MIT,HTTP/REST API client library.,""
 fauxhai,2.2.0,MIT,Fauxhai provides an easy way to mock out your ohai data for testing with chefspec!,Easily mock out ohai data
 ffi,1.9.6,BSD,Ruby FFI,Ruby FFI library
 ffi-yajl,1.3.1,Apache 2.0,Ruby FFI wrapper around YAJL 2.x,Ruby FFI wrapper around YAJL 2.x
 foodcritic,4.0.0,MIT,foodcritic-4.0.0,Lint tool for Opscode Chef cookbooks.
 formatador,0.2.5,MIT,Ruby STDOUT text formatting,STDOUT text formatting
 gherkin,2.12.2,MIT,gherkin-2.12.2,A fast Gherkin lexer/parser based on the Ragel State Machine Compiler.
-guard,2.10.5,MIT,Guard keeps an eye on your file modifications,Guard is a command line tool to easily handle events on file system modifications.
-guard-compat,1.2.0,MIT,Tools for developing Guard compatible plugins,Helps creating valid Guard plugins and testing them
+guard,2.11.1,MIT,Guard keeps an eye on your file modifications,Guard is a command line tool to easily handle events on file system modifications.
+guard-compat,1.2.1,MIT,Tools for developing Guard compatible plugins,Helps creating valid Guard plugins and testing them
 guard-rspec,4.5.0,MIT,Guard gem for RSpec,Guard::RSpec automatically run your specs (much like autotest).
 guard-rubocop,1.2.0,MIT,Guard plugin for RuboCop,Guard::Rubocop automatically checks Ruby code style with RuboCop when files are modified.
 hashie,2.1.2,MIT,Your friendly neighborhood hash library.,Hashie is a collection of classes and mixins that make hashes more powerful.
@@ -68,14 +68,14 @@ ipaddress,0.8.0,MIT,IPv4/IPv6 addresses manipulation library,"IPAddress is a Rub
       of IPv4 and IPv6 addresses both powerful and simple. It mantains
       a layer of compatibility with Ruby's own IPAddr, while 
       addressing many of its issues."
-json,1.8.1,ruby,This json is bundled with Ruby,""
+json,1.8.2,ruby,JSON Implementation for Ruby,This is a JSON implementation as a Ruby extension in C.
 kitchen-vagrant,0.15.0,Apache 2.0,Kitchen::Driver::Vagrant - A Vagrant Driver for Test Kitchen.,Kitchen::Driver::Vagrant - A Vagrant Driver for Test Kitchen.
 libyajl2,1.2.0,Apache 2.0,Installs a vendored copy of libyajl2 for distributions which lack it,Installs a vendored copy of libyajl2 for distributions which lack it
 license_finder,1.2,MIT,Audit the OSS licenses of your application's dependencies.,"LicenseFinder works with your package managers to find
     dependencies, detect the licenses of the packages in them, compare
     those licenses against a user-defined whitelist, and give you an
     actionable exception report."
-listen,2.8.4,MIT,Listen to file modifications,The Listen gem listens to file modifications and notifies you about the changes. Works everywhere!
+listen,2.8.5,MIT,Listen to file modifications,The Listen gem listens to file modifications and notifies you about the changes. Works everywhere!
 lumberjack,1.0.9,MIT,"A simple, powerful, and very fast logging utility that can be a drop in replacement for Logger or ActiveSupport::BufferedLogger.","A simple, powerful, and very fast logging utility that can be a drop in replacement for Logger or ActiveSupport::BufferedLogger. Provides support for automatically rolling log files even with multiple processes writing the same log file."
 method_source,0.8.2,MIT,retrieve the sourcecode for a method,retrieve the sourcecode for a method
 mime-types,1.25.1,"MIT,Artistic 2.0,GPL-2",This library allows for the identification of a file's likely MIME content type,"This library allows for the identification of a file's likely MIME content
@@ -126,7 +126,7 @@ tracks the {IANA registry}[http://www.iana.org/assignments/media-types/]
 ({ftp}[ftp://ftp.iana.org/assignments/media-types]) with some unofficial types
 added from the {LTSW collection}[http://www.ltsw.se/knbase/internet/mime.htp]
 and added by the users of MIME::Types."
-mini_portile,0.6.1,MIT,Simplistic port-like solution for developers,Simplistic port-like solution for developers. It provides a standard and simplified way to compile against dependency libraries without messing up your system.
+mini_portile,0.6.2,MIT,Simplistic port-like solution for developers,Simplistic port-like solution for developers. It provides a standard and simplified way to compile against dependency libraries without messing up your system.
 minitar,0.5.4,ruby,Provides POSIX tarchive management from Ruby programs.,"Archive::Tar::Minitar is a pure-Ruby library and command-line utility that provides the ability to deal with POSIX tar(1) archive files. The implementation is based heavily on Mauricio Ferna'ndez's implementation in rpa-base, but has been reorganised to promote reuse in other projects. Antoine Toulme forked the original project on rubyforge to place it on github, under http://www.github.com/atoulme/minitar"
 mixlib-authentication,1.3.0,Apache 2.0,Mixes in simple per-request authentication,Mixes in simple per-request authentication
 mixlib-cli,1.5.0,Apache 2.0,"A simple mixin for CLI interfaces, including option parsing","A simple mixin for CLI interfaces, including option parsing"
@@ -136,7 +136,7 @@ mixlib-shellout,2.0.1,Apache 2.0,Run external commands on Unix or Windows,Run ex
 multi_json,1.10.1,MIT,A common interface to multiple JSON libraries.,"A common interface to multiple JSON libraries, including Oj, Yajl, the JSON gem (with C-extensions), the pure-Ruby JSON gem, NSJSONSerialization, gson.rb, JrJackson, and OkJson."
 multi_xml,0.5.5,MIT,A generic swappable back-end for XML parsing,"Provides swappable XML backends utilizing LibXML, Nokogiri, Ox, or REXML."
 multipart-post,2.0.0,MIT,A multipart form post accessory for Net::HTTP.,"Use with Net::HTTP to do multipart form posts.  IO values that have #content_type, #original_filename, and #local_path will be posted as a binary file."
-nenv,0.1.1,MIT,Convenience wrapper for Ruby's ENV,Using ENV is like using raw SQL statements in your code. We all know how that ends...
+nenv,0.2.0,MIT,Convenience wrapper for Ruby's ENV,Using ENV is like using raw SQL statements in your code. We all know how that ends...
 net-dhcp,1.3.2,other,set of classes to low level handle the DHCP protocol,"The aim of Net::DHCP is to provide a set of classes to low level handle the DHCP protocol (rfc2131, rfc2132, etc.). With Net::DHCP you will be able to craft custom DHCP packages and have access to all the fields defined for the protocol."
 net-http-persistent,2.9.4,MIT,Manages persistent connections using Net::HTTP plus a speed fix for Ruby 1.8,"Manages persistent connections using Net::HTTP plus a speed fix for Ruby 1.8.
 It's thread-safe too!
@@ -149,18 +149,19 @@ Net::HTTP supports persistent connections with some API methods but does not
 handle reconnection gracefully.  Net::HTTP::Persistent supports reconnection
 and retry according to RFC 2616."
 net-scp,1.2.1,MIT,A pure Ruby implementation of the SCP client protocol,A pure Ruby implementation of the SCP client protocol
-net-ssh,2.9.1,MIT,Net::SSH: a pure-Ruby implementation of the SSH2 client protocol.,"Net::SSH: a pure-Ruby implementation of the SSH2 client protocol. It allows you to write programs that invoke and interact with processes on remote servers, via SSH2."
+net-ssh,2.9.2,MIT,Net::SSH: a pure-Ruby implementation of the SSH2 client protocol.,"Net::SSH: a pure-Ruby implementation of the SSH2 client protocol. It allows you to write programs that invoke and interact with processes on remote servers, via SSH2."
 net-ssh-gateway,1.2.0,MIT,A simple library to assist in establishing tunneled Net::SSH connections,A simple library to assist in establishing tunneled Net::SSH connections
 net-ssh-multi,1.2.0,MIT,Control multiple Net::SSH connections via a single interface.,Control multiple Net::SSH connections via a single interface.
-nio4r,1.0.1,MIT,NIO provides a high performance selector API for monitoring IO objects,New IO for Ruby
-nokogiri,1.6.5,MIT,"Nokogiri (鋸) is an HTML, XML, SAX, and Reader parser","Nokogiri (鋸) is an HTML, XML, SAX, and Reader parser.  Among Nokogiri's
+nio4r,1.1.0,MIT,NIO provides a high performance selector API for monitoring IO objects,New IO for Ruby
+nokogiri,1.6.6.2,MIT,"Nokogiri (鋸) is an HTML, XML, SAX, and Reader parser","Nokogiri (鋸) is an HTML, XML, SAX, and Reader parser.  Among Nokogiri's
 many features is the ability to search documents via XPath or CSS3 selectors.
 
 XML is like violence - if it doesn’t solve your problems, you are not using
 enough of it."
+notiffany,0.0.3,MIT,Notifier library (extracted from Guard project),Single wrapper for most popular notification libraries
 octokit,3.7.0,MIT,Ruby toolkit for working with the GitHub API,Simple wrapper for the GitHub API
 ohai,8.0.1,Apache 2.0,Ohai profiles your system and emits JSON,Ohai profiles your system and emits JSON
-parser,2.2.0.1,MIT,A Ruby parser written in pure Ruby.,A Ruby parser written in pure Ruby.
+parser,2.2.0.2,MIT,A Ruby parser written in pure Ruby.,A Ruby parser written in pure Ruby.
 plist,3.1.0,MIT,All-purpose Property List manipulation library.,"Plist is a library to manipulate Property List files, also known as plists.  It can parse plist files into native Ruby data structures as well as generating new plist files from your Ruby objects."
 polyglot,0.3.5,MIT,Augment 'require' to load non-Ruby file types,"The Polyglot library allows a Ruby module to register a loader
 for the file type associated with a filename extension, and it
@@ -199,8 +200,8 @@ Rake has the following features:
 * Supports parallel execution of tasks."
 rb-fsevent,0.9.4,MIT,Very simple & usable FSEvents API,FSEvents API with Signals catching (without RubyCocoa)
 rb-inotify,0.9.5,MIT,"A Ruby wrapper for Linux's inotify, using FFI","A Ruby wrapper for Linux's inotify, using FFI"
-retryable,1.3.6,MIT,"Kernel#retryable, allow for retrying of code blocks.","Kernel#retryable, allow for retrying of code blocks."
-ridley,4.1.1,Apache 2.0,A reliable Chef API client with a clean syntax,A reliable Chef API client with a clean syntax
+retryable,2.0.0,MIT,"Kernel#retryable, allow for retrying of code blocks.","Kernel#retryable, allow for retrying of code blocks."
+ridley,4.1.2,Apache 2.0,A reliable Chef API client with a clean syntax,A reliable Chef API client with a clean syntax
 rspec,3.1.0,MIT,rspec-3.1.0,BDD for Ruby
 rspec-core,3.1.7,MIT,rspec-core-3.1.7,BDD for Ruby. RSpec runner and example groups.
 rspec-expectations,3.1.2,MIT,rspec-expectations-3.1.2,"rspec-expectations provides a simple, readable API to express expected outcomes of a code example."
@@ -216,18 +217,19 @@ rufus-lru,1.0.5,MIT,"A Hash with a max size, controlled by a LRU mechanism","Lru
 safe_yaml,1.0.4,MIT,SameYAML provides an alternative implementation of YAML.load suitable for accepting user input in Ruby applications.,Parse YAML safely
 sawyer,0.6.0,MIT,Secret User Agent of HTTP,""
 semverse,1.2.1,Apache 2.0,An elegant library for representing and comparing SemVer versions and constraints,An elegant library for representing and comparing SemVer versions and constraints
-sequel,4.17.0,MIT,The Database Toolkit for Ruby,The Database Toolkit for Ruby
-serverspec,2.7.1,MIT,"RSpec tests for your servers configured by Puppet, Chef or anything else","RSpec tests for your servers configured by Puppet, Chef or anything else"
+sequel,4.18.0,MIT,The Database Toolkit for Ruby,The Database Toolkit for Ruby
+serverspec,2.8.0,MIT,"RSpec tests for your servers configured by Puppet, Chef or anything else","RSpec tests for your servers configured by Puppet, Chef or anything else"
+shellany,0.0.1,MIT,"Simple, somewhat portable command capturing",MRI+JRuby compatible command output capturing
 slop,3.6.0,MIT,Simple Lightweight Option Parsing,A simple DSL for gathering options and parsing the command line
 solve,1.2.1,Apache 2.0,A Ruby version constraint solver implementing Semantic Versioning 2.0.0-rc.1,A Ruby version constraint solver
-specinfra,2.11.2,MIT,Common layer for serverspec and itamae,Common layer for serverspec and itamae
+specinfra,2.12.0,MIT,Common layer for serverspec and itamae,Common layer for serverspec and itamae
 sqlite3,1.3.10,New BSD,This module allows Ruby programs to interface with the SQLite3 database engine (http://www.sqlite.org),"This module allows Ruby programs to interface with the SQLite3
 database engine (http://www.sqlite.org).  You must have the
 SQLite engine installed in order to build this module.
 
 Note that this module is only compatible with SQLite 3.6.16 or newer."
 systemu,2.6.4,ruby,systemu,"universal capture of stdout and stderr and handling of child process pid for windows, *nix, etc."
-test-kitchen,1.2.2.dev,Apache 2.0,Test Kitchen is an integration tool for developing and testing infrastructure code and software on isolated target platforms.,Test Kitchen is an integration tool for developing and testing infrastructure code and software on isolated target platforms.
+test-kitchen,1.3.1,Apache 2.0,Test Kitchen is an integration tool for developing and testing infrastructure code and software on isolated target platforms.,Test Kitchen is an integration tool for developing and testing infrastructure code and software on isolated target platforms.
 thor,0.19.1,MIT,Thor is a toolkit for building powerful command-line interfaces.,Thor is a toolkit for building powerful command-line interfaces.
 timers,4.0.1,MIT,"Schedule procs to run after a certain time, or at periodic intervals, using any API that accepts a timeout",Pure Ruby one-shot and periodic timers
 treetop,1.5.3,MIT,A Ruby-based text parsing and interpretation DSL,""
