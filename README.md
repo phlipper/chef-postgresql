@@ -3,7 +3,7 @@
 ## Flair
 
 ![Cookbook Version](https://img.shields.io/badge/cookbook-0.16.0-blue.svg)
-[![License](https://img.shields.io/badge/license-MIT-blue.svg)](http://phlipper.mit-license.org/2012-2014/license.html)
+[![License](https://img.shields.io/badge/license-MIT-blue.svg)](http://phlipper.mit-license.org/2012-2015/license.html)
 [![Build Status](http://img.shields.io/travis-ci/phlipper/chef-postgresql.png)](https://travis-ci.org/phlipper/chef-postgresql)
 [![Gitter](https://img.shields.io/badge/Gitter%2Eim-Join_Chat_→-yellow.svg)](https://gitter.im/phlipper/chef-postgresql)
 ![It Works On My Machine™](https://img.shields.io/badge/It_Works-On_My_Machine%E2%84%A2-orange.svg)
@@ -728,6 +728,6 @@ Many thanks go to the following who have contributed to making this cookbook eve
 
 **chef-postgresql**
 
-* Freely distributable and licensed under the [MIT license](http://phlipper.mit-license.org/2012-2014/license.html).
-* Copyright (c) 2012-2014 Phil Cohen (github@phlippers.net)
+* Freely distributable and licensed under the [MIT license](http://phlipper.mit-license.org/2012-2015/license.html).
+* Copyright (c) 2012-2015 Phil Cohen (github@phlippers.net)
 * http://phlippers.net/
