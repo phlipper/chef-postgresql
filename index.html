@@ -27,7 +27,16 @@
         </ul>
       </header>
       <section>
-        <p><a href="https://travis-ci.org/phlipper/chef-postgresql"><img src="http://img.shields.io/travis-ci/phlipper/chef-postgresql.png" alt="Build Status"></a></p>
+        <h2>
+<a id="flair" class="anchor" href="#flair" aria-hidden="true"><span class="octicon octicon-link"></span></a>Flair</h2>
+
+<p><img src="https://img.shields.io/badge/cookbook-0.16.1-blue.svg" alt="Cookbook Version">
+<a href="http://phlipper.mit-license.org/2012-2015/license.html"><img src="https://img.shields.io/badge/license-MIT-blue.svg" alt="License"></a>
+<a href="https://travis-ci.org/phlipper/chef-postgresql"><img src="http://img.shields.io/travis-ci/phlipper/chef-postgresql.png" alt="Build Status"></a>
+<a href="https://gitter.im/phlipper/chef-postgresql"><img src="https://img.shields.io/badge/Gitter%2Eim-Join_Chat_%E2%86%92-yellow.svg" alt="Gitter"></a>
+<img src="https://img.shields.io/badge/It_Works-On_My_Machine%E2%84%A2-orange.svg" alt="It Works On My Machine™">
+<a href="https://gratipay.com/phlipper/"><img src="http://img.shields.io/gratipay/phlipper.png" alt="Tip"></a>
+<a href="http://coderwall.com/phlipper"><img src="http://api.coderwall.com/phlipper/endorsecount.png" alt="Endorse"></a></p>
 
 <h2>
 <a id="description" class="anchor" href="#description" aria-hidden="true"><span class="octicon octicon-link"></span></a>Description</h2>
@@ -43,9 +52,10 @@
 <li><code>9.1</code></li>
 <li><code>9.2</code></li>
 <li><code>9.3</code></li>
+<li><code>9.4</code></li>
 </ul>
 
-<p>The default version is <code>9.3</code>.</p>
+<p>The default version is <code>9.4</code>.</p>
 
 <h2>
 <a id="requirements" class="anchor" href="#requirements" aria-hidden="true"><span class="octicon octicon-link"></span></a>Requirements</h2>
@@ -59,6 +69,11 @@
 <li>Ubuntu 12.04+</li>
 <li>Debian 6+</li>
 </ul>
+
+<h3>
+<a id="chef" class="anchor" href="#chef" aria-hidden="true"><span class="octicon octicon-link"></span></a>Chef</h3>
+
+<p>This cookbook requires Chef &gt;= 11.13 due to the use of the <code>sensitive</code> attribute for some resources.</p>
 
 <h3>
 <a id="cookbooks" class="anchor" href="#cookbooks" aria-hidden="true"><span class="octicon octicon-link"></span></a>Cookbooks</h3>
@@ -95,10 +110,6 @@
 <li>
 <code>postgresql::libpq</code> - PostgreSQL C client library and header files for libpq5 (PostgreSQL library)</li>
 <li>
-<code>postgresql::pg_database</code> - Internal recipe to manage specified databases</li>
-<li>
-<code>postgresql::pg_user</code> - Internal recipe to manage specified users</li>
-<li>
 <code>postgresql::postgis</code> - Geographic objects support for PostgreSQL 9.x <em>(currently Ubuntu only)</em>
 </li>
 <li>
@@ -107,6 +118,14 @@
 <code>postgresql::server_dev</code> - Development files for PostgreSQL server-side programming</li>
 <li>
 <code>postgresql::service</code> - Internal recipe to declare the system service</li>
+<li>
+<code>postgresql::setup_databases</code> - Internal recipe to manage specified databases</li>
+<li>
+<code>postgresql::setup_extensions</code> - Internal recipe to manage specified database extensions</li>
+<li>
+<code>postgresql::setup_languages</code> - Internal recipe to manage specified database languages</li>
+<li>
+<code>postgresql::setup_users</code> - Internal recipe to manage specified users</li>
 </ul>
 
 <h2>
@@ -119,21 +138,27 @@
 <h3>
 <a id="users" class="anchor" href="#users" aria-hidden="true"><span class="octicon octicon-link"></span></a>Users</h3>
 
-<div class="highlight highlight-ruby"><pre><span class="pl-c"><span class="pl-pdc">#</span> create a user</span>
-pg_user <span class="pl-s1"><span class="pl-pds">"</span>myuser<span class="pl-pds">"</span></span> <span class="pl-k">do</span>
-  privileges <span class="pl-cos">superuser<span class="pl-pdc1">:</span></span> <span class="pl-c1">false</span>, <span class="pl-cos">replication<span class="pl-pdc1">:</span></span> <span class="pl-c1">false</span>, <span class="pl-cos">createdb<span class="pl-pdc1">:</span></span> <span class="pl-c1">false</span>, <span class="pl-cos">login<span class="pl-pdc1">:</span></span> <span class="pl-c1">true</span>
+<div class="highlight highlight-ruby"><pre><span class="pl-c"># create a user</span>
+postgresql_user <span class="pl-s1"><span class="pl-pds">"</span>myuser<span class="pl-pds">"</span></span> <span class="pl-k">do</span>
+  superuser <span class="pl-c1">false</span>
+  createdb <span class="pl-c1">false</span>
+  login <span class="pl-c1">true</span>
+  replication <span class="pl-c1">false</span>
   password <span class="pl-s1"><span class="pl-pds">"</span>mypassword<span class="pl-pds">"</span></span>
 <span class="pl-k">end</span>
 
-<span class="pl-c"><span class="pl-pdc">#</span> create a user with an MD5-encrypted password</span>
-pg_user <span class="pl-s1"><span class="pl-pds">"</span>myuser<span class="pl-pds">"</span></span> <span class="pl-k">do</span>
-  privileges <span class="pl-cos">superuser<span class="pl-pdc1">:</span></span> <span class="pl-c1">false</span>, <span class="pl-cos">replication<span class="pl-pdc1">:</span></span> <span class="pl-c1">false</span>, <span class="pl-cos">createdb<span class="pl-pdc1">:</span></span> <span class="pl-c1">false</span>, <span class="pl-cos">login<span class="pl-pdc1">:</span></span> <span class="pl-c1">true</span>
+<span class="pl-c"># create a user with an MD5-encrypted password</span>
+postgresql_user <span class="pl-s1"><span class="pl-pds">"</span>myuser<span class="pl-pds">"</span></span> <span class="pl-k">do</span>
+  superuser <span class="pl-c1">false</span>
+  createdb <span class="pl-c1">false</span>
+  login <span class="pl-c1">true</span>
+  replication <span class="pl-c1">false</span>
   encrypted_password <span class="pl-s1"><span class="pl-pds">"</span>667ff118ef6d196c96313aeaee7da519<span class="pl-pds">"</span></span>
 <span class="pl-k">end</span>
 
-<span class="pl-c"><span class="pl-pdc">#</span> drop a user</span>
-pg_user <span class="pl-s1"><span class="pl-pds">"</span>myuser<span class="pl-pds">"</span></span> <span class="pl-k">do</span>
-  action <span class="pl-cos"><span class="pl-pdc1">:</span>drop</span>
+<span class="pl-c"># drop a user</span>
+postgresql_user <span class="pl-s1"><span class="pl-pds">"</span>myuser<span class="pl-pds">"</span></span> <span class="pl-k">do</span>
+  action <span class="pl-c1">:drop</span>
 <span class="pl-k">end</span></pre></div>
 
 <p>Or add users via attributes:</p>
@@ -146,6 +171,9 @@ pg_user <span class="pl-s1"><span class="pl-pds">"</span>myuser<span class="pl-p
       <span class="pl-s1"><span class="pl-pds">"</span>superuser<span class="pl-pds">"</span></span>: <span class="pl-c1">true</span>,
       <span class="pl-s1"><span class="pl-pds">"</span>replication<span class="pl-pds">"</span></span>: <span class="pl-c1">false</span>,
       <span class="pl-s1"><span class="pl-pds">"</span>createdb<span class="pl-pds">"</span></span>: <span class="pl-c1">true</span>,
+      <span class="pl-s1"><span class="pl-pds">"</span>createrole<span class="pl-pds">"</span></span>: <span class="pl-c1">false</span>,
+      <span class="pl-s1"><span class="pl-pds">"</span>inherit<span class="pl-pds">"</span></span>: <span class="pl-c1">true</span>,
+      <span class="pl-s1"><span class="pl-pds">"</span>replication<span class="pl-pds">"</span></span>: <span class="pl-c1">false</span>,
       <span class="pl-s1"><span class="pl-pds">"</span>login<span class="pl-pds">"</span></span>: <span class="pl-c1">true</span>
     }
   ]
@@ -154,30 +182,32 @@ pg_user <span class="pl-s1"><span class="pl-pds">"</span>myuser<span class="pl-p
 <h3>
 <a id="databases-and-extensions" class="anchor" href="#databases-and-extensions" aria-hidden="true"><span class="octicon octicon-link"></span></a>Databases and Extensions</h3>
 
-<div class="highlight highlight-ruby"><pre><span class="pl-c"><span class="pl-pdc">#</span> create a database</span>
-pg_database <span class="pl-s1"><span class="pl-pds">"</span>mydb<span class="pl-pds">"</span></span> <span class="pl-k">do</span>
+<div class="highlight highlight-ruby"><pre><span class="pl-c"># create a database</span>
+postgresql_database <span class="pl-s1"><span class="pl-pds">"</span>mydb<span class="pl-pds">"</span></span> <span class="pl-k">do</span>
   owner <span class="pl-s1"><span class="pl-pds">"</span>myuser<span class="pl-pds">"</span></span>
   encoding <span class="pl-s1"><span class="pl-pds">"</span>UTF-8<span class="pl-pds">"</span></span>
   template <span class="pl-s1"><span class="pl-pds">"</span>template0<span class="pl-pds">"</span></span>
   locale <span class="pl-s1"><span class="pl-pds">"</span>en_US.UTF-8<span class="pl-pds">"</span></span>
 <span class="pl-k">end</span>
 
-<span class="pl-c"><span class="pl-pdc">#</span> install extensions to database</span>
-pg_database_extensions <span class="pl-s1"><span class="pl-pds">"</span>mydb<span class="pl-pds">"</span></span> <span class="pl-k">do</span>
-  languages <span class="pl-s1"><span class="pl-pds">"</span>plpgsql<span class="pl-pds">"</span></span>              <span class="pl-c"><span class="pl-pdc">#</span> install `plpgsql` language - single value may be passed without array</span>
-  extensions [<span class="pl-s1"><span class="pl-pds">"</span>hstore<span class="pl-pds">"</span></span>, <span class="pl-s1"><span class="pl-pds">"</span>dblink<span class="pl-pds">"</span></span>]  <span class="pl-c"><span class="pl-pdc">#</span> install `hstore` and `dblink` extensions - multiple values in array</span>
-  postgis <span class="pl-c1">true</span>                     <span class="pl-c"><span class="pl-pdc">#</span> install `postgis` support</span>
+<span class="pl-c"># install extensions to database</span>
+postgresql_extension <span class="pl-s1"><span class="pl-pds">"</span>hstore<span class="pl-pds">"</span></span> <span class="pl-k">do</span>
+  database <span class="pl-s1"><span class="pl-pds">"</span>mydb<span class="pl-pds">"</span></span>
 <span class="pl-k">end</span>
 
-<span class="pl-c"><span class="pl-pdc">#</span> drop dblink extension</span>
-pg_database_extensions <span class="pl-s1"><span class="pl-pds">"</span>mydb<span class="pl-pds">"</span></span> <span class="pl-k">do</span>
-  action <span class="pl-cos"><span class="pl-pdc1">:</span>drop</span>
-  extensions <span class="pl-s1"><span class="pl-pds">"</span>dblink<span class="pl-pds">"</span></span>
+postgresql_language <span class="pl-s1"><span class="pl-pds">"</span>plpgsql<span class="pl-pds">"</span></span> <span class="pl-k">do</span>
+  database <span class="pl-s1"><span class="pl-pds">"</span>mydb<span class="pl-pds">"</span></span>
 <span class="pl-k">end</span>
 
-<span class="pl-c"><span class="pl-pdc">#</span> drop a database</span>
-pg_database <span class="pl-s1"><span class="pl-pds">"</span>mydb<span class="pl-pds">"</span></span> <span class="pl-k">do</span>
-  action <span class="pl-cos"><span class="pl-pdc1">:</span>drop</span>
+<span class="pl-c"># drop dblink extension</span>
+postgresql_extension <span class="pl-s1"><span class="pl-pds">"</span>dblink<span class="pl-pds">"</span></span> <span class="pl-k">do</span>
+  database <span class="pl-s1"><span class="pl-pds">"</span>mydb<span class="pl-pds">"</span></span>
+  action <span class="pl-c1">:drop</span>
+<span class="pl-k">end</span>
+
+<span class="pl-c"># drop a database</span>
+postgresql_database <span class="pl-s1"><span class="pl-pds">"</span>mydb<span class="pl-pds">"</span></span> <span class="pl-k">do</span>
+  action <span class="pl-c1">:drop</span>
 <span class="pl-k">end</span></pre></div>
 
 <p>Or add the database via attributes:</p>
@@ -190,7 +220,8 @@ pg_database <span class="pl-s1"><span class="pl-pds">"</span>mydb<span class="pl
       <span class="pl-s1"><span class="pl-pds">"</span>template<span class="pl-pds">"</span></span>: <span class="pl-s1"><span class="pl-pds">"</span>template0<span class="pl-pds">"</span></span>,
       <span class="pl-s1"><span class="pl-pds">"</span>encoding<span class="pl-pds">"</span></span>: <span class="pl-s1"><span class="pl-pds">"</span>UTF-8<span class="pl-pds">"</span></span>,
       <span class="pl-s1"><span class="pl-pds">"</span>locale<span class="pl-pds">"</span></span>: <span class="pl-s1"><span class="pl-pds">"</span>en_US.UTF-8<span class="pl-pds">"</span></span>,
-      <span class="pl-s1"><span class="pl-pds">"</span>extensions<span class="pl-pds">"</span></span>: <span class="pl-s1"><span class="pl-pds">"</span>hstore<span class="pl-pds">"</span></span>
+      <span class="pl-s1"><span class="pl-pds">"</span>extensions<span class="pl-pds">"</span></span>: [<span class="pl-s1"><span class="pl-pds">"</span>hstore<span class="pl-pds">"</span></span>, <span class="pl-s1"><span class="pl-pds">"</span>dblink<span class="pl-pds">"</span></span>],
+      <span class="pl-s1"><span class="pl-pds">"</span>postgis<span class="pl-pds">"</span></span>: <span class="pl-c1">true</span>
     }
   ]
 }</pre></div>
@@ -243,395 +274,403 @@ distribution:</p>
 <h2>
 <a id="attributes" class="anchor" href="#attributes" aria-hidden="true"><span class="octicon octicon-link"></span></a>Attributes</h2>
 
-<div class="highlight highlight-ruby"><pre><span class="pl-c"><span class="pl-pdc">#</span> WARNING: If this version number is changed in your own recipes, the</span>
-<span class="pl-c"><span class="pl-pdc">#</span> FILE LOCATIONS (see below) attributes *must* also be overridden in</span>
-<span class="pl-c"><span class="pl-pdc">#</span> order to re-compute the paths with the correct version number.</span>
-default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>version<span class="pl-pds">"</span></span>]                         <span class="pl-ko">=</span> <span class="pl-s1"><span class="pl-pds">"</span>9.3<span class="pl-pds">"</span></span>
+<div class="highlight highlight-ruby"><pre><span class="pl-c"># WARNING: If this version number is changed in your own recipes, the</span>
+<span class="pl-c"># FILE LOCATIONS (see below) attributes *must* also be overridden in</span>
+<span class="pl-c"># order to re-compute the paths with the correct version number.</span>
+default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>version<span class="pl-pds">"</span></span>]                         <span class="pl-k">=</span> <span class="pl-s1"><span class="pl-pds">"</span>9.4<span class="pl-pds">"</span></span>
 
-<span class="pl-c"><span class="pl-pdc">#</span> control how the postgres service is signaled when configuration files are</span>
-<span class="pl-c"><span class="pl-pdc">#</span> updated. by default the service is told to `:restart` (stop, start). if you</span>
-<span class="pl-c"><span class="pl-pdc">#</span> run high availability installation and do not want the service to restart via</span>
-<span class="pl-c"><span class="pl-pdc">#</span> chef you can change this to `:reload`. the caveat is that you will need to</span>
-<span class="pl-c"><span class="pl-pdc">#</span> manually restart the postgres server if you change a setting that requires</span>
-<span class="pl-c"><span class="pl-pdc">#</span> a full restart.</span>
-default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>cfg_update_action<span class="pl-pds">"</span></span>]               <span class="pl-ko">=</span> <span class="pl-cos"><span class="pl-pdc1">:</span>restart</span>
+<span class="pl-c">#----------------------------------------------------------------------------</span>
+<span class="pl-c"># DAEMON CONTROL</span>
+<span class="pl-c">#----------------------------------------------------------------------------</span>
+default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>service_actions<span class="pl-pds">"</span></span>]                 <span class="pl-k">=</span> <span class="pl-s1"><span class="pl-pds">%w[</span>enable start<span class="pl-pds">]</span></span>
 
-<span class="pl-c"><span class="pl-pdc">#</span>----------------------------------------------------------------------------</span>
-<span class="pl-c"><span class="pl-pdc">#</span> APT Repository</span>
-<span class="pl-c"><span class="pl-pdc">#</span>----------------------------------------------------------------------------</span>
-default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>apt_distribution<span class="pl-pds">"</span></span>]                <span class="pl-ko">=</span> node[<span class="pl-s1"><span class="pl-pds">"</span>lsb<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>codename<span class="pl-pds">"</span></span>]
-default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>apt_repository<span class="pl-pds">"</span></span>]                  <span class="pl-ko">=</span> <span class="pl-s1"><span class="pl-pds">"</span>apt.postgresql.org<span class="pl-pds">"</span></span>
-default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>apt_uri<span class="pl-pds">"</span></span>]                         <span class="pl-ko">=</span> <span class="pl-s1"><span class="pl-pds">"</span>http://apt.postgresql.org/pub/repos/apt<span class="pl-pds">"</span></span>
-default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>apt_components<span class="pl-pds">"</span></span>]                  <span class="pl-ko">=</span> [<span class="pl-s1"><span class="pl-pds">"</span>main<span class="pl-pds">"</span></span>]
-default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>apt_key<span class="pl-pds">"</span></span>]                         <span class="pl-ko">=</span> <span class="pl-s1"><span class="pl-pds">"</span>https://www.postgresql.org/media/keys/ACCC4CF8.asc<span class="pl-pds">"</span></span>
-<span class="pl-c"><span class="pl-pdc">#</span> You can set default["postgresql"]["apt_keyserver"] if you want to use a keyserver</span>
+<span class="pl-c"># control how the postgres service is signaled when configuration files are</span>
+<span class="pl-c"># updated. by default the service is told to `:restart` (stop, start). if you</span>
+<span class="pl-c"># run high availability installation and do not want the service to restart via</span>
+<span class="pl-c"># chef you can change this to `:reload`. the caveat is that you will need to</span>
+<span class="pl-c"># manually restart the postgres server if you change a setting that requires</span>
+<span class="pl-c"># a full restart.</span>
+default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>cfg_update_action<span class="pl-pds">"</span></span>]               <span class="pl-k">=</span> <span class="pl-c1">:restart</span>
 
-default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>environment_variables<span class="pl-pds">"</span></span>]           <span class="pl-ko">=</span> {}
-default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>pg_ctl_options<span class="pl-pds">"</span></span>]                  <span class="pl-ko">=</span> <span class="pl-s1"><span class="pl-pds">"</span><span class="pl-pds">"</span></span>
-default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>pg_hba<span class="pl-pds">"</span></span>]                          <span class="pl-ko">=</span> []
-default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>pg_hba_defaults<span class="pl-pds">"</span></span>]                 <span class="pl-ko">=</span> <span class="pl-c1">true</span>  <span class="pl-c"><span class="pl-pdc">#</span> Whether to populate the pg_hba.conf with defaults</span>
-default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>pg_ident<span class="pl-pds">"</span></span>]                        <span class="pl-ko">=</span> []
-default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>start<span class="pl-pds">"</span></span>]                           <span class="pl-ko">=</span> <span class="pl-s1"><span class="pl-pds">"</span>auto<span class="pl-pds">"</span></span>  <span class="pl-c"><span class="pl-pdc">#</span> auto, manual, disabled</span>
+<span class="pl-c">#----------------------------------------------------------------------------</span>
+<span class="pl-c"># APT REPOSITORY</span>
+<span class="pl-c">#----------------------------------------------------------------------------</span>
+default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>apt_distribution<span class="pl-pds">"</span></span>]                <span class="pl-k">=</span> node[<span class="pl-s1"><span class="pl-pds">"</span>lsb<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>codename<span class="pl-pds">"</span></span>]
+default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>apt_repository<span class="pl-pds">"</span></span>]                  <span class="pl-k">=</span> <span class="pl-s1"><span class="pl-pds">"</span>apt.postgresql.org<span class="pl-pds">"</span></span>
+default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>apt_uri<span class="pl-pds">"</span></span>]                         <span class="pl-k">=</span> <span class="pl-s1"><span class="pl-pds">"</span>http://apt.postgresql.org/pub/repos/apt<span class="pl-pds">"</span></span>
+default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>apt_components<span class="pl-pds">"</span></span>]                  <span class="pl-k">=</span> [<span class="pl-s1"><span class="pl-pds">"</span>main<span class="pl-pds">"</span></span>]
+default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>apt_key<span class="pl-pds">"</span></span>]                         <span class="pl-k">=</span> <span class="pl-s1"><span class="pl-pds">"</span>https://www.postgresql.org/media/keys/ACCC4CF8.asc<span class="pl-pds">"</span></span>
+<span class="pl-c"># You can set default["postgresql"]["apt_keyserver"] if you want to use a keyserver</span>
 
-default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>conf<span class="pl-pds">"</span></span>]                            <span class="pl-ko">=</span> {}
-default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>conf_custom<span class="pl-pds">"</span></span>]                     <span class="pl-ko">=</span> <span class="pl-c1">false</span>  <span class="pl-c"><span class="pl-pdc">#</span> if true, only use node["postgresql"]["conf"]</span>
-default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>initdb_options<span class="pl-pds">"</span></span>]                  <span class="pl-ko">=</span> <span class="pl-s1"><span class="pl-pds">"</span>--locale=en_US.UTF-8<span class="pl-pds">"</span></span>
+default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>environment_variables<span class="pl-pds">"</span></span>]           <span class="pl-k">=</span> {}
+default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>pg_ctl_options<span class="pl-pds">"</span></span>]                  <span class="pl-k">=</span> <span class="pl-s1"><span class="pl-pds">"</span><span class="pl-pds">"</span></span>
+default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>pg_hba<span class="pl-pds">"</span></span>]                          <span class="pl-k">=</span> []
+default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>pg_hba_defaults<span class="pl-pds">"</span></span>]                 <span class="pl-k">=</span> <span class="pl-c1">true</span>  <span class="pl-c"># Whether to populate the pg_hba.conf with defaults</span>
+default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>pg_ident<span class="pl-pds">"</span></span>]                        <span class="pl-k">=</span> []
+default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>start<span class="pl-pds">"</span></span>]                           <span class="pl-k">=</span> <span class="pl-s1"><span class="pl-pds">"</span>auto<span class="pl-pds">"</span></span>  <span class="pl-c"># auto, manual, disabled</span>
 
-<span class="pl-c"><span class="pl-pdc">#</span>------------------------------------------------------------------------------</span>
-<span class="pl-c"><span class="pl-pdc">#</span> POSTGIS</span>
-<span class="pl-c"><span class="pl-pdc">#</span>------------------------------------------------------------------------------</span>
-default[<span class="pl-s1"><span class="pl-pds">"</span>postgis<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>version<span class="pl-pds">"</span></span>]                            <span class="pl-ko">=</span> <span class="pl-s1"><span class="pl-pds">"</span>2.1<span class="pl-pds">"</span></span>
+default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>conf<span class="pl-pds">"</span></span>]                            <span class="pl-k">=</span> {}
+default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>conf_custom<span class="pl-pds">"</span></span>]                     <span class="pl-k">=</span> <span class="pl-c1">false</span>  <span class="pl-c"># if true, only use node["postgresql"]["conf"]</span>
+default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>initdb_options<span class="pl-pds">"</span></span>]                  <span class="pl-k">=</span> <span class="pl-s1"><span class="pl-pds">"</span>--locale=en_US.UTF-8<span class="pl-pds">"</span></span>
 
-<span class="pl-c"><span class="pl-pdc">#</span>------------------------------------------------------------------------------</span>
-<span class="pl-c"><span class="pl-pdc">#</span> FILE LOCATIONS</span>
-<span class="pl-c"><span class="pl-pdc">#</span>------------------------------------------------------------------------------</span>
-default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>data_directory<span class="pl-pds">"</span></span>]                  <span class="pl-ko">=</span> <span class="pl-s1"><span class="pl-pds">"</span>/var/lib/postgresql/<span class="pl-pse">#{</span><span class="pl-s2">node[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>version<span class="pl-pds">"</span></span>]</span><span class="pl-pse"><span class="pl-s2">}</span></span>/main<span class="pl-pds">"</span></span>
-default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>hba_file<span class="pl-pds">"</span></span>]                        <span class="pl-ko">=</span> <span class="pl-s1"><span class="pl-pds">"</span>/etc/postgresql/<span class="pl-pse">#{</span><span class="pl-s2">node[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>version<span class="pl-pds">"</span></span>]</span><span class="pl-pse"><span class="pl-s2">}</span></span>/main/pg_hba.conf<span class="pl-pds">"</span></span>
-default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>ident_file<span class="pl-pds">"</span></span>]                      <span class="pl-ko">=</span> <span class="pl-s1"><span class="pl-pds">"</span>/etc/postgresql/<span class="pl-pse">#{</span><span class="pl-s2">node[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>version<span class="pl-pds">"</span></span>]</span><span class="pl-pse"><span class="pl-s2">}</span></span>/main/pg_ident.conf<span class="pl-pds">"</span></span>
-default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>external_pid_file<span class="pl-pds">"</span></span>]               <span class="pl-ko">=</span> <span class="pl-s1"><span class="pl-pds">"</span>/var/run/postgresql/<span class="pl-pse">#{</span><span class="pl-s2">node[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>version<span class="pl-pds">"</span></span>]</span><span class="pl-pse"><span class="pl-s2">}</span></span>-main.pid<span class="pl-pds">"</span></span>
+<span class="pl-c">#------------------------------------------------------------------------------</span>
+<span class="pl-c"># POSTGIS</span>
+<span class="pl-c">#------------------------------------------------------------------------------</span>
+default[<span class="pl-s1"><span class="pl-pds">"</span>postgis<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>version<span class="pl-pds">"</span></span>]                            <span class="pl-k">=</span> <span class="pl-s1"><span class="pl-pds">"</span>2.1<span class="pl-pds">"</span></span>
+
+<span class="pl-c">#------------------------------------------------------------------------------</span>
+<span class="pl-c"># FILE LOCATIONS</span>
+<span class="pl-c">#------------------------------------------------------------------------------</span>
+default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>data_directory<span class="pl-pds">"</span></span>]                  <span class="pl-k">=</span> <span class="pl-s1"><span class="pl-pds">"</span>/var/lib/postgresql/<span class="pl-pse">#{</span><span class="pl-s2">node[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>version<span class="pl-pds">"</span></span>]</span><span class="pl-pse"><span class="pl-s2">}</span></span>/main<span class="pl-pds">"</span></span>
+default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>hba_file<span class="pl-pds">"</span></span>]                        <span class="pl-k">=</span> <span class="pl-s1"><span class="pl-pds">"</span>/etc/postgresql/<span class="pl-pse">#{</span><span class="pl-s2">node[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>version<span class="pl-pds">"</span></span>]</span><span class="pl-pse"><span class="pl-s2">}</span></span>/main/pg_hba.conf<span class="pl-pds">"</span></span>
+default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>ident_file<span class="pl-pds">"</span></span>]                      <span class="pl-k">=</span> <span class="pl-s1"><span class="pl-pds">"</span>/etc/postgresql/<span class="pl-pse">#{</span><span class="pl-s2">node[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>version<span class="pl-pds">"</span></span>]</span><span class="pl-pse"><span class="pl-s2">}</span></span>/main/pg_ident.conf<span class="pl-pds">"</span></span>
+default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>external_pid_file<span class="pl-pds">"</span></span>]               <span class="pl-k">=</span> <span class="pl-s1"><span class="pl-pds">"</span>/var/run/postgresql/<span class="pl-pse">#{</span><span class="pl-s2">node[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>version<span class="pl-pds">"</span></span>]</span><span class="pl-pse"><span class="pl-s2">}</span></span>-main.pid<span class="pl-pds">"</span></span>
 
 
-<span class="pl-c"><span class="pl-pdc">#</span>------------------------------------------------------------------------------</span>
-<span class="pl-c"><span class="pl-pdc">#</span> CONNECTIONS AND AUTHENTICATION</span>
-<span class="pl-c"><span class="pl-pdc">#</span>------------------------------------------------------------------------------</span>
+<span class="pl-c">#------------------------------------------------------------------------------</span>
+<span class="pl-c"># CONNECTIONS AND AUTHENTICATION</span>
+<span class="pl-c">#------------------------------------------------------------------------------</span>
 
-<span class="pl-c"><span class="pl-pdc">#</span> connection settings</span>
-default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>listen_addresses<span class="pl-pds">"</span></span>]                <span class="pl-ko">=</span> <span class="pl-s1"><span class="pl-pds">"</span>localhost<span class="pl-pds">"</span></span>
-default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>port<span class="pl-pds">"</span></span>]                            <span class="pl-ko">=</span> <span class="pl-cn">5432</span>
-default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>max_connections<span class="pl-pds">"</span></span>]                 <span class="pl-ko">=</span> <span class="pl-cn">100</span>
-default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>superuser_reserved_connections<span class="pl-pds">"</span></span>]  <span class="pl-ko">=</span> <span class="pl-cn">3</span>
-default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>unix_socket_group<span class="pl-pds">"</span></span>]               <span class="pl-ko">=</span> <span class="pl-s1"><span class="pl-pds">"</span><span class="pl-pds">"</span></span>
-default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>unix_socket_permissions<span class="pl-pds">"</span></span>]         <span class="pl-ko">=</span> <span class="pl-s1"><span class="pl-pds">"</span>0777<span class="pl-pds">"</span></span>
-default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>bonjour<span class="pl-pds">"</span></span>]                         <span class="pl-ko">=</span> <span class="pl-s1"><span class="pl-pds">"</span>off<span class="pl-pds">"</span></span>
-default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>bonjour_name<span class="pl-pds">"</span></span>]                    <span class="pl-ko">=</span> <span class="pl-s1"><span class="pl-pds">"</span><span class="pl-pds">"</span></span>
+<span class="pl-c"># connection settings</span>
+default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>listen_addresses<span class="pl-pds">"</span></span>]                <span class="pl-k">=</span> <span class="pl-s1"><span class="pl-pds">"</span>localhost<span class="pl-pds">"</span></span>
+default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>port<span class="pl-pds">"</span></span>]                            <span class="pl-k">=</span> <span class="pl-c1">5432</span>
+default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>max_connections<span class="pl-pds">"</span></span>]                 <span class="pl-k">=</span> <span class="pl-c1">100</span>
+default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>superuser_reserved_connections<span class="pl-pds">"</span></span>]  <span class="pl-k">=</span> <span class="pl-c1">3</span>
+default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>unix_socket_group<span class="pl-pds">"</span></span>]               <span class="pl-k">=</span> <span class="pl-s1"><span class="pl-pds">"</span><span class="pl-pds">"</span></span>
+default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>unix_socket_permissions<span class="pl-pds">"</span></span>]         <span class="pl-k">=</span> <span class="pl-s1"><span class="pl-pds">"</span>0777<span class="pl-pds">"</span></span>
+default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>bonjour<span class="pl-pds">"</span></span>]                         <span class="pl-k">=</span> <span class="pl-s1"><span class="pl-pds">"</span>off<span class="pl-pds">"</span></span>
+default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>bonjour_name<span class="pl-pds">"</span></span>]                    <span class="pl-k">=</span> <span class="pl-s1"><span class="pl-pds">"</span><span class="pl-pds">"</span></span>
 
-<span class="pl-k">if</span> <span class="pl-sc">Gem</span>::<span class="pl-sc">Version</span>.<span class="pl-kos">new</span>(node[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>version<span class="pl-pds">"</span></span>]) <span class="pl-ko">&gt;=</span> <span class="pl-sc">Gem</span>::<span class="pl-sc">Version</span>.<span class="pl-kos">new</span>(<span class="pl-s1"><span class="pl-pds">"</span>9.3<span class="pl-pds">"</span></span>)
-  default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>unix_socket_directories<span class="pl-pds">"</span></span>]       <span class="pl-ko">=</span> <span class="pl-s1"><span class="pl-pds">"</span>/var/run/postgresql<span class="pl-pds">"</span></span>
+<span class="pl-k">if</span> <span class="pl-s3">Gem</span>::<span class="pl-s3">Version</span>.<span class="pl-k">new</span>(node[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>version<span class="pl-pds">"</span></span>]) <span class="pl-k">&gt;=</span> <span class="pl-s3">Gem</span>::<span class="pl-s3">Version</span>.<span class="pl-k">new</span>(<span class="pl-s1"><span class="pl-pds">"</span>9.3<span class="pl-pds">"</span></span>)
+  default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>unix_socket_directories<span class="pl-pds">"</span></span>]       <span class="pl-k">=</span> <span class="pl-s1"><span class="pl-pds">"</span>/var/run/postgresql<span class="pl-pds">"</span></span>
 <span class="pl-k">else</span>
-  default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>unix_socket_directory<span class="pl-pds">"</span></span>]         <span class="pl-ko">=</span> <span class="pl-s1"><span class="pl-pds">"</span>/var/run/postgresql<span class="pl-pds">"</span></span>
+  default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>unix_socket_directory<span class="pl-pds">"</span></span>]         <span class="pl-k">=</span> <span class="pl-s1"><span class="pl-pds">"</span>/var/run/postgresql<span class="pl-pds">"</span></span>
 <span class="pl-k">end</span>
 
-<span class="pl-c"><span class="pl-pdc">#</span> security and authentication</span>
-default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>authentication_timeout<span class="pl-pds">"</span></span>]          <span class="pl-ko">=</span> <span class="pl-s1"><span class="pl-pds">"</span>1min<span class="pl-pds">"</span></span>
-default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>ssl<span class="pl-pds">"</span></span>]                             <span class="pl-ko">=</span> <span class="pl-c1">true</span>
-default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>ssl_ciphers<span class="pl-pds">"</span></span>]                     <span class="pl-ko">=</span> <span class="pl-s1"><span class="pl-pds">"</span>ALL:!ADH:!LOW:!EXP:!MD5:@STRENGTH<span class="pl-pds">"</span></span>
-default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>ssl_renegotiation_limit<span class="pl-pds">"</span></span>]         <span class="pl-ko">=</span> <span class="pl-s1"><span class="pl-pds">"</span>512MB<span class="pl-pds">"</span></span>
-default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>ssl_ca_file<span class="pl-pds">"</span></span>]                     <span class="pl-ko">=</span> <span class="pl-s1"><span class="pl-pds">"</span><span class="pl-pds">"</span></span>
-default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>ssl_cert_file<span class="pl-pds">"</span></span>]                   <span class="pl-ko">=</span> <span class="pl-s1"><span class="pl-pds">"</span>/etc/ssl/certs/ssl-cert-snakeoil.pem<span class="pl-pds">"</span></span>
-default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>ssl_crl_file<span class="pl-pds">"</span></span>]                    <span class="pl-ko">=</span> <span class="pl-s1"><span class="pl-pds">"</span><span class="pl-pds">"</span></span>
-default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>ssl_key_file<span class="pl-pds">"</span></span>]                    <span class="pl-ko">=</span> <span class="pl-s1"><span class="pl-pds">"</span>/etc/ssl/private/ssl-cert-snakeoil.key<span class="pl-pds">"</span></span>
-default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>password_encryption<span class="pl-pds">"</span></span>]             <span class="pl-ko">=</span> <span class="pl-s1"><span class="pl-pds">"</span>on<span class="pl-pds">"</span></span>
-default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>db_user_namespace<span class="pl-pds">"</span></span>]               <span class="pl-ko">=</span> <span class="pl-s1"><span class="pl-pds">"</span>off<span class="pl-pds">"</span></span>
+<span class="pl-c"># security and authentication</span>
+default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>authentication_timeout<span class="pl-pds">"</span></span>]          <span class="pl-k">=</span> <span class="pl-s1"><span class="pl-pds">"</span>1min<span class="pl-pds">"</span></span>
+default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>ssl<span class="pl-pds">"</span></span>]                             <span class="pl-k">=</span> <span class="pl-c1">true</span>
+default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>ssl_ciphers<span class="pl-pds">"</span></span>]                     <span class="pl-k">=</span> <span class="pl-s1"><span class="pl-pds">"</span>ALL:!ADH:!LOW:!EXP:!MD5:@STRENGTH<span class="pl-pds">"</span></span>
+default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>ssl_renegotiation_limit<span class="pl-pds">"</span></span>]         <span class="pl-k">=</span> <span class="pl-s1"><span class="pl-pds">"</span>512MB<span class="pl-pds">"</span></span>
+default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>ssl_ca_file<span class="pl-pds">"</span></span>]                     <span class="pl-k">=</span> <span class="pl-s1"><span class="pl-pds">"</span><span class="pl-pds">"</span></span>
+default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>ssl_cert_file<span class="pl-pds">"</span></span>]                   <span class="pl-k">=</span> <span class="pl-s1"><span class="pl-pds">"</span>/etc/ssl/certs/ssl-cert-snakeoil.pem<span class="pl-pds">"</span></span>
+default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>ssl_crl_file<span class="pl-pds">"</span></span>]                    <span class="pl-k">=</span> <span class="pl-s1"><span class="pl-pds">"</span><span class="pl-pds">"</span></span>
+default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>ssl_key_file<span class="pl-pds">"</span></span>]                    <span class="pl-k">=</span> <span class="pl-s1"><span class="pl-pds">"</span>/etc/ssl/private/ssl-cert-snakeoil.key<span class="pl-pds">"</span></span>
+default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>password_encryption<span class="pl-pds">"</span></span>]             <span class="pl-k">=</span> <span class="pl-s1"><span class="pl-pds">"</span>on<span class="pl-pds">"</span></span>
+default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>db_user_namespace<span class="pl-pds">"</span></span>]               <span class="pl-k">=</span> <span class="pl-s1"><span class="pl-pds">"</span>off<span class="pl-pds">"</span></span>
 
-<span class="pl-c"><span class="pl-pdc">#</span> kerberos and gssapi</span>
-default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>db_user_namespace<span class="pl-pds">"</span></span>]               <span class="pl-ko">=</span> <span class="pl-s1"><span class="pl-pds">"</span>off<span class="pl-pds">"</span></span>
-default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>krb_server_keyfile<span class="pl-pds">"</span></span>]              <span class="pl-ko">=</span> <span class="pl-s1"><span class="pl-pds">"</span><span class="pl-pds">"</span></span>
-default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>krb_srvname<span class="pl-pds">"</span></span>]                     <span class="pl-ko">=</span> <span class="pl-s1"><span class="pl-pds">"</span>postgres<span class="pl-pds">"</span></span>
-default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>krb_caseins_users<span class="pl-pds">"</span></span>]               <span class="pl-ko">=</span> <span class="pl-s1"><span class="pl-pds">"</span>off<span class="pl-pds">"</span></span>
+<span class="pl-c"># kerberos and gssapi</span>
+default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>db_user_namespace<span class="pl-pds">"</span></span>]               <span class="pl-k">=</span> <span class="pl-s1"><span class="pl-pds">"</span>off<span class="pl-pds">"</span></span>
+default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>krb_server_keyfile<span class="pl-pds">"</span></span>]              <span class="pl-k">=</span> <span class="pl-s1"><span class="pl-pds">"</span><span class="pl-pds">"</span></span>
+default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>krb_srvname<span class="pl-pds">"</span></span>]                     <span class="pl-k">=</span> <span class="pl-s1"><span class="pl-pds">"</span>postgres<span class="pl-pds">"</span></span>
+default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>krb_caseins_users<span class="pl-pds">"</span></span>]               <span class="pl-k">=</span> <span class="pl-s1"><span class="pl-pds">"</span>off<span class="pl-pds">"</span></span>
 
-<span class="pl-c"><span class="pl-pdc">#</span> tcp keepalives</span>
-default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>tcp_keepalives_idle<span class="pl-pds">"</span></span>]             <span class="pl-ko">=</span> <span class="pl-cn">0</span>
-default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>tcp_keepalives_interval<span class="pl-pds">"</span></span>]         <span class="pl-ko">=</span> <span class="pl-cn">0</span>
-default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>tcp_keepalives_count<span class="pl-pds">"</span></span>]            <span class="pl-ko">=</span> <span class="pl-cn">0</span>
-
-
-<span class="pl-c"><span class="pl-pdc">#</span>------------------------------------------------------------------------------</span>
-<span class="pl-c"><span class="pl-pdc">#</span> RESOURCE USAGE (except WAL)</span>
-<span class="pl-c"><span class="pl-pdc">#</span>------------------------------------------------------------------------------</span>
-
-<span class="pl-c"><span class="pl-pdc">#</span> memory</span>
-default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>shared_buffers<span class="pl-pds">"</span></span>]                  <span class="pl-ko">=</span> <span class="pl-s1"><span class="pl-pds">"</span>24MB<span class="pl-pds">"</span></span>
-default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>temp_buffers<span class="pl-pds">"</span></span>]                    <span class="pl-ko">=</span> <span class="pl-s1"><span class="pl-pds">"</span>8MB<span class="pl-pds">"</span></span>
-default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>max_prepared_transactions<span class="pl-pds">"</span></span>]       <span class="pl-ko">=</span> <span class="pl-cn">0</span>
-default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>work_mem<span class="pl-pds">"</span></span>]                        <span class="pl-ko">=</span> <span class="pl-s1"><span class="pl-pds">"</span>1MB<span class="pl-pds">"</span></span>
-default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>maintenance_work_mem<span class="pl-pds">"</span></span>]            <span class="pl-ko">=</span> <span class="pl-s1"><span class="pl-pds">"</span>16MB<span class="pl-pds">"</span></span>
-default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>max_stack_depth<span class="pl-pds">"</span></span>]                 <span class="pl-ko">=</span> <span class="pl-s1"><span class="pl-pds">"</span>2MB<span class="pl-pds">"</span></span>
-
-<span class="pl-c"><span class="pl-pdc">#</span> kernel resource usage</span>
-default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>max_files_per_process<span class="pl-pds">"</span></span>]           <span class="pl-ko">=</span> <span class="pl-cn">1000</span>
-default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>shared_preload_libraries<span class="pl-pds">"</span></span>]        <span class="pl-ko">=</span> <span class="pl-s1"><span class="pl-pds">"</span><span class="pl-pds">"</span></span>
-
-<span class="pl-c"><span class="pl-pdc">#</span> cost-based vacuum delay</span>
-default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>vacuum_cost_delay<span class="pl-pds">"</span></span>]               <span class="pl-ko">=</span> <span class="pl-s1"><span class="pl-pds">"</span>0ms<span class="pl-pds">"</span></span>
-default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>vacuum_cost_page_hit<span class="pl-pds">"</span></span>]            <span class="pl-ko">=</span> <span class="pl-cn">1</span>
-default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>vacuum_cost_page_miss<span class="pl-pds">"</span></span>]           <span class="pl-ko">=</span> <span class="pl-cn">10</span>
-default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>vacuum_cost_page_dirty<span class="pl-pds">"</span></span>]          <span class="pl-ko">=</span> <span class="pl-cn">20</span>
-default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>vacuum_cost_limit<span class="pl-pds">"</span></span>]               <span class="pl-ko">=</span> <span class="pl-cn">200</span>
-
-<span class="pl-c"><span class="pl-pdc">#</span> background writer</span>
-default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>bgwriter_delay<span class="pl-pds">"</span></span>]                  <span class="pl-ko">=</span> <span class="pl-s1"><span class="pl-pds">"</span>200ms<span class="pl-pds">"</span></span>
-default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>bgwriter_lru_maxpages<span class="pl-pds">"</span></span>]           <span class="pl-ko">=</span> <span class="pl-cn">100</span>
-default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>bgwriter_lru_multiplier<span class="pl-pds">"</span></span>]         <span class="pl-ko">=</span> <span class="pl-cn">2.0</span>
-
-<span class="pl-c"><span class="pl-pdc">#</span> asynchronous behavior</span>
-default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>effective_io_concurrency<span class="pl-pds">"</span></span>]        <span class="pl-ko">=</span> <span class="pl-cn">1</span>
+<span class="pl-c"># tcp keepalives</span>
+default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>tcp_keepalives_idle<span class="pl-pds">"</span></span>]             <span class="pl-k">=</span> <span class="pl-c1">0</span>
+default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>tcp_keepalives_interval<span class="pl-pds">"</span></span>]         <span class="pl-k">=</span> <span class="pl-c1">0</span>
+default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>tcp_keepalives_count<span class="pl-pds">"</span></span>]            <span class="pl-k">=</span> <span class="pl-c1">0</span>
 
 
-<span class="pl-c"><span class="pl-pdc">#</span>------------------------------------------------------------------------------</span>
-<span class="pl-c"><span class="pl-pdc">#</span> WRITE AHEAD LOG</span>
-<span class="pl-c"><span class="pl-pdc">#</span>------------------------------------------------------------------------------</span>
+<span class="pl-c">#------------------------------------------------------------------------------</span>
+<span class="pl-c"># RESOURCE USAGE (except WAL)</span>
+<span class="pl-c">#------------------------------------------------------------------------------</span>
 
-<span class="pl-c"><span class="pl-pdc">#</span> settings</span>
-default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>wal_level<span class="pl-pds">"</span></span>]                       <span class="pl-ko">=</span> <span class="pl-s1"><span class="pl-pds">"</span>minimal<span class="pl-pds">"</span></span>
-default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>fsync<span class="pl-pds">"</span></span>]                           <span class="pl-ko">=</span> <span class="pl-s1"><span class="pl-pds">"</span>on<span class="pl-pds">"</span></span>
-default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>synchronous_commit<span class="pl-pds">"</span></span>]              <span class="pl-ko">=</span> <span class="pl-s1"><span class="pl-pds">"</span>on<span class="pl-pds">"</span></span>
-default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>wal_sync_method<span class="pl-pds">"</span></span>]                 <span class="pl-ko">=</span> <span class="pl-s1"><span class="pl-pds">"</span>fsync<span class="pl-pds">"</span></span>
-default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>full_page_writes<span class="pl-pds">"</span></span>]                <span class="pl-ko">=</span> <span class="pl-s1"><span class="pl-pds">"</span>on<span class="pl-pds">"</span></span>
-default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>wal_buffers<span class="pl-pds">"</span></span>]                     <span class="pl-ko">=</span> <span class="pl-ko">-</span><span class="pl-cn">1</span>
-default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>wal_writer_delay<span class="pl-pds">"</span></span>]                <span class="pl-ko">=</span> <span class="pl-s1"><span class="pl-pds">"</span>200ms<span class="pl-pds">"</span></span>
-default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>commit_delay<span class="pl-pds">"</span></span>]                    <span class="pl-ko">=</span> <span class="pl-cn">0</span>
-default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>commit_siblings<span class="pl-pds">"</span></span>]                 <span class="pl-ko">=</span> <span class="pl-cn">5</span>
+<span class="pl-c"># memory</span>
+default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>shared_buffers<span class="pl-pds">"</span></span>]                  <span class="pl-k">=</span> <span class="pl-s1"><span class="pl-pds">"</span>24MB<span class="pl-pds">"</span></span>
+default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>temp_buffers<span class="pl-pds">"</span></span>]                    <span class="pl-k">=</span> <span class="pl-s1"><span class="pl-pds">"</span>8MB<span class="pl-pds">"</span></span>
+default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>max_prepared_transactions<span class="pl-pds">"</span></span>]       <span class="pl-k">=</span> <span class="pl-c1">0</span>
+default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>work_mem<span class="pl-pds">"</span></span>]                        <span class="pl-k">=</span> <span class="pl-s1"><span class="pl-pds">"</span>1MB<span class="pl-pds">"</span></span>
+default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>maintenance_work_mem<span class="pl-pds">"</span></span>]            <span class="pl-k">=</span> <span class="pl-s1"><span class="pl-pds">"</span>16MB<span class="pl-pds">"</span></span>
+default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>max_stack_depth<span class="pl-pds">"</span></span>]                 <span class="pl-k">=</span> <span class="pl-s1"><span class="pl-pds">"</span>2MB<span class="pl-pds">"</span></span>
 
-<span class="pl-c"><span class="pl-pdc">#</span> checkpoints</span>
-default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>checkpoint_segments<span class="pl-pds">"</span></span>]             <span class="pl-ko">=</span> <span class="pl-cn">3</span>
-default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>checkpoint_timeout<span class="pl-pds">"</span></span>]              <span class="pl-ko">=</span> <span class="pl-s1"><span class="pl-pds">"</span>5min<span class="pl-pds">"</span></span>
-default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>checkpoint_completion_target<span class="pl-pds">"</span></span>]    <span class="pl-ko">=</span> <span class="pl-cn">0.5</span>
-default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>checkpoint_warning<span class="pl-pds">"</span></span>]              <span class="pl-ko">=</span> <span class="pl-s1"><span class="pl-pds">"</span>30s<span class="pl-pds">"</span></span>
+<span class="pl-c"># kernel resource usage</span>
+default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>max_files_per_process<span class="pl-pds">"</span></span>]           <span class="pl-k">=</span> <span class="pl-c1">1000</span>
+default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>shared_preload_libraries<span class="pl-pds">"</span></span>]        <span class="pl-k">=</span> <span class="pl-s1"><span class="pl-pds">"</span><span class="pl-pds">"</span></span>
 
-<span class="pl-c"><span class="pl-pdc">#</span> archiving</span>
-default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>archive_mode<span class="pl-pds">"</span></span>]                    <span class="pl-ko">=</span> <span class="pl-s1"><span class="pl-pds">"</span>off<span class="pl-pds">"</span></span>
-default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>archive_command<span class="pl-pds">"</span></span>]                 <span class="pl-ko">=</span> <span class="pl-s1"><span class="pl-pds">"</span><span class="pl-pds">"</span></span>
-default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>archive_timeout<span class="pl-pds">"</span></span>]                 <span class="pl-ko">=</span> <span class="pl-cn">0</span>
+<span class="pl-c"># cost-based vacuum delay</span>
+default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>vacuum_cost_delay<span class="pl-pds">"</span></span>]               <span class="pl-k">=</span> <span class="pl-s1"><span class="pl-pds">"</span>0ms<span class="pl-pds">"</span></span>
+default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>vacuum_cost_page_hit<span class="pl-pds">"</span></span>]            <span class="pl-k">=</span> <span class="pl-c1">1</span>
+default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>vacuum_cost_page_miss<span class="pl-pds">"</span></span>]           <span class="pl-k">=</span> <span class="pl-c1">10</span>
+default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>vacuum_cost_page_dirty<span class="pl-pds">"</span></span>]          <span class="pl-k">=</span> <span class="pl-c1">20</span>
+default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>vacuum_cost_limit<span class="pl-pds">"</span></span>]               <span class="pl-k">=</span> <span class="pl-c1">200</span>
 
+<span class="pl-c"># background writer</span>
+default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>bgwriter_delay<span class="pl-pds">"</span></span>]                  <span class="pl-k">=</span> <span class="pl-s1"><span class="pl-pds">"</span>200ms<span class="pl-pds">"</span></span>
+default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>bgwriter_lru_maxpages<span class="pl-pds">"</span></span>]           <span class="pl-k">=</span> <span class="pl-c1">100</span>
+default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>bgwriter_lru_multiplier<span class="pl-pds">"</span></span>]         <span class="pl-k">=</span> <span class="pl-c1">2.0</span>
 
-<span class="pl-c"><span class="pl-pdc">#</span>------------------------------------------------------------------------------</span>
-<span class="pl-c"><span class="pl-pdc">#</span> REPLICATION</span>
-<span class="pl-c"><span class="pl-pdc">#</span>------------------------------------------------------------------------------</span>
-
-<span class="pl-c"><span class="pl-pdc">#</span> master server</span>
-default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>max_wal_senders<span class="pl-pds">"</span></span>]                 <span class="pl-ko">=</span> <span class="pl-cn">0</span>
-default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>wal_sender_delay<span class="pl-pds">"</span></span>]                <span class="pl-ko">=</span> <span class="pl-s1"><span class="pl-pds">"</span>1s<span class="pl-pds">"</span></span>
-default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>wal_keep_segments<span class="pl-pds">"</span></span>]               <span class="pl-ko">=</span> <span class="pl-cn">0</span>
-default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>vacuum_defer_cleanup_age<span class="pl-pds">"</span></span>]        <span class="pl-ko">=</span> <span class="pl-cn">0</span>
-default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>replication_timeout<span class="pl-pds">"</span></span>]             <span class="pl-ko">=</span> <span class="pl-s1"><span class="pl-pds">"</span>60s<span class="pl-pds">"</span></span>
-default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>synchronous_standby_names<span class="pl-pds">"</span></span>]       <span class="pl-ko">=</span> <span class="pl-s1"><span class="pl-pds">"</span><span class="pl-pds">"</span></span>
-
-<span class="pl-c"><span class="pl-pdc">#</span> standby servers</span>
-default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>hot_standby<span class="pl-pds">"</span></span>]                     <span class="pl-ko">=</span> <span class="pl-s1"><span class="pl-pds">"</span>off<span class="pl-pds">"</span></span>
-default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>max_standby_archive_delay<span class="pl-pds">"</span></span>]       <span class="pl-ko">=</span> <span class="pl-s1"><span class="pl-pds">"</span>30s<span class="pl-pds">"</span></span>
-default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>max_standby_streaming_delay<span class="pl-pds">"</span></span>]     <span class="pl-ko">=</span> <span class="pl-s1"><span class="pl-pds">"</span>30s<span class="pl-pds">"</span></span>
-default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>wal_receiver_status_interval<span class="pl-pds">"</span></span>]    <span class="pl-ko">=</span> <span class="pl-s1"><span class="pl-pds">"</span>10s<span class="pl-pds">"</span></span>
-default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>hot_standby_feedback<span class="pl-pds">"</span></span>]            <span class="pl-ko">=</span> <span class="pl-s1"><span class="pl-pds">"</span>off<span class="pl-pds">"</span></span>
+<span class="pl-c"># asynchronous behavior</span>
+default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>effective_io_concurrency<span class="pl-pds">"</span></span>]        <span class="pl-k">=</span> <span class="pl-c1">1</span>
 
 
-<span class="pl-c"><span class="pl-pdc">#</span>------------------------------------------------------------------------------</span>
-<span class="pl-c"><span class="pl-pdc">#</span> QUERY TUNING</span>
-<span class="pl-c"><span class="pl-pdc">#</span>------------------------------------------------------------------------------</span>
+<span class="pl-c">#------------------------------------------------------------------------------</span>
+<span class="pl-c"># WRITE AHEAD LOG</span>
+<span class="pl-c">#------------------------------------------------------------------------------</span>
 
-<span class="pl-c"><span class="pl-pdc">#</span> planner method configuration</span>
-default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>enable_bitmapscan<span class="pl-pds">"</span></span>]               <span class="pl-ko">=</span> <span class="pl-s1"><span class="pl-pds">"</span>on<span class="pl-pds">"</span></span>
-default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>enable_hashagg<span class="pl-pds">"</span></span>]                  <span class="pl-ko">=</span> <span class="pl-s1"><span class="pl-pds">"</span>on<span class="pl-pds">"</span></span>
-default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>enable_hashjoin<span class="pl-pds">"</span></span>]                 <span class="pl-ko">=</span> <span class="pl-s1"><span class="pl-pds">"</span>on<span class="pl-pds">"</span></span>
-default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>enable_indexscan<span class="pl-pds">"</span></span>]                <span class="pl-ko">=</span> <span class="pl-s1"><span class="pl-pds">"</span>on<span class="pl-pds">"</span></span>
-default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>enable_material<span class="pl-pds">"</span></span>]                 <span class="pl-ko">=</span> <span class="pl-s1"><span class="pl-pds">"</span>on<span class="pl-pds">"</span></span>
-default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>enable_mergejoin<span class="pl-pds">"</span></span>]                <span class="pl-ko">=</span> <span class="pl-s1"><span class="pl-pds">"</span>on<span class="pl-pds">"</span></span>
-default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>enable_nestloop<span class="pl-pds">"</span></span>]                 <span class="pl-ko">=</span> <span class="pl-s1"><span class="pl-pds">"</span>on<span class="pl-pds">"</span></span>
-default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>enable_seqscan<span class="pl-pds">"</span></span>]                  <span class="pl-ko">=</span> <span class="pl-s1"><span class="pl-pds">"</span>on<span class="pl-pds">"</span></span>
-default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>enable_sort<span class="pl-pds">"</span></span>]                     <span class="pl-ko">=</span> <span class="pl-s1"><span class="pl-pds">"</span>on<span class="pl-pds">"</span></span>
-default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>enable_tidscan<span class="pl-pds">"</span></span>]                  <span class="pl-ko">=</span> <span class="pl-s1"><span class="pl-pds">"</span>on<span class="pl-pds">"</span></span>
+<span class="pl-c"># settings</span>
+default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>wal_level<span class="pl-pds">"</span></span>]                       <span class="pl-k">=</span> <span class="pl-s1"><span class="pl-pds">"</span>minimal<span class="pl-pds">"</span></span>
+default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>fsync<span class="pl-pds">"</span></span>]                           <span class="pl-k">=</span> <span class="pl-s1"><span class="pl-pds">"</span>on<span class="pl-pds">"</span></span>
+default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>synchronous_commit<span class="pl-pds">"</span></span>]              <span class="pl-k">=</span> <span class="pl-s1"><span class="pl-pds">"</span>on<span class="pl-pds">"</span></span>
+default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>wal_sync_method<span class="pl-pds">"</span></span>]                 <span class="pl-k">=</span> <span class="pl-s1"><span class="pl-pds">"</span>fsync<span class="pl-pds">"</span></span>
+default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>full_page_writes<span class="pl-pds">"</span></span>]                <span class="pl-k">=</span> <span class="pl-s1"><span class="pl-pds">"</span>on<span class="pl-pds">"</span></span>
+default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>wal_buffers<span class="pl-pds">"</span></span>]                     <span class="pl-k">=</span> <span class="pl-k">-</span><span class="pl-c1">1</span>
+default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>wal_writer_delay<span class="pl-pds">"</span></span>]                <span class="pl-k">=</span> <span class="pl-s1"><span class="pl-pds">"</span>200ms<span class="pl-pds">"</span></span>
+default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>commit_delay<span class="pl-pds">"</span></span>]                    <span class="pl-k">=</span> <span class="pl-c1">0</span>
+default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>commit_siblings<span class="pl-pds">"</span></span>]                 <span class="pl-k">=</span> <span class="pl-c1">5</span>
 
-<span class="pl-c"><span class="pl-pdc">#</span> planner cost constants</span>
-default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>seq_page_cost<span class="pl-pds">"</span></span>]                   <span class="pl-ko">=</span> <span class="pl-cn">1.0</span>
-default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>random_page_cost<span class="pl-pds">"</span></span>]                <span class="pl-ko">=</span> <span class="pl-cn">4.0</span>
-default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>cpu_tuple_cost<span class="pl-pds">"</span></span>]                  <span class="pl-ko">=</span> <span class="pl-cn">0.01</span>
-default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>cpu_index_tuple_cost<span class="pl-pds">"</span></span>]            <span class="pl-ko">=</span> <span class="pl-cn">0.005</span>
-default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>cpu_operator_cost<span class="pl-pds">"</span></span>]               <span class="pl-ko">=</span> <span class="pl-cn">0.0025</span>
-default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>effective_cache_size<span class="pl-pds">"</span></span>]            <span class="pl-ko">=</span> <span class="pl-s1"><span class="pl-pds">"</span>128MB<span class="pl-pds">"</span></span>
+<span class="pl-c"># checkpoints</span>
+default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>checkpoint_segments<span class="pl-pds">"</span></span>]             <span class="pl-k">=</span> <span class="pl-c1">3</span>
+default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>checkpoint_timeout<span class="pl-pds">"</span></span>]              <span class="pl-k">=</span> <span class="pl-s1"><span class="pl-pds">"</span>5min<span class="pl-pds">"</span></span>
+default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>checkpoint_completion_target<span class="pl-pds">"</span></span>]    <span class="pl-k">=</span> <span class="pl-c1">0.5</span>
+default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>checkpoint_warning<span class="pl-pds">"</span></span>]              <span class="pl-k">=</span> <span class="pl-s1"><span class="pl-pds">"</span>30s<span class="pl-pds">"</span></span>
 
-<span class="pl-c"><span class="pl-pdc">#</span> genetic query optimizer</span>
-default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>geqo<span class="pl-pds">"</span></span>]                            <span class="pl-ko">=</span> <span class="pl-s1"><span class="pl-pds">"</span>on<span class="pl-pds">"</span></span>
-default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>geqo_threshold<span class="pl-pds">"</span></span>]                  <span class="pl-ko">=</span> <span class="pl-cn">12</span>
-default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>geqo_effort<span class="pl-pds">"</span></span>]                     <span class="pl-ko">=</span> <span class="pl-cn">5</span>
-default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>geqo_pool_size<span class="pl-pds">"</span></span>]                  <span class="pl-ko">=</span> <span class="pl-cn">0</span>
-default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>geqo_generations<span class="pl-pds">"</span></span>]                <span class="pl-ko">=</span> <span class="pl-cn">0</span>
-default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>geqo_selection_bias<span class="pl-pds">"</span></span>]             <span class="pl-ko">=</span> <span class="pl-cn">2.0</span>
-default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>geqo_seed<span class="pl-pds">"</span></span>]                       <span class="pl-ko">=</span> <span class="pl-cn">0.0</span>
-
-<span class="pl-c"><span class="pl-pdc">#</span> other planner options</span>
-default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>default_statistics_target<span class="pl-pds">"</span></span>]       <span class="pl-ko">=</span> <span class="pl-cn">100</span>
-default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>constraint_exclusion<span class="pl-pds">"</span></span>]            <span class="pl-ko">=</span> <span class="pl-s1"><span class="pl-pds">"</span>partition<span class="pl-pds">"</span></span>
-default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>cursor_tuple_fraction<span class="pl-pds">"</span></span>]           <span class="pl-ko">=</span> <span class="pl-cn">0.1</span>
-default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>from_collapse_limit<span class="pl-pds">"</span></span>]             <span class="pl-ko">=</span> <span class="pl-cn">8</span>
-default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>join_collapse_limit<span class="pl-pds">"</span></span>]             <span class="pl-ko">=</span> <span class="pl-cn">8</span>
+<span class="pl-c"># archiving</span>
+default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>archive_mode<span class="pl-pds">"</span></span>]                    <span class="pl-k">=</span> <span class="pl-s1"><span class="pl-pds">"</span>off<span class="pl-pds">"</span></span>
+default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>archive_command<span class="pl-pds">"</span></span>]                 <span class="pl-k">=</span> <span class="pl-s1"><span class="pl-pds">"</span><span class="pl-pds">"</span></span>
+default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>archive_timeout<span class="pl-pds">"</span></span>]                 <span class="pl-k">=</span> <span class="pl-c1">0</span>
 
 
-<span class="pl-c"><span class="pl-pdc">#</span>------------------------------------------------------------------------------</span>
-<span class="pl-c"><span class="pl-pdc">#</span> ERROR REPORTING AND LOGGING</span>
-<span class="pl-c"><span class="pl-pdc">#</span>------------------------------------------------------------------------------</span>
+<span class="pl-c">#------------------------------------------------------------------------------</span>
+<span class="pl-c"># REPLICATION</span>
+<span class="pl-c">#------------------------------------------------------------------------------</span>
 
-<span class="pl-c"><span class="pl-pdc">#</span> where to log</span>
-default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>log_destination<span class="pl-pds">"</span></span>]                 <span class="pl-ko">=</span> <span class="pl-s1"><span class="pl-pds">"</span>stderr<span class="pl-pds">"</span></span>
-default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>logging_collector<span class="pl-pds">"</span></span>]               <span class="pl-ko">=</span> <span class="pl-s1"><span class="pl-pds">"</span>off<span class="pl-pds">"</span></span>
-default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>log_directory<span class="pl-pds">"</span></span>]                   <span class="pl-ko">=</span> <span class="pl-s1"><span class="pl-pds">"</span>pg_log<span class="pl-pds">"</span></span>
-default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>log_filename<span class="pl-pds">"</span></span>]                    <span class="pl-ko">=</span> <span class="pl-s1"><span class="pl-pds">"</span>postgresql-%Y-%m-%d_%H%M%S.log<span class="pl-pds">"</span></span>
-default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>log_file_mode<span class="pl-pds">"</span></span>]                   <span class="pl-ko">=</span> <span class="pl-cn">0600</span>
-default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>log_truncate_on_rotation<span class="pl-pds">"</span></span>]        <span class="pl-ko">=</span> <span class="pl-s1"><span class="pl-pds">"</span>off<span class="pl-pds">"</span></span>
-default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>log_rotation_age<span class="pl-pds">"</span></span>]                <span class="pl-ko">=</span> <span class="pl-s1"><span class="pl-pds">"</span>1d<span class="pl-pds">"</span></span>
-default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>log_rotation_size<span class="pl-pds">"</span></span>]               <span class="pl-ko">=</span> <span class="pl-s1"><span class="pl-pds">"</span>10MB<span class="pl-pds">"</span></span>
+<span class="pl-c"># master server</span>
+default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>max_wal_senders<span class="pl-pds">"</span></span>]                 <span class="pl-k">=</span> <span class="pl-c1">0</span>
+default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>wal_sender_delay<span class="pl-pds">"</span></span>]                <span class="pl-k">=</span> <span class="pl-s1"><span class="pl-pds">"</span>1s<span class="pl-pds">"</span></span>
+default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>wal_keep_segments<span class="pl-pds">"</span></span>]               <span class="pl-k">=</span> <span class="pl-c1">0</span>
+default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>vacuum_defer_cleanup_age<span class="pl-pds">"</span></span>]        <span class="pl-k">=</span> <span class="pl-c1">0</span>
+default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>replication_timeout<span class="pl-pds">"</span></span>]             <span class="pl-k">=</span> <span class="pl-s1"><span class="pl-pds">"</span>60s<span class="pl-pds">"</span></span>
+default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>synchronous_standby_names<span class="pl-pds">"</span></span>]       <span class="pl-k">=</span> <span class="pl-s1"><span class="pl-pds">"</span><span class="pl-pds">"</span></span>
 
-<span class="pl-c"><span class="pl-pdc">#</span> These are relevant when logging to syslog:</span>
-default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>syslog_facility<span class="pl-pds">"</span></span>]                 <span class="pl-ko">=</span> <span class="pl-s1"><span class="pl-pds">"</span>LOCAL0<span class="pl-pds">"</span></span>
-default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>syslog_ident<span class="pl-pds">"</span></span>]                    <span class="pl-ko">=</span> <span class="pl-s1"><span class="pl-pds">"</span>postgres<span class="pl-pds">"</span></span>
-default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>silent_mode<span class="pl-pds">"</span></span>]                     <span class="pl-ko">=</span> <span class="pl-s1"><span class="pl-pds">"</span>off<span class="pl-pds">"</span></span>
-
-<span class="pl-c"><span class="pl-pdc">#</span> when to log</span>
-default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>client_min_messages<span class="pl-pds">"</span></span>]             <span class="pl-ko">=</span> <span class="pl-s1"><span class="pl-pds">"</span>notice<span class="pl-pds">"</span></span>
-default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>log_min_messages<span class="pl-pds">"</span></span>]                <span class="pl-ko">=</span> <span class="pl-s1"><span class="pl-pds">"</span>warning<span class="pl-pds">"</span></span>
-default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>log_min_error_statement<span class="pl-pds">"</span></span>]         <span class="pl-ko">=</span> <span class="pl-s1"><span class="pl-pds">"</span>error<span class="pl-pds">"</span></span>
-default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>log_min_duration_statement<span class="pl-pds">"</span></span>]      <span class="pl-ko">=</span> <span class="pl-ko">-</span><span class="pl-cn">1</span>
-
-<span class="pl-c"><span class="pl-pdc">#</span> what to log</span>
-default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>debug_print_parse<span class="pl-pds">"</span></span>]               <span class="pl-ko">=</span> <span class="pl-s1"><span class="pl-pds">"</span>off<span class="pl-pds">"</span></span>
-default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>debug_print_rewritten<span class="pl-pds">"</span></span>]           <span class="pl-ko">=</span> <span class="pl-s1"><span class="pl-pds">"</span>off<span class="pl-pds">"</span></span>
-default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>debug_print_plan<span class="pl-pds">"</span></span>]                <span class="pl-ko">=</span> <span class="pl-s1"><span class="pl-pds">"</span>off<span class="pl-pds">"</span></span>
-default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>debug_pretty_print<span class="pl-pds">"</span></span>]              <span class="pl-ko">=</span> <span class="pl-s1"><span class="pl-pds">"</span>on<span class="pl-pds">"</span></span>
-default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>log_checkpoints<span class="pl-pds">"</span></span>]                 <span class="pl-ko">=</span> <span class="pl-s1"><span class="pl-pds">"</span>off<span class="pl-pds">"</span></span>
-default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>log_connections<span class="pl-pds">"</span></span>]                 <span class="pl-ko">=</span> <span class="pl-s1"><span class="pl-pds">"</span>off<span class="pl-pds">"</span></span>
-default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>log_disconnections<span class="pl-pds">"</span></span>]              <span class="pl-ko">=</span> <span class="pl-s1"><span class="pl-pds">"</span>off<span class="pl-pds">"</span></span>
-default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>log_duration<span class="pl-pds">"</span></span>]                    <span class="pl-ko">=</span> <span class="pl-s1"><span class="pl-pds">"</span>off<span class="pl-pds">"</span></span>
-default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>log_error_verbosity<span class="pl-pds">"</span></span>]             <span class="pl-ko">=</span> <span class="pl-s1"><span class="pl-pds">"</span>default<span class="pl-pds">"</span></span>
-default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>log_hostname<span class="pl-pds">"</span></span>]                    <span class="pl-ko">=</span> <span class="pl-s1"><span class="pl-pds">"</span>off<span class="pl-pds">"</span></span>
-default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>log_line_prefix<span class="pl-pds">"</span></span>]                 <span class="pl-ko">=</span> <span class="pl-s1"><span class="pl-pds">"</span>%t <span class="pl-pds">"</span></span>
-default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>log_lock_waits<span class="pl-pds">"</span></span>]                  <span class="pl-ko">=</span> <span class="pl-s1"><span class="pl-pds">"</span>off<span class="pl-pds">"</span></span>
-default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>log_statement<span class="pl-pds">"</span></span>]                   <span class="pl-ko">=</span> <span class="pl-s1"><span class="pl-pds">"</span>none<span class="pl-pds">"</span></span>
-default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>log_temp_files<span class="pl-pds">"</span></span>]                  <span class="pl-ko">=</span> <span class="pl-ko">-</span><span class="pl-cn">1</span>
-default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>log_timezone<span class="pl-pds">"</span></span>]                    <span class="pl-ko">=</span> <span class="pl-s1"><span class="pl-pds">"</span>(defaults to server environment setting)<span class="pl-pds">"</span></span>
+<span class="pl-c"># standby servers</span>
+default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>hot_standby<span class="pl-pds">"</span></span>]                     <span class="pl-k">=</span> <span class="pl-s1"><span class="pl-pds">"</span>off<span class="pl-pds">"</span></span>
+default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>max_standby_archive_delay<span class="pl-pds">"</span></span>]       <span class="pl-k">=</span> <span class="pl-s1"><span class="pl-pds">"</span>30s<span class="pl-pds">"</span></span>
+default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>max_standby_streaming_delay<span class="pl-pds">"</span></span>]     <span class="pl-k">=</span> <span class="pl-s1"><span class="pl-pds">"</span>30s<span class="pl-pds">"</span></span>
+default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>wal_receiver_status_interval<span class="pl-pds">"</span></span>]    <span class="pl-k">=</span> <span class="pl-s1"><span class="pl-pds">"</span>10s<span class="pl-pds">"</span></span>
+default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>hot_standby_feedback<span class="pl-pds">"</span></span>]            <span class="pl-k">=</span> <span class="pl-s1"><span class="pl-pds">"</span>off<span class="pl-pds">"</span></span>
 
 
-<span class="pl-c"><span class="pl-pdc">#</span>------------------------------------------------------------------------------</span>
-<span class="pl-c"><span class="pl-pdc">#</span> RUNTIME STATISTICS</span>
-<span class="pl-c"><span class="pl-pdc">#</span>------------------------------------------------------------------------------</span>
+<span class="pl-c">#------------------------------------------------------------------------------</span>
+<span class="pl-c"># QUERY TUNING</span>
+<span class="pl-c">#------------------------------------------------------------------------------</span>
 
-<span class="pl-c"><span class="pl-pdc">#</span> query/index statistics collector</span>
-default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>track_activities<span class="pl-pds">"</span></span>]                <span class="pl-ko">=</span> <span class="pl-s1"><span class="pl-pds">"</span>on<span class="pl-pds">"</span></span>
-default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>track_counts<span class="pl-pds">"</span></span>]                    <span class="pl-ko">=</span> <span class="pl-s1"><span class="pl-pds">"</span>on<span class="pl-pds">"</span></span>
-default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>track_functions<span class="pl-pds">"</span></span>]                 <span class="pl-ko">=</span> <span class="pl-s1"><span class="pl-pds">"</span>none<span class="pl-pds">"</span></span>
-default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>track_activity_query_size<span class="pl-pds">"</span></span>]       <span class="pl-ko">=</span> <span class="pl-cn">1024</span>
-default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>update_process_title<span class="pl-pds">"</span></span>]            <span class="pl-ko">=</span> <span class="pl-s1"><span class="pl-pds">"</span>on<span class="pl-pds">"</span></span>
-default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>stats_temp_directory<span class="pl-pds">"</span></span>]            <span class="pl-ko">=</span> <span class="pl-s1"><span class="pl-pds">'</span>pg_stat_tmp<span class="pl-pds">'</span></span>
+<span class="pl-c"># planner method configuration</span>
+default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>enable_bitmapscan<span class="pl-pds">"</span></span>]               <span class="pl-k">=</span> <span class="pl-s1"><span class="pl-pds">"</span>on<span class="pl-pds">"</span></span>
+default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>enable_hashagg<span class="pl-pds">"</span></span>]                  <span class="pl-k">=</span> <span class="pl-s1"><span class="pl-pds">"</span>on<span class="pl-pds">"</span></span>
+default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>enable_hashjoin<span class="pl-pds">"</span></span>]                 <span class="pl-k">=</span> <span class="pl-s1"><span class="pl-pds">"</span>on<span class="pl-pds">"</span></span>
+default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>enable_indexscan<span class="pl-pds">"</span></span>]                <span class="pl-k">=</span> <span class="pl-s1"><span class="pl-pds">"</span>on<span class="pl-pds">"</span></span>
+default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>enable_material<span class="pl-pds">"</span></span>]                 <span class="pl-k">=</span> <span class="pl-s1"><span class="pl-pds">"</span>on<span class="pl-pds">"</span></span>
+default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>enable_mergejoin<span class="pl-pds">"</span></span>]                <span class="pl-k">=</span> <span class="pl-s1"><span class="pl-pds">"</span>on<span class="pl-pds">"</span></span>
+default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>enable_nestloop<span class="pl-pds">"</span></span>]                 <span class="pl-k">=</span> <span class="pl-s1"><span class="pl-pds">"</span>on<span class="pl-pds">"</span></span>
+default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>enable_seqscan<span class="pl-pds">"</span></span>]                  <span class="pl-k">=</span> <span class="pl-s1"><span class="pl-pds">"</span>on<span class="pl-pds">"</span></span>
+default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>enable_sort<span class="pl-pds">"</span></span>]                     <span class="pl-k">=</span> <span class="pl-s1"><span class="pl-pds">"</span>on<span class="pl-pds">"</span></span>
+default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>enable_tidscan<span class="pl-pds">"</span></span>]                  <span class="pl-k">=</span> <span class="pl-s1"><span class="pl-pds">"</span>on<span class="pl-pds">"</span></span>
 
-<span class="pl-c"><span class="pl-pdc">#</span> statistics monitoring</span>
-default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>log_parser_stats<span class="pl-pds">"</span></span>]                <span class="pl-ko">=</span> <span class="pl-s1"><span class="pl-pds">"</span>off<span class="pl-pds">"</span></span>
-default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>log_planner_stats<span class="pl-pds">"</span></span>]               <span class="pl-ko">=</span> <span class="pl-s1"><span class="pl-pds">"</span>off<span class="pl-pds">"</span></span>
-default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>log_executor_stats<span class="pl-pds">"</span></span>]              <span class="pl-ko">=</span> <span class="pl-s1"><span class="pl-pds">"</span>off<span class="pl-pds">"</span></span>
-default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>log_statement_stats<span class="pl-pds">"</span></span>]             <span class="pl-ko">=</span> <span class="pl-s1"><span class="pl-pds">"</span>off<span class="pl-pds">"</span></span>
+<span class="pl-c"># planner cost constants</span>
+default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>seq_page_cost<span class="pl-pds">"</span></span>]                   <span class="pl-k">=</span> <span class="pl-c1">1.0</span>
+default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>random_page_cost<span class="pl-pds">"</span></span>]                <span class="pl-k">=</span> <span class="pl-c1">4.0</span>
+default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>cpu_tuple_cost<span class="pl-pds">"</span></span>]                  <span class="pl-k">=</span> <span class="pl-c1">0.01</span>
+default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>cpu_index_tuple_cost<span class="pl-pds">"</span></span>]            <span class="pl-k">=</span> <span class="pl-c1">0.005</span>
+default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>cpu_operator_cost<span class="pl-pds">"</span></span>]               <span class="pl-k">=</span> <span class="pl-c1">0.0025</span>
+default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>effective_cache_size<span class="pl-pds">"</span></span>]            <span class="pl-k">=</span> <span class="pl-s1"><span class="pl-pds">"</span>128MB<span class="pl-pds">"</span></span>
 
+<span class="pl-c"># genetic query optimizer</span>
+default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>geqo<span class="pl-pds">"</span></span>]                            <span class="pl-k">=</span> <span class="pl-s1"><span class="pl-pds">"</span>on<span class="pl-pds">"</span></span>
+default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>geqo_threshold<span class="pl-pds">"</span></span>]                  <span class="pl-k">=</span> <span class="pl-c1">12</span>
+default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>geqo_effort<span class="pl-pds">"</span></span>]                     <span class="pl-k">=</span> <span class="pl-c1">5</span>
+default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>geqo_pool_size<span class="pl-pds">"</span></span>]                  <span class="pl-k">=</span> <span class="pl-c1">0</span>
+default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>geqo_generations<span class="pl-pds">"</span></span>]                <span class="pl-k">=</span> <span class="pl-c1">0</span>
+default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>geqo_selection_bias<span class="pl-pds">"</span></span>]             <span class="pl-k">=</span> <span class="pl-c1">2.0</span>
+default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>geqo_seed<span class="pl-pds">"</span></span>]                       <span class="pl-k">=</span> <span class="pl-c1">0.0</span>
 
-<span class="pl-c"><span class="pl-pdc">#</span>------------------------------------------------------------------------------</span>
-<span class="pl-c"><span class="pl-pdc">#</span> AUTOVACUUM PARAMETERS</span>
-<span class="pl-c"><span class="pl-pdc">#</span>------------------------------------------------------------------------------</span>
-
-default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>autovacuum<span class="pl-pds">"</span></span>]                      <span class="pl-ko">=</span> <span class="pl-s1"><span class="pl-pds">"</span>on<span class="pl-pds">"</span></span>
-default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>log_autovacuum_min_duration<span class="pl-pds">"</span></span>]     <span class="pl-ko">=</span> <span class="pl-ko">-</span><span class="pl-cn">1</span>
-default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>autovacuum_max_workers<span class="pl-pds">"</span></span>]          <span class="pl-ko">=</span> <span class="pl-cn">3</span>
-default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>autovacuum_naptime<span class="pl-pds">"</span></span>]              <span class="pl-ko">=</span> <span class="pl-s1"><span class="pl-pds">"</span>1min<span class="pl-pds">"</span></span>
-default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>autovacuum_vacuum_threshold<span class="pl-pds">"</span></span>]     <span class="pl-ko">=</span> <span class="pl-cn">50</span>
-default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>autovacuum_analyze_threshold<span class="pl-pds">"</span></span>]    <span class="pl-ko">=</span> <span class="pl-cn">50</span>
-default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>autovacuum_vacuum_scale_factor<span class="pl-pds">"</span></span>]  <span class="pl-ko">=</span> <span class="pl-cn">0.2</span>
-default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>autovacuum_analyze_scale_factor<span class="pl-pds">"</span></span>] <span class="pl-ko">=</span> <span class="pl-cn">0.1</span>
-default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>autovacuum_freeze_max_age<span class="pl-pds">"</span></span>]       <span class="pl-ko">=</span> <span class="pl-cn">200000000</span>
-default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>autovacuum_vacuum_cost_delay<span class="pl-pds">"</span></span>]    <span class="pl-ko">=</span> <span class="pl-s1"><span class="pl-pds">"</span>20ms<span class="pl-pds">"</span></span>
-default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>autovacuum_vacuum_cost_limit<span class="pl-pds">"</span></span>]    <span class="pl-ko">=</span> <span class="pl-ko">-</span><span class="pl-cn">1</span>
-
-
-<span class="pl-c"><span class="pl-pdc">#</span>------------------------------------------------------------------------------</span>
-<span class="pl-c"><span class="pl-pdc">#</span> CLIENT CONNECTION DEFAULTS</span>
-<span class="pl-c"><span class="pl-pdc">#</span>------------------------------------------------------------------------------</span>
-
-<span class="pl-c"><span class="pl-pdc">#</span> statement behavior</span>
-default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>search_path<span class="pl-pds">"</span></span>]                     <span class="pl-ko">=</span> <span class="pl-s1"><span class="pl-pds">'</span>"$user",public<span class="pl-pds">'</span></span>
-default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>default_tablespace<span class="pl-pds">"</span></span>]              <span class="pl-ko">=</span> <span class="pl-s1"><span class="pl-pds">"</span><span class="pl-pds">"</span></span>
-default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>temp_tablespaces<span class="pl-pds">"</span></span>]                <span class="pl-ko">=</span> <span class="pl-s1"><span class="pl-pds">"</span><span class="pl-pds">"</span></span>
-default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>check_function_bodies<span class="pl-pds">"</span></span>]           <span class="pl-ko">=</span> <span class="pl-s1"><span class="pl-pds">"</span>on<span class="pl-pds">"</span></span>
-default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>default_transaction_isolation<span class="pl-pds">"</span></span>]   <span class="pl-ko">=</span> <span class="pl-s1"><span class="pl-pds">"</span>read committed<span class="pl-pds">"</span></span>
-default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>default_transaction_read_only<span class="pl-pds">"</span></span>]   <span class="pl-ko">=</span> <span class="pl-s1"><span class="pl-pds">"</span>off<span class="pl-pds">"</span></span>
-default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>default_transaction_deferrable<span class="pl-pds">"</span></span>]  <span class="pl-ko">=</span> <span class="pl-s1"><span class="pl-pds">"</span>off<span class="pl-pds">"</span></span>
-default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>session_replication_role<span class="pl-pds">"</span></span>]        <span class="pl-ko">=</span> <span class="pl-s1"><span class="pl-pds">"</span>origin<span class="pl-pds">"</span></span>
-default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>statement_timeout<span class="pl-pds">"</span></span>]               <span class="pl-ko">=</span> <span class="pl-cn">0</span>
-default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>vacuum_freeze_min_age<span class="pl-pds">"</span></span>]           <span class="pl-ko">=</span> <span class="pl-cn">50000000</span>
-default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>vacuum_freeze_table_age<span class="pl-pds">"</span></span>]         <span class="pl-ko">=</span> <span class="pl-cn">150000000</span>
-default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>bytea_output<span class="pl-pds">"</span></span>]                    <span class="pl-ko">=</span> <span class="pl-s1"><span class="pl-pds">"</span>hex<span class="pl-pds">"</span></span>
-default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>xmlbinary<span class="pl-pds">"</span></span>]                       <span class="pl-ko">=</span> <span class="pl-s1"><span class="pl-pds">"</span>base64<span class="pl-pds">"</span></span>
-default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>xmloption<span class="pl-pds">"</span></span>]                       <span class="pl-ko">=</span> <span class="pl-s1"><span class="pl-pds">"</span>content<span class="pl-pds">"</span></span>
-
-<span class="pl-c"><span class="pl-pdc">#</span> locale and formatting</span>
-default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>datestyle<span class="pl-pds">"</span></span>]                       <span class="pl-ko">=</span> <span class="pl-s1"><span class="pl-pds">"</span>iso, mdy<span class="pl-pds">"</span></span>
-default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>intervalstyle<span class="pl-pds">"</span></span>]                   <span class="pl-ko">=</span> <span class="pl-s1"><span class="pl-pds">"</span>postgres<span class="pl-pds">"</span></span>
-default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>timezone<span class="pl-pds">"</span></span>]                        <span class="pl-ko">=</span> <span class="pl-s1"><span class="pl-pds">"</span>(defaults to server environment setting)<span class="pl-pds">"</span></span>
-default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>timezone_abbreviations<span class="pl-pds">"</span></span>]          <span class="pl-ko">=</span> <span class="pl-s1"><span class="pl-pds">"</span>Default<span class="pl-pds">"</span></span>
-default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>extra_float_digits<span class="pl-pds">"</span></span>]              <span class="pl-ko">=</span> <span class="pl-cn">0</span>
-default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>client_encoding<span class="pl-pds">"</span></span>]                 <span class="pl-ko">=</span> <span class="pl-s1"><span class="pl-pds">"</span>sql_ascii<span class="pl-pds">"</span></span>
-
-<span class="pl-c"><span class="pl-pdc">#</span> These settings are initialized by initdb, but they can be changed.</span>
-default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>lc_messages<span class="pl-pds">"</span></span>]                     <span class="pl-ko">=</span> <span class="pl-s1"><span class="pl-pds">"</span>en_US.UTF-8<span class="pl-pds">"</span></span>
-default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>lc_monetary<span class="pl-pds">"</span></span>]                     <span class="pl-ko">=</span> <span class="pl-s1"><span class="pl-pds">"</span>en_US.UTF-8<span class="pl-pds">"</span></span>
-default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>lc_numeric<span class="pl-pds">"</span></span>]                      <span class="pl-ko">=</span> <span class="pl-s1"><span class="pl-pds">"</span>en_US.UTF-8<span class="pl-pds">"</span></span>
-default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>lc_time<span class="pl-pds">"</span></span>]                         <span class="pl-ko">=</span> <span class="pl-s1"><span class="pl-pds">"</span>en_US.UTF-8<span class="pl-pds">"</span></span>
-
-<span class="pl-c"><span class="pl-pdc">#</span> default configuration for text search</span>
-default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>default_text_search_config<span class="pl-pds">"</span></span>]      <span class="pl-ko">=</span> <span class="pl-s1"><span class="pl-pds">"</span>pg_catalog.english<span class="pl-pds">"</span></span>
-
-<span class="pl-c"><span class="pl-pdc">#</span> other defaults</span>
-default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>dynamic_library_path<span class="pl-pds">"</span></span>]            <span class="pl-ko">=</span> <span class="pl-s1"><span class="pl-pds">"</span>$libdir<span class="pl-pds">"</span></span>
-default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>local_preload_libraries<span class="pl-pds">"</span></span>]         <span class="pl-ko">=</span> <span class="pl-s1"><span class="pl-pds">"</span><span class="pl-pds">"</span></span>
+<span class="pl-c"># other planner options</span>
+default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>default_statistics_target<span class="pl-pds">"</span></span>]       <span class="pl-k">=</span> <span class="pl-c1">100</span>
+default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>constraint_exclusion<span class="pl-pds">"</span></span>]            <span class="pl-k">=</span> <span class="pl-s1"><span class="pl-pds">"</span>partition<span class="pl-pds">"</span></span>
+default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>cursor_tuple_fraction<span class="pl-pds">"</span></span>]           <span class="pl-k">=</span> <span class="pl-c1">0.1</span>
+default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>from_collapse_limit<span class="pl-pds">"</span></span>]             <span class="pl-k">=</span> <span class="pl-c1">8</span>
+default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>join_collapse_limit<span class="pl-pds">"</span></span>]             <span class="pl-k">=</span> <span class="pl-c1">8</span>
 
 
-<span class="pl-c"><span class="pl-pdc">#</span>------------------------------------------------------------------------------</span>
-<span class="pl-c"><span class="pl-pdc">#</span> LOCK MANAGEMENT</span>
-<span class="pl-c"><span class="pl-pdc">#</span>------------------------------------------------------------------------------</span>
+<span class="pl-c">#------------------------------------------------------------------------------</span>
+<span class="pl-c"># ERROR REPORTING AND LOGGING</span>
+<span class="pl-c">#------------------------------------------------------------------------------</span>
 
-default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>deadlock_timeout<span class="pl-pds">"</span></span>]                <span class="pl-ko">=</span> <span class="pl-s1"><span class="pl-pds">"</span>1s<span class="pl-pds">"</span></span>
-default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>max_locks_per_transaction<span class="pl-pds">"</span></span>]       <span class="pl-ko">=</span> <span class="pl-cn">64</span>
-default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>max_pred_locks_per_transaction<span class="pl-pds">"</span></span>]  <span class="pl-ko">=</span> <span class="pl-cn">64</span>
+<span class="pl-c"># where to log</span>
+default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>log_destination<span class="pl-pds">"</span></span>]                 <span class="pl-k">=</span> <span class="pl-s1"><span class="pl-pds">"</span>stderr<span class="pl-pds">"</span></span>
+default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>logging_collector<span class="pl-pds">"</span></span>]               <span class="pl-k">=</span> <span class="pl-s1"><span class="pl-pds">"</span>off<span class="pl-pds">"</span></span>
+default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>log_directory<span class="pl-pds">"</span></span>]                   <span class="pl-k">=</span> <span class="pl-s1"><span class="pl-pds">"</span>pg_log<span class="pl-pds">"</span></span>
+default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>log_filename<span class="pl-pds">"</span></span>]                    <span class="pl-k">=</span> <span class="pl-s1"><span class="pl-pds">"</span>postgresql-%Y-%m-%d_%H%M%S.log<span class="pl-pds">"</span></span>
+default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>log_file_mode<span class="pl-pds">"</span></span>]                   <span class="pl-k">=</span> <span class="pl-c1">0600</span>
+default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>log_truncate_on_rotation<span class="pl-pds">"</span></span>]        <span class="pl-k">=</span> <span class="pl-s1"><span class="pl-pds">"</span>off<span class="pl-pds">"</span></span>
+default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>log_rotation_age<span class="pl-pds">"</span></span>]                <span class="pl-k">=</span> <span class="pl-s1"><span class="pl-pds">"</span>1d<span class="pl-pds">"</span></span>
+default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>log_rotation_size<span class="pl-pds">"</span></span>]               <span class="pl-k">=</span> <span class="pl-s1"><span class="pl-pds">"</span>10MB<span class="pl-pds">"</span></span>
 
+<span class="pl-c"># These are relevant when logging to syslog:</span>
+default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>syslog_facility<span class="pl-pds">"</span></span>]                 <span class="pl-k">=</span> <span class="pl-s1"><span class="pl-pds">"</span>LOCAL0<span class="pl-pds">"</span></span>
+default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>syslog_ident<span class="pl-pds">"</span></span>]                    <span class="pl-k">=</span> <span class="pl-s1"><span class="pl-pds">"</span>postgres<span class="pl-pds">"</span></span>
+default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>silent_mode<span class="pl-pds">"</span></span>]                     <span class="pl-k">=</span> <span class="pl-s1"><span class="pl-pds">"</span>off<span class="pl-pds">"</span></span>
 
-<span class="pl-c"><span class="pl-pdc">#</span>------------------------------------------------------------------------------</span>
-<span class="pl-c"><span class="pl-pdc">#</span> VERSION/PLATFORM COMPATIBILITY</span>
-<span class="pl-c"><span class="pl-pdc">#</span>------------------------------------------------------------------------------</span>
+<span class="pl-c"># when to log</span>
+default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>client_min_messages<span class="pl-pds">"</span></span>]             <span class="pl-k">=</span> <span class="pl-s1"><span class="pl-pds">"</span>notice<span class="pl-pds">"</span></span>
+default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>log_min_messages<span class="pl-pds">"</span></span>]                <span class="pl-k">=</span> <span class="pl-s1"><span class="pl-pds">"</span>warning<span class="pl-pds">"</span></span>
+default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>log_min_error_statement<span class="pl-pds">"</span></span>]         <span class="pl-k">=</span> <span class="pl-s1"><span class="pl-pds">"</span>error<span class="pl-pds">"</span></span>
+default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>log_min_duration_statement<span class="pl-pds">"</span></span>]      <span class="pl-k">=</span> <span class="pl-k">-</span><span class="pl-c1">1</span>
 
-<span class="pl-c"><span class="pl-pdc">#</span> previous postgresql versions</span>
-default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>array_nulls<span class="pl-pds">"</span></span>]                     <span class="pl-ko">=</span> <span class="pl-s1"><span class="pl-pds">"</span>on<span class="pl-pds">"</span></span>
-default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>backslash_quote<span class="pl-pds">"</span></span>]                 <span class="pl-ko">=</span> <span class="pl-s1"><span class="pl-pds">"</span>safe_encoding<span class="pl-pds">"</span></span>
-default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>default_with_oids<span class="pl-pds">"</span></span>]               <span class="pl-ko">=</span> <span class="pl-s1"><span class="pl-pds">"</span>off<span class="pl-pds">"</span></span>
-default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>escape_string_warning<span class="pl-pds">"</span></span>]           <span class="pl-ko">=</span> <span class="pl-s1"><span class="pl-pds">"</span>on<span class="pl-pds">"</span></span>
-default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>lo_compat_privileges<span class="pl-pds">"</span></span>]            <span class="pl-ko">=</span> <span class="pl-s1"><span class="pl-pds">"</span>off<span class="pl-pds">"</span></span>
-default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>quote_all_identifiers<span class="pl-pds">"</span></span>]           <span class="pl-ko">=</span> <span class="pl-s1"><span class="pl-pds">"</span>off<span class="pl-pds">"</span></span>
-default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>sql_inheritance<span class="pl-pds">"</span></span>]                 <span class="pl-ko">=</span> <span class="pl-s1"><span class="pl-pds">"</span>on<span class="pl-pds">"</span></span>
-default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>standard_conforming_strings<span class="pl-pds">"</span></span>]     <span class="pl-ko">=</span> <span class="pl-s1"><span class="pl-pds">"</span>on<span class="pl-pds">"</span></span>
-default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>synchronize_seqscans<span class="pl-pds">"</span></span>]            <span class="pl-ko">=</span> <span class="pl-s1"><span class="pl-pds">"</span>on<span class="pl-pds">"</span></span>
-
-<span class="pl-c"><span class="pl-pdc">#</span> other platforms and clients</span>
-default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>transform_null_equals<span class="pl-pds">"</span></span>]           <span class="pl-ko">=</span> <span class="pl-s1"><span class="pl-pds">"</span>off<span class="pl-pds">"</span></span>
-
-
-<span class="pl-c"><span class="pl-pdc">#</span>------------------------------------------------------------------------------</span>
-<span class="pl-c"><span class="pl-pdc">#</span> ERROR HANDLING</span>
-<span class="pl-c"><span class="pl-pdc">#</span>------------------------------------------------------------------------------</span>
-
-default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>exit_on_error<span class="pl-pds">"</span></span>]                   <span class="pl-ko">=</span> <span class="pl-s1"><span class="pl-pds">"</span>off<span class="pl-pds">"</span></span>
-default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>restart_after_crash<span class="pl-pds">"</span></span>]             <span class="pl-ko">=</span> <span class="pl-s1"><span class="pl-pds">"</span>on<span class="pl-pds">"</span></span>
-
-
-<span class="pl-c"><span class="pl-pdc">#</span>------------------------------------------------------------------------------</span>
-<span class="pl-c"><span class="pl-pdc">#</span> USERS AND DATABASES</span>
-<span class="pl-c"><span class="pl-pdc">#</span>------------------------------------------------------------------------------</span>
-
-default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>users<span class="pl-pds">"</span></span>]                           <span class="pl-ko">=</span> []
-default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>databases<span class="pl-pds">"</span></span>]                       <span class="pl-ko">=</span> []
-
-
-<span class="pl-c"><span class="pl-pdc">#</span>------------------------------------------------------------------------------</span>
-<span class="pl-c"><span class="pl-pdc">#</span> CUSTOMIZED OPTIONS</span>
-<span class="pl-c"><span class="pl-pdc">#</span>------------------------------------------------------------------------------</span>
-
-default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>custom_variable_classes<span class="pl-pds">"</span></span>]         <span class="pl-ko">=</span> <span class="pl-s1"><span class="pl-pds">"</span><span class="pl-pds">"</span></span>
+<span class="pl-c"># what to log</span>
+default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>debug_print_parse<span class="pl-pds">"</span></span>]               <span class="pl-k">=</span> <span class="pl-s1"><span class="pl-pds">"</span>off<span class="pl-pds">"</span></span>
+default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>debug_print_rewritten<span class="pl-pds">"</span></span>]           <span class="pl-k">=</span> <span class="pl-s1"><span class="pl-pds">"</span>off<span class="pl-pds">"</span></span>
+default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>debug_print_plan<span class="pl-pds">"</span></span>]                <span class="pl-k">=</span> <span class="pl-s1"><span class="pl-pds">"</span>off<span class="pl-pds">"</span></span>
+default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>debug_pretty_print<span class="pl-pds">"</span></span>]              <span class="pl-k">=</span> <span class="pl-s1"><span class="pl-pds">"</span>on<span class="pl-pds">"</span></span>
+default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>log_checkpoints<span class="pl-pds">"</span></span>]                 <span class="pl-k">=</span> <span class="pl-s1"><span class="pl-pds">"</span>off<span class="pl-pds">"</span></span>
+default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>log_connections<span class="pl-pds">"</span></span>]                 <span class="pl-k">=</span> <span class="pl-s1"><span class="pl-pds">"</span>off<span class="pl-pds">"</span></span>
+default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>log_disconnections<span class="pl-pds">"</span></span>]              <span class="pl-k">=</span> <span class="pl-s1"><span class="pl-pds">"</span>off<span class="pl-pds">"</span></span>
+default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>log_duration<span class="pl-pds">"</span></span>]                    <span class="pl-k">=</span> <span class="pl-s1"><span class="pl-pds">"</span>off<span class="pl-pds">"</span></span>
+default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>log_error_verbosity<span class="pl-pds">"</span></span>]             <span class="pl-k">=</span> <span class="pl-s1"><span class="pl-pds">"</span>default<span class="pl-pds">"</span></span>
+default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>log_hostname<span class="pl-pds">"</span></span>]                    <span class="pl-k">=</span> <span class="pl-s1"><span class="pl-pds">"</span>off<span class="pl-pds">"</span></span>
+default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>log_line_prefix<span class="pl-pds">"</span></span>]                 <span class="pl-k">=</span> <span class="pl-s1"><span class="pl-pds">"</span>%t <span class="pl-pds">"</span></span>
+default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>log_lock_waits<span class="pl-pds">"</span></span>]                  <span class="pl-k">=</span> <span class="pl-s1"><span class="pl-pds">"</span>off<span class="pl-pds">"</span></span>
+default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>log_statement<span class="pl-pds">"</span></span>]                   <span class="pl-k">=</span> <span class="pl-s1"><span class="pl-pds">"</span>none<span class="pl-pds">"</span></span>
+default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>log_temp_files<span class="pl-pds">"</span></span>]                  <span class="pl-k">=</span> <span class="pl-k">-</span><span class="pl-c1">1</span>
+default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>log_timezone<span class="pl-pds">"</span></span>]                    <span class="pl-k">=</span> <span class="pl-s1"><span class="pl-pds">"</span>(defaults to server environment setting)<span class="pl-pds">"</span></span>
 
 
-<span class="pl-c"><span class="pl-pdc">#</span>------------------------------------------------------------------------------</span>
-<span class="pl-c"><span class="pl-pdc">#</span> POSTGIS OPTIONS</span>
-<span class="pl-c"><span class="pl-pdc">#</span>------------------------------------------------------------------------------</span>
+<span class="pl-c">#------------------------------------------------------------------------------</span>
+<span class="pl-c"># RUNTIME STATISTICS</span>
+<span class="pl-c">#------------------------------------------------------------------------------</span>
 
-default[<span class="pl-s1"><span class="pl-pds">"</span>postgis<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>version<span class="pl-pds">"</span></span>] <span class="pl-ko">=</span> <span class="pl-s1"><span class="pl-pds">"</span>2.0<span class="pl-pds">"</span></span></pre></div>
+<span class="pl-c"># query/index statistics collector</span>
+default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>track_activities<span class="pl-pds">"</span></span>]                <span class="pl-k">=</span> <span class="pl-s1"><span class="pl-pds">"</span>on<span class="pl-pds">"</span></span>
+default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>track_counts<span class="pl-pds">"</span></span>]                    <span class="pl-k">=</span> <span class="pl-s1"><span class="pl-pds">"</span>on<span class="pl-pds">"</span></span>
+default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>track_functions<span class="pl-pds">"</span></span>]                 <span class="pl-k">=</span> <span class="pl-s1"><span class="pl-pds">"</span>none<span class="pl-pds">"</span></span>
+default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>track_activity_query_size<span class="pl-pds">"</span></span>]       <span class="pl-k">=</span> <span class="pl-c1">1024</span>
+default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>update_process_title<span class="pl-pds">"</span></span>]            <span class="pl-k">=</span> <span class="pl-s1"><span class="pl-pds">"</span>on<span class="pl-pds">"</span></span>
+default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>stats_temp_directory<span class="pl-pds">"</span></span>]            <span class="pl-k">=</span> <span class="pl-s1"><span class="pl-pds">'</span>pg_stat_tmp<span class="pl-pds">'</span></span>
+
+<span class="pl-c"># statistics monitoring</span>
+default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>log_parser_stats<span class="pl-pds">"</span></span>]                <span class="pl-k">=</span> <span class="pl-s1"><span class="pl-pds">"</span>off<span class="pl-pds">"</span></span>
+default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>log_planner_stats<span class="pl-pds">"</span></span>]               <span class="pl-k">=</span> <span class="pl-s1"><span class="pl-pds">"</span>off<span class="pl-pds">"</span></span>
+default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>log_executor_stats<span class="pl-pds">"</span></span>]              <span class="pl-k">=</span> <span class="pl-s1"><span class="pl-pds">"</span>off<span class="pl-pds">"</span></span>
+default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>log_statement_stats<span class="pl-pds">"</span></span>]             <span class="pl-k">=</span> <span class="pl-s1"><span class="pl-pds">"</span>off<span class="pl-pds">"</span></span>
+
+
+<span class="pl-c">#------------------------------------------------------------------------------</span>
+<span class="pl-c"># AUTOVACUUM PARAMETERS</span>
+<span class="pl-c">#------------------------------------------------------------------------------</span>
+
+default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>autovacuum<span class="pl-pds">"</span></span>]                      <span class="pl-k">=</span> <span class="pl-s1"><span class="pl-pds">"</span>on<span class="pl-pds">"</span></span>
+default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>log_autovacuum_min_duration<span class="pl-pds">"</span></span>]     <span class="pl-k">=</span> <span class="pl-k">-</span><span class="pl-c1">1</span>
+default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>autovacuum_max_workers<span class="pl-pds">"</span></span>]          <span class="pl-k">=</span> <span class="pl-c1">3</span>
+default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>autovacuum_naptime<span class="pl-pds">"</span></span>]              <span class="pl-k">=</span> <span class="pl-s1"><span class="pl-pds">"</span>1min<span class="pl-pds">"</span></span>
+default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>autovacuum_vacuum_threshold<span class="pl-pds">"</span></span>]     <span class="pl-k">=</span> <span class="pl-c1">50</span>
+default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>autovacuum_analyze_threshold<span class="pl-pds">"</span></span>]    <span class="pl-k">=</span> <span class="pl-c1">50</span>
+default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>autovacuum_vacuum_scale_factor<span class="pl-pds">"</span></span>]  <span class="pl-k">=</span> <span class="pl-c1">0.2</span>
+default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>autovacuum_analyze_scale_factor<span class="pl-pds">"</span></span>] <span class="pl-k">=</span> <span class="pl-c1">0.1</span>
+default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>autovacuum_freeze_max_age<span class="pl-pds">"</span></span>]       <span class="pl-k">=</span> <span class="pl-c1">200000000</span>
+default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>autovacuum_vacuum_cost_delay<span class="pl-pds">"</span></span>]    <span class="pl-k">=</span> <span class="pl-s1"><span class="pl-pds">"</span>20ms<span class="pl-pds">"</span></span>
+default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>autovacuum_vacuum_cost_limit<span class="pl-pds">"</span></span>]    <span class="pl-k">=</span> <span class="pl-k">-</span><span class="pl-c1">1</span>
+
+
+<span class="pl-c">#------------------------------------------------------------------------------</span>
+<span class="pl-c"># CLIENT CONNECTION DEFAULTS</span>
+<span class="pl-c">#------------------------------------------------------------------------------</span>
+
+<span class="pl-c"># statement behavior</span>
+default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>search_path<span class="pl-pds">"</span></span>]                     <span class="pl-k">=</span> <span class="pl-s1"><span class="pl-pds">'</span>"$user",public<span class="pl-pds">'</span></span>
+default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>default_tablespace<span class="pl-pds">"</span></span>]              <span class="pl-k">=</span> <span class="pl-s1"><span class="pl-pds">"</span><span class="pl-pds">"</span></span>
+default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>temp_tablespaces<span class="pl-pds">"</span></span>]                <span class="pl-k">=</span> <span class="pl-s1"><span class="pl-pds">"</span><span class="pl-pds">"</span></span>
+default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>check_function_bodies<span class="pl-pds">"</span></span>]           <span class="pl-k">=</span> <span class="pl-s1"><span class="pl-pds">"</span>on<span class="pl-pds">"</span></span>
+default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>default_transaction_isolation<span class="pl-pds">"</span></span>]   <span class="pl-k">=</span> <span class="pl-s1"><span class="pl-pds">"</span>read committed<span class="pl-pds">"</span></span>
+default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>default_transaction_read_only<span class="pl-pds">"</span></span>]   <span class="pl-k">=</span> <span class="pl-s1"><span class="pl-pds">"</span>off<span class="pl-pds">"</span></span>
+default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>default_transaction_deferrable<span class="pl-pds">"</span></span>]  <span class="pl-k">=</span> <span class="pl-s1"><span class="pl-pds">"</span>off<span class="pl-pds">"</span></span>
+default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>session_replication_role<span class="pl-pds">"</span></span>]        <span class="pl-k">=</span> <span class="pl-s1"><span class="pl-pds">"</span>origin<span class="pl-pds">"</span></span>
+default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>statement_timeout<span class="pl-pds">"</span></span>]               <span class="pl-k">=</span> <span class="pl-c1">0</span>
+default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>vacuum_freeze_min_age<span class="pl-pds">"</span></span>]           <span class="pl-k">=</span> <span class="pl-c1">50000000</span>
+default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>vacuum_freeze_table_age<span class="pl-pds">"</span></span>]         <span class="pl-k">=</span> <span class="pl-c1">150000000</span>
+default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>bytea_output<span class="pl-pds">"</span></span>]                    <span class="pl-k">=</span> <span class="pl-s1"><span class="pl-pds">"</span>hex<span class="pl-pds">"</span></span>
+default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>xmlbinary<span class="pl-pds">"</span></span>]                       <span class="pl-k">=</span> <span class="pl-s1"><span class="pl-pds">"</span>base64<span class="pl-pds">"</span></span>
+default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>xmloption<span class="pl-pds">"</span></span>]                       <span class="pl-k">=</span> <span class="pl-s1"><span class="pl-pds">"</span>content<span class="pl-pds">"</span></span>
+
+<span class="pl-c"># locale and formatting</span>
+default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>datestyle<span class="pl-pds">"</span></span>]                       <span class="pl-k">=</span> <span class="pl-s1"><span class="pl-pds">"</span>iso, mdy<span class="pl-pds">"</span></span>
+default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>intervalstyle<span class="pl-pds">"</span></span>]                   <span class="pl-k">=</span> <span class="pl-s1"><span class="pl-pds">"</span>postgres<span class="pl-pds">"</span></span>
+default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>timezone<span class="pl-pds">"</span></span>]                        <span class="pl-k">=</span> <span class="pl-s1"><span class="pl-pds">"</span>(defaults to server environment setting)<span class="pl-pds">"</span></span>
+default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>timezone_abbreviations<span class="pl-pds">"</span></span>]          <span class="pl-k">=</span> <span class="pl-s1"><span class="pl-pds">"</span>Default<span class="pl-pds">"</span></span>
+default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>extra_float_digits<span class="pl-pds">"</span></span>]              <span class="pl-k">=</span> <span class="pl-c1">0</span>
+default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>client_encoding<span class="pl-pds">"</span></span>]                 <span class="pl-k">=</span> <span class="pl-s1"><span class="pl-pds">"</span>sql_ascii<span class="pl-pds">"</span></span>
+
+<span class="pl-c"># These settings are initialized by initdb, but they can be changed.</span>
+default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>lc_messages<span class="pl-pds">"</span></span>]                     <span class="pl-k">=</span> <span class="pl-s1"><span class="pl-pds">"</span>en_US.UTF-8<span class="pl-pds">"</span></span>
+default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>lc_monetary<span class="pl-pds">"</span></span>]                     <span class="pl-k">=</span> <span class="pl-s1"><span class="pl-pds">"</span>en_US.UTF-8<span class="pl-pds">"</span></span>
+default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>lc_numeric<span class="pl-pds">"</span></span>]                      <span class="pl-k">=</span> <span class="pl-s1"><span class="pl-pds">"</span>en_US.UTF-8<span class="pl-pds">"</span></span>
+default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>lc_time<span class="pl-pds">"</span></span>]                         <span class="pl-k">=</span> <span class="pl-s1"><span class="pl-pds">"</span>en_US.UTF-8<span class="pl-pds">"</span></span>
+
+<span class="pl-c"># default configuration for text search</span>
+default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>default_text_search_config<span class="pl-pds">"</span></span>]      <span class="pl-k">=</span> <span class="pl-s1"><span class="pl-pds">"</span>pg_catalog.english<span class="pl-pds">"</span></span>
+
+<span class="pl-c"># other defaults</span>
+default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>dynamic_library_path<span class="pl-pds">"</span></span>]            <span class="pl-k">=</span> <span class="pl-s1"><span class="pl-pds">"</span>$libdir<span class="pl-pds">"</span></span>
+default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>local_preload_libraries<span class="pl-pds">"</span></span>]         <span class="pl-k">=</span> <span class="pl-s1"><span class="pl-pds">"</span><span class="pl-pds">"</span></span>
+
+
+<span class="pl-c">#------------------------------------------------------------------------------</span>
+<span class="pl-c"># LOCK MANAGEMENT</span>
+<span class="pl-c">#------------------------------------------------------------------------------</span>
+
+default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>deadlock_timeout<span class="pl-pds">"</span></span>]                <span class="pl-k">=</span> <span class="pl-s1"><span class="pl-pds">"</span>1s<span class="pl-pds">"</span></span>
+default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>max_locks_per_transaction<span class="pl-pds">"</span></span>]       <span class="pl-k">=</span> <span class="pl-c1">64</span>
+default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>max_pred_locks_per_transaction<span class="pl-pds">"</span></span>]  <span class="pl-k">=</span> <span class="pl-c1">64</span>
+
+
+<span class="pl-c">#------------------------------------------------------------------------------</span>
+<span class="pl-c"># VERSION/PLATFORM COMPATIBILITY</span>
+<span class="pl-c">#------------------------------------------------------------------------------</span>
+
+<span class="pl-c"># previous postgresql versions</span>
+default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>array_nulls<span class="pl-pds">"</span></span>]                     <span class="pl-k">=</span> <span class="pl-s1"><span class="pl-pds">"</span>on<span class="pl-pds">"</span></span>
+default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>backslash_quote<span class="pl-pds">"</span></span>]                 <span class="pl-k">=</span> <span class="pl-s1"><span class="pl-pds">"</span>safe_encoding<span class="pl-pds">"</span></span>
+default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>default_with_oids<span class="pl-pds">"</span></span>]               <span class="pl-k">=</span> <span class="pl-s1"><span class="pl-pds">"</span>off<span class="pl-pds">"</span></span>
+default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>escape_string_warning<span class="pl-pds">"</span></span>]           <span class="pl-k">=</span> <span class="pl-s1"><span class="pl-pds">"</span>on<span class="pl-pds">"</span></span>
+default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>lo_compat_privileges<span class="pl-pds">"</span></span>]            <span class="pl-k">=</span> <span class="pl-s1"><span class="pl-pds">"</span>off<span class="pl-pds">"</span></span>
+default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>quote_all_identifiers<span class="pl-pds">"</span></span>]           <span class="pl-k">=</span> <span class="pl-s1"><span class="pl-pds">"</span>off<span class="pl-pds">"</span></span>
+default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>sql_inheritance<span class="pl-pds">"</span></span>]                 <span class="pl-k">=</span> <span class="pl-s1"><span class="pl-pds">"</span>on<span class="pl-pds">"</span></span>
+default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>standard_conforming_strings<span class="pl-pds">"</span></span>]     <span class="pl-k">=</span> <span class="pl-s1"><span class="pl-pds">"</span>on<span class="pl-pds">"</span></span>
+default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>synchronize_seqscans<span class="pl-pds">"</span></span>]            <span class="pl-k">=</span> <span class="pl-s1"><span class="pl-pds">"</span>on<span class="pl-pds">"</span></span>
+
+<span class="pl-c"># other platforms and clients</span>
+default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>transform_null_equals<span class="pl-pds">"</span></span>]           <span class="pl-k">=</span> <span class="pl-s1"><span class="pl-pds">"</span>off<span class="pl-pds">"</span></span>
+
+
+<span class="pl-c">#------------------------------------------------------------------------------</span>
+<span class="pl-c"># ERROR HANDLING</span>
+<span class="pl-c">#------------------------------------------------------------------------------</span>
+
+default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>exit_on_error<span class="pl-pds">"</span></span>]                   <span class="pl-k">=</span> <span class="pl-s1"><span class="pl-pds">"</span>off<span class="pl-pds">"</span></span>
+default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>restart_after_crash<span class="pl-pds">"</span></span>]             <span class="pl-k">=</span> <span class="pl-s1"><span class="pl-pds">"</span>on<span class="pl-pds">"</span></span>
+
+
+<span class="pl-c">#------------------------------------------------------------------------------</span>
+<span class="pl-c"># USERS AND DATABASES</span>
+<span class="pl-c">#------------------------------------------------------------------------------</span>
+
+default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>users<span class="pl-pds">"</span></span>]                           <span class="pl-k">=</span> []
+default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>databases<span class="pl-pds">"</span></span>]                       <span class="pl-k">=</span> []
+default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>extensions<span class="pl-pds">"</span></span>]                      <span class="pl-k">=</span> []
+default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>languages<span class="pl-pds">"</span></span>]                       <span class="pl-k">=</span> []
+
+
+
+<span class="pl-c">#------------------------------------------------------------------------------</span>
+<span class="pl-c"># CUSTOMIZED OPTIONS</span>
+<span class="pl-c">#------------------------------------------------------------------------------</span>
+
+default[<span class="pl-s1"><span class="pl-pds">"</span>postgresql<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>custom_variable_classes<span class="pl-pds">"</span></span>]         <span class="pl-k">=</span> <span class="pl-s1"><span class="pl-pds">"</span><span class="pl-pds">"</span></span>
+
+
+<span class="pl-c">#------------------------------------------------------------------------------</span>
+<span class="pl-c"># POSTGIS OPTIONS</span>
+<span class="pl-c">#------------------------------------------------------------------------------</span>
+
+default[<span class="pl-s1"><span class="pl-pds">"</span>postgis<span class="pl-pds">"</span></span>][<span class="pl-s1"><span class="pl-pds">"</span>version<span class="pl-pds">"</span></span>] <span class="pl-k">=</span> <span class="pl-s1"><span class="pl-pds">"</span>2.0<span class="pl-pds">"</span></span></pre></div>
 
 <h2>
 <a id="todo" class="anchor" href="#todo" aria-hidden="true"><span class="octicon octicon-link"></span></a>TODO</h2>
@@ -646,7 +685,6 @@ postgresql-{version}-pgq3
 postgresql-{version}-plsh
 postgresql-{version}-pgmp
 postgresql-{version}-plproxy
-postgresql-{version}-plv8
 postgresql-{version}-repmgr
 postgresql-{version}-debversion
 postgresql-{version}-pgpool2
@@ -869,6 +907,20 @@ postgresql-{version}-slony1-2
 <li>add replication mode to <code>pg_user</code> definition</li>
 </ul>
 </li>
+<li>
+<strong><a href="https://github.com/vesln">@vesln</a></strong>
+
+<ul>
+<li>add missing <code>ssl_ca_file</code> and <code>ssl_crl_file</code> attributes to the configuration template</li>
+</ul>
+</li>
+<li>
+<strong><a href="https://github.com/vivid-inc">@vivid-inc</a></strong>
+
+<ul>
+<li>add <code>service_actions</code> attribute</li>
+</ul>
+</li>
 </ul>
 
 <h2>
@@ -877,9 +929,8 @@ postgresql-{version}-slony1-2
 <p><strong>chef-postgresql</strong></p>
 
 <ul>
-<li>Freely distributable and licensed under the <a href="http://phlipper.mit-license.org/2012-2014/license.html">MIT license</a>.</li>
-<li>Copyright (c) 2012-2014 Phil Cohen (<a href="mailto:github@phlippers.net">github@phlippers.net</a>) <a href="http://coderwall.com/phlipper"><img src="http://api.coderwall.com/phlipper/endorsecount.png" alt="endorse"></a>  <a href="https://www.gittip.com/phlipper/"><img src="http://img.shields.io/gittip/phlipper.png" alt="Gittip"></a>
-</li>
+<li>Freely distributable and licensed under the <a href="http://phlipper.mit-license.org/2012-2015/license.html">MIT license</a>.</li>
+<li>Copyright (c) 2012-2015 Phil Cohen (<a href="mailto:github@phlippers.net">github@phlippers.net</a>)</li>
 <li><a href="http://phlippers.net/">http://phlippers.net/</a></li>
 </ul>
       </section>
