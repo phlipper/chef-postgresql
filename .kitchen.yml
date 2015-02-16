@@ -13,8 +13,7 @@ platforms:
   - name: ubuntu-14.04
 
 suites:
-  <% %w[9.3 9.4].each do |version| %>
-  - name: server_<%= version.tr(".", "") %>
+  - name: server_93
     run_list:
       - recipe[apt]
       - recipe[postgresql::server]
@@ -26,7 +25,7 @@ suites:
       - recipe[minitest-handler]
     attributes:
       postgresql:
-        version: <%= version %>
+        version: "9.3"
         users:
           - username: testuser
             password: s3kr1t
@@ -39,12 +38,52 @@ suites:
             locale: en_US.UTF8
             # postgis: true
             extensions:
+              - adminpack
+              - autoinc
+              - btree_gin
+              - btree_gist
+              - chkpass
+              - citext
+              - cube
+              - dblink
+              - dict_int
+              - dict_xsyn
+              - earthdistance
+              - file_fdw
+              - fuzzystrmatch
               - hstore
+              - insert_username
+              - intarray
+              - isn
+              - lo
+              - ltree
+              - moddatetime
+              - pageinspect
+              - pg_buffercache
+              - pg_freespacemap
+              - pg_stat_statements
+              - pg_trgm
               - pgcrypto
+              - pgrowlocks
+              - pgstattuple
+              - postgres_fdw
+              - seg
+              - sslinfo
+              - tablefunc
+              - tcn
+              - test_parser
+              - timetravel
+              - tsearch2
+              - unaccent
+              - xml2
             languages:
+              - pllua
               - plpgsql
               - plperl
+              - plproxy
               - plpython3
+              - plr
+              - plsh
               - pltcl
         extensions:
           - name: dblink
@@ -56,4 +95,88 @@ suites:
             database: testdb
           - name: plv8
             database: testdb
-  <% end %>
+  - name: server_94
+    run_list:
+      - recipe[apt]
+      - recipe[postgresql::server]
+      - recipe[postgresql::client]
+      - recipe[postgresql::dbg]
+      - recipe[postgresql::doc]
+      - recipe[postgresql::libpq]
+      - recipe[postgresql::server_dev]
+      - recipe[minitest-handler]
+    attributes:
+      postgresql:
+        version: "9.4"
+        users:
+          - username: testuser
+            password: s3kr1t
+            login: true
+        databases:
+          - name: testdb
+            owner: testuser
+            template: template0
+            encoding: utf8
+            locale: en_US.UTF8
+            # postgis: true
+            extensions:
+              - adminpack
+              - autoinc
+              - btree_gin
+              - btree_gist
+              - chkpass
+              - citext
+              - cube
+              - dict_int
+              - dict_xsyn
+              - earthdistance
+              - file_fdw
+              - fuzzystrmatch
+              - hstore
+              - insert_username
+              - intagg
+              - intarray
+              - isn
+              - lo
+              - ltree
+              - moddatetime
+              - pageinspect
+              - pg_buffercache
+              - pg_freespacemap
+              - pg_prewarm
+              - pg_stat_statements
+              - pg_trgm
+              - pgcrypto
+              - pgrowlocks
+              - pgstattuple
+              - postgres_fdw
+              - refint
+              - seg
+              - sslinfo
+              - tablefunc
+              - tcn
+              - test_parser
+              - test_shm_mq
+              - timetravel
+              - tsearch2
+              - unaccent
+              - worker_spi
+              - xml2
+            languages:
+              - plpgsql
+              - plperl
+              - plproxy
+              - plpython3
+              - plr
+              # - plsh
+              - pltcl
+        extensions:
+          - name: dblink
+            database: testdb
+          - name: uuid-ossp
+            database: testdb
+        languages:
+          - name: plpython
+            database: testdb
+          - name: plv8
+            database: testdb
