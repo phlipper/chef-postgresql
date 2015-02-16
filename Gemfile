@@ -7,7 +7,7 @@ gem "berkshelf", "~> 3.2.3"
 gem "foodcritic", "~> 4.0.0"
 gem "license_finder", "~> 1.2.0"
 gem "rake", "~> 10.4.0"
-gem "rubocop", "~> 0.28.0"
+gem "rubocop", "~> 0.29.1"
 gem "serverspec", "~> 2.8.0"
 
 group :integration do
