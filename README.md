@@ -630,13 +630,11 @@ default["postgis"]["version"] = "2.0"
 ```
 postgresql-{version}-ip4r
 postgresql-{version}-pgq3
-postgresql-{version}-plsh
 postgresql-{version}-pgmp
 postgresql-{version}-plproxy
 postgresql-{version}-repmgr
 postgresql-{version}-debversion
 postgresql-{version}-pgpool2
-postgresql-{version}-plr
 postgresql-{version}-slony1-2
 ```
 

@@ -1,3 +1,8 @@
+AllCops:
+  Exclude:
+    - ".bundle/**/*"
+    - "vendor/**/*"
+
 LineLength:
   Max: 80
   Exclude:

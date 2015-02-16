@@ -76,23 +76,38 @@ describe "PostgreSQL users, databases, and extensions" do
     its(:exit_status) { should eq 1 }
   end
 
-  %w[dblink hstore pgcrypto uuid-ossp].each do |extension|
+  installed_extensions = %w[
+    adminpack autoinc btree_gin btree_gist chkpass citext cube dblink dict_int
+    dict_xsyn earthdistance file_fdw fuzzystrmatch hstore insert_username
+    intarray isn lo ltree moddatetime pageinspect pg_buffercache pg_freespacemap
+    pg_stat_statements pg_trgm pgcrypto pgrowlocks pgstattuple postgres_fdw seg
+    sslinfo tablefunc tcn test_parser timetravel tsearch2 unaccent uuid-ossp
+    xml2
+  ]
+  installed_extensions.each do |extension|
     describe command(cmd_extension_exists("testdb", extension)) do
+      its(:stdout) { should match(extension) }
       its(:exit_status) { should eq 0 }
     end
   end
 
   describe command(cmd_extension_exists("testdb", "fake_extension")) do
+    its(:stdout) { should_not match("fake_extension") }
     its(:exit_status) { should eq 1 }
   end
 
-  %w[plpgsql plperl plpythonu plpython3u pltcl plv8].each do |language|
+  installed_languages = %w[
+    plpgsql pllua plperl plproxy plpythonu plpython3u plr plsh pltcl plv8
+  ]
+  installed_languages.each do |language|
     describe command(cmd_language_exists("testdb", language)) do
+      its(:stdout) { should match(language) }
       its(:exit_status) { should eq 0 }
     end
   end
 
   describe command(cmd_language_exists("testdb", "fake_language")) do
+    its(:stdout) { should_not match("fake_language") }
     its(:exit_status) { should eq 1 }
   end
 end
