@@ -28,5 +28,5 @@ recipe "postgresql::setup_users",      "Internal recipe to manage specified user
 supports "ubuntu"
 supports "debian"
 
-depends "apt", ">= 1.9.0"
+depends "apt", ">= 2.6.1"
 suggests "minitest-handler"
