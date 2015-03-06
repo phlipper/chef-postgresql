@@ -262,11 +262,6 @@ default["postgresql"]["conf_custom"]                     = false  # if true, onl
 default["postgresql"]["initdb_options"]                  = "--locale=en_US.UTF-8"
 
 #------------------------------------------------------------------------------
-# POSTGIS
-#------------------------------------------------------------------------------
-default["postgis"]["version"]                            = "2.1"
-
-#------------------------------------------------------------------------------
 # FILE LOCATIONS
 #------------------------------------------------------------------------------
 default["postgresql"]["data_directory"]                  = "/var/lib/postgresql/#{node["postgresql"]["version"]}/main"
@@ -618,7 +613,7 @@ default["postgresql"]["custom_variable_classes"]         = ""
 # POSTGIS OPTIONS
 #------------------------------------------------------------------------------
 
-default["postgis"]["version"] = "2.0"
+default["postgis"]["version"] = "2.1"
 ```
 
 
@@ -721,6 +716,8 @@ Many thanks go to the following who have contributed to making this cookbook eve
     * add missing `ssl_ca_file` and `ssl_crl_file` attributes to the configuration template
 * **[@vivid-inc](https://github.com/vivid-inc)**
     * add `service_actions` attribute
+* **[@rmoriz](https://github.com/rmoriz)**
+    * remove redundant postgis attribute
 
 
 ## License

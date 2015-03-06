@@ -38,12 +38,6 @@ default["postgresql"]["conf_custom"]                     = false  # if true, onl
 default["postgresql"]["initdb_options"]                  = "--locale=en_US.UTF-8"
 
 #------------------------------------------------------------------------------
-# POSTGIS
-#------------------------------------------------------------------------------
-
-default["postgis"]["version"]                            = "1.5"
-
-#------------------------------------------------------------------------------
 # FILE LOCATIONS
 #------------------------------------------------------------------------------
 default["postgresql"]["data_directory"]                  = "/var/lib/postgresql/#{node["postgresql"]["version"]}/main"
