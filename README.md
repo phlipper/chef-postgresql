@@ -716,6 +716,8 @@ Many thanks go to the following who have contributed to making this cookbook eve
     * add missing `ssl_ca_file` and `ssl_crl_file` attributes to the configuration template
 * **[@vivid-inc](https://github.com/vivid-inc)**
     * add `service_actions` attribute
+* **[@rmoriz](https://github.com/rmoriz)**
+    * remove redundant postgis attribute
 
 
 ## License
